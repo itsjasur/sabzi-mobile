@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NeighborhoodModel extends ChangeNotifier {
+class NeighborhoodProvider extends ChangeNotifier {
   String? _currentNeighborHood;
 
   String? get currentNeighborHood => _currentNeighborHood;

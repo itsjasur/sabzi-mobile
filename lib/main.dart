@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_mobile/models/neighborhood_model.dart';
-import 'package:sabzi_mobile/pages/home_page.dart';
+import 'package:sabzi_mobile/pages/wrapper/wrapper.dart';
+import 'package:sabzi_mobile/providers/bottom_navigation.dart';
+import 'package:sabzi_mobile/providers/neighborhood.dart';
+import 'package:sabzi_mobile/pages/home.dart';
 import 'package:sabzi_mobile/theme.dart';
 
 void main() {
@@ -10,7 +12,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => NeighborhoodModel()),
+        ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
+        ChangeNotifierProvider(create: (_) => NeighborhoodProvider()),
       ],
       child: const MyApp(),
     ),
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       // themeMode: ThemeMode.dark,
-      home: const HomePage(),
+      home: const Wrapper(),
     );
   }
 }

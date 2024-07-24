@@ -1,0 +1,75 @@
+class Item {
+  final String id;
+  final String title;
+  final String description;
+  final double price;
+  final String sellerId;
+  final String status;
+  final int categoryId;
+  final List<String> imageUrls;
+  final DateTime datePosted;
+  final int? chatCount;
+  final int? likeCount;
+  final int? viewCount;
+
+  Item({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.sellerId,
+    required this.status,
+    required this.categoryId,
+    required this.imageUrls,
+    required this.datePosted,
+    this.chatCount,
+    this.likeCount,
+    this.viewCount,
+  });
+
+  // Create Item from Map
+  factory Item.fromMap(Map<String, dynamic> map) {
+    return Item(
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
+      price: map['price'],
+      status: map['status'],
+      sellerId: map['seller_id'],
+      categoryId: map['category_id'],
+      imageUrls: List<String>.from(map['image_urls']),
+      datePosted: DateTime.parse(map['date_posted']),
+      chatCount: map['chat_count'],
+      likeCount: map['like_count'],
+      viewCount: map['view_count'],
+    );
+  }
+
+  // // Convert Item to Map
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'title': title,
+  //     'description': description,
+  //     'price': price,
+  //     'status': status,
+  //     'sellerId': sellerId,
+  //     'category': categoryId,
+  //     'imageUrls': imageUrls,
+  //     'datePosted': datePosted.toIso8601String(),
+  //   };
+  // }
+
+  // // Copy with method for easy modification
+  // Item copyWith({
+  //   String? id,
+  //   String? title,
+
+  //   bool? isSold,
+  // }) {
+  //   return Item(
+  //     id: id ?? this.id,
+
+  //   );
+  // }
+}
