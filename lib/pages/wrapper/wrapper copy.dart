@@ -34,15 +34,15 @@ class _WrapperState extends State<Wrapper> {
     return Consumer<BottomNavigationProvider>(
       builder: (context, provider, child) => Scaffold(
         appBar: const WrapperAppbar(),
-        // body: _pages[provider.currentIndex],
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            provider.change(index);
-          },
-          physics: const NeverScrollableScrollPhysics(),
-          children: _pages,
-        ),
+        body: _pages[provider.currentIndex],
+        // body: PageView(
+        //   controller: _pageController,
+        //   onPageChanged: (index) {
+        //     provider.change(index);
+        //   },
+        //   physics: const NeverScrollableScrollPhysics(),
+        //   children: _pages,
+        // ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedLabelStyle: const TextStyle(fontSize: 12),
@@ -53,8 +53,9 @@ class _WrapperState extends State<Wrapper> {
           iconSize: 22,
           onTap: (newValue) {
             provider.change(newValue);
-            _pageController.jumpToPage(newValue);
             // print(_pageController.initialPage);
+            // _pageController.jumpToPage(newValue);
+
             // print(newValue);
             // setState(() {});
           },

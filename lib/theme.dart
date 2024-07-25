@@ -4,6 +4,8 @@ final lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     background: Colors.white, //background
 
+    tertiaryContainer: Colors.grey.shade100,
+
     secondaryContainer: Colors.white, //popups background color
 
     primary: Colors.green, //buttons, containers, checkboxes, radios etc...
