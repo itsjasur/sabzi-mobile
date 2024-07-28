@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:uicons/uicons.dart';
 
-class Category {
+class ItemCategory {
   final int id;
   final String code;
   final String name;
-  final int priority;
   late Icon icon;
   final String? imagUrl;
 
-  Category({
+  ItemCategory({
     required this.id,
     required this.name,
     required this.code,
-    required this.priority,
-    required this.imagUrl,
+    this.imagUrl,
   }) {
     icon = _getIconFromCode(code);
   }

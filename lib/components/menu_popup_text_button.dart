@@ -18,7 +18,7 @@ class _MenuPopupTextButtonState extends State<MenuPopupTextButton> with TickerPr
   Widget build(BuildContext context) {
     return InkWell(
       key: _menuTextButtonKey,
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(6),
       onTap: _showCustomPopup,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
@@ -102,7 +102,8 @@ class _MenuPopupTextButtonState extends State<MenuPopupTextButton> with TickerPr
                 alignment: Alignment.topLeft,
                 scale: scaleAnimation,
                 child: Material(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  // color: Theme.of(context).colorScheme.primaryContainer,
+                  // color: Theme.of(context).colorScheme.onPrimary,
                   // elevation: 1,
                   borderRadius: BorderRadius.circular(6),
                   child: ConstrainedBox(
@@ -115,6 +116,7 @@ class _MenuPopupTextButtonState extends State<MenuPopupTextButton> with TickerPr
                           children: widget.items
                               .map(
                                 (i) => InkWell(
+                                  borderRadius: BorderRadius.circular(6),
                                   onTap: () {
                                     animationController.reverse().then((_) {
                                       overlayEntry.remove();

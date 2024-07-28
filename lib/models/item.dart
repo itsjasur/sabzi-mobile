@@ -1,13 +1,17 @@
+import 'package:sabzi_mobile/utils/custom_localizers.dart';
+
 class Item {
-  final String id;
+  final int id;
   final String title;
   final String description;
-  final double price;
-  final String sellerId;
+  final String price;
+  final bool isNegotiable;
+  final int sellerId;
   final String status;
   final int categoryId;
   final List<String> imageUrls;
-  final DateTime datePosted;
+  final String datePosted;
+  final String distanceFromMe;
   final int? chatCount;
   final int? likeCount;
   final int? viewCount;
@@ -17,11 +21,13 @@ class Item {
     required this.title,
     required this.description,
     required this.price,
+    required this.isNegotiable,
     required this.sellerId,
     required this.status,
     required this.categoryId,
     required this.imageUrls,
     required this.datePosted,
+    required this.distanceFromMe,
     this.chatCount,
     this.likeCount,
     this.viewCount,
@@ -33,15 +39,17 @@ class Item {
       id: map['id'],
       title: map['title'],
       description: map['description'],
-      price: map['price'],
+      price: CustomLocalizers().costFormatter(map['price']),
+      isNegotiable: map['negotiable'],
       status: map['status'],
       sellerId: map['seller_id'],
       categoryId: map['category_id'],
       imageUrls: List<String>.from(map['image_urls']),
-      datePosted: DateTime.parse(map['date_posted']),
+      datePosted: CustomLocalizers().getRelativeTime(map['date_posted']),
       chatCount: map['chat_count'],
       likeCount: map['like_count'],
       viewCount: map['view_count'],
+      distanceFromMe: map['distance_from_me'],
     );
   }
 

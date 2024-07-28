@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 final lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     background: Colors.white, //background
-
-    tertiaryContainer: Colors.grey.shade100,
-
-    secondaryContainer: Colors.white, //popups background color
-
     primary: Colors.green, //buttons, containers, checkboxes, radios etc...
-    onPrimary: Colors.white, // color of items on primary
-    outline: Colors.grey.shade300, //outlined button, textfield outlines
+    // onPrimary: Colors.white,
+
+    secondary: Colors.grey.shade700,
+    secondaryContainer: Colors.grey.shade200,
+
+    // primaryContainer: Colors.white, //popups background color
+    // secondaryContainer: Colors.grey.shade200,
+
+    // outline: Colors.grey.shade300, //outlined button, textfield outlines
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
@@ -33,16 +35,19 @@ final lightTheme = ThemeData(
 
 final darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
-    background: const Color(0xFF181818), //background
-    secondaryContainer: const Color(0xFF282828), //popups background color
-
+    background: const Color.fromARGB(255, 44, 44, 44), //background
     primary: Colors.green, //buttons, containers, checkboxes, radios etc...
-    onPrimary: Colors.white, // color of items on primary
-    outline: Colors.grey.shade300, //outlined button, textfield outlines
+    // onPrimary: Colors.white,
+    secondary: Colors.white60,
+
+    secondaryContainer: Colors.grey.shade900,
+
+    // onPrimary: Colors.white, // color of items on primary
+    // outline: Colors.grey.shade300, //outlined button, textfield outlines
   ),
   appBarTheme: const AppBarTheme(
     titleSpacing: 20,
-    backgroundColor: Color(0xFF181818),
+    backgroundColor: Color.fromARGB(255, 44, 44, 44),
   ),
   iconTheme: const IconThemeData(
     applyTextScaling: true,
