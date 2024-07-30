@@ -1,18 +1,24 @@
 import 'package:intl/intl.dart';
 
-class CustomLocalizers {
+class CustomFormatters {
   //lang specific
-  String costFormatter(dynamic number) {
+  String currencyFormat(dynamic number, String currrency) {
     final formatter = NumberFormat('#,###', 'en_US');
 
     if (number == 0) {
       return 'Free';
     }
     try {
+      if (currrency == 'USD') return "\$ ${formatter.format(number)}";
       return "${formatter.format(number)} SO'M";
     } catch (e) {
       throw ArgumentError('Input must be int or double');
     }
+  }
+
+  String commafy(dynamic number) {
+    final formatter = NumberFormat('#,###', 'en_US');
+    return formatter.format(number).toString();
   }
 
   String getRelativeTime(String dateString) {

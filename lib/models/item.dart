@@ -5,6 +5,7 @@ class Item {
   final String title;
   final String description;
   final String price;
+  final String currency;
   final bool isNegotiable;
   final int sellerId;
   final String status;
@@ -21,6 +22,7 @@ class Item {
     required this.title,
     required this.description,
     required this.price,
+    required this.currency,
     required this.isNegotiable,
     required this.sellerId,
     required this.status,
@@ -39,13 +41,14 @@ class Item {
       id: map['id'],
       title: map['title'],
       description: map['description'],
-      price: CustomLocalizers().costFormatter(map['price']),
+      currency: map['currency'],
+      price: CustomFormatters().currencyFormat(map['price'], map['currency']),
       isNegotiable: map['negotiable'],
       status: map['status'],
       sellerId: map['seller_id'],
       categoryId: map['category_id'],
       imageUrls: List<String>.from(map['image_urls']),
-      datePosted: CustomLocalizers().getRelativeTime(map['date_posted']),
+      datePosted: CustomFormatters().getRelativeTime(map['date_posted']),
       chatCount: map['chat_count'],
       likeCount: map['like_count'],
       viewCount: map['view_count'],
