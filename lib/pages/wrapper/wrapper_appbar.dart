@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabzi_mobile/components/menu_popup_text_button.dart';
 import 'package:sabzi_mobile/providers/neighborhood.dart';
+import 'package:sabzi_mobile/providers/theme_provider.dart';
 import 'package:uicons/uicons.dart';
 
 class WrapperAppbar extends StatefulWidget implements PreferredSizeWidget {
@@ -21,21 +22,34 @@ class _WrapperAppbarState extends State<WrapperAppbar> {
       title: _titleBuilder(),
       centerTitle: false,
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 5, right: 10),
-          child: IconButton(
-            style: IconButton.styleFrom(
-              padding: EdgeInsets.zero,
-              // visualDensity: VisualDensity.compact,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            onPressed: () {},
-            icon: Icon(
-              UIcons.regularRounded.bell,
-              // size: 26,
-            ),
+        IconButton(
+          style: IconButton.styleFrom(
+            padding: EdgeInsets.zero,
+            // visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: () {
+            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+          },
+          icon: Icon(
+            UIcons.regularRounded.moon,
+            // size: 26,
           ),
         ),
+        const SizedBox(width: 10),
+        IconButton(
+          style: IconButton.styleFrom(
+            padding: EdgeInsets.zero,
+            // visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: () {},
+          icon: Icon(
+            UIcons.regularRounded.bell,
+            // size: 26,
+          ),
+        ),
+        const SizedBox(width: 15)
       ],
     );
   }

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sabzi_mobile/pages/wrapper/wrapper.dart';
 import 'package:sabzi_mobile/providers/bottom_navigation.dart';
 import 'package:sabzi_mobile/providers/neighborhood.dart';
-import 'package:sabzi_mobile/pages/home.dart';
+import 'package:sabzi_mobile/providers/theme_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 
 void main() {
@@ -12,6 +12,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
         ChangeNotifierProvider(create: (_) => NeighborhoodProvider()),
       ],
@@ -25,12 +26,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
-      home: const Wrapper(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme(),
+        darkTheme: darkTheme(),
+        // themeMode: ThemeMode.light,
+        themeMode: themeProvider.themeMode,
+        home: const Wrapper(),
+      ),
     );
   }
 }

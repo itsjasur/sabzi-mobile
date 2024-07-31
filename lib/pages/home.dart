@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sabzi_mobile/models/category.dart';
 import 'package:sabzi_mobile/models/item.dart';
 import 'package:sabzi_mobile/pages/test.dart';
+import 'package:sabzi_mobile/theme.dart';
 import 'package:sabzi_mobile/utils/custom_localizers.dart';
 import 'package:uicons/uicons.dart';
 
@@ -58,7 +59,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     super.build(context);
 
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    // ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final colors = AppColorPalette.of(context);
 
     return Stack(
       children: [
@@ -66,14 +68,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           controller: _scrollController,
           padding: EdgeInsets.zero,
           separatorBuilder: (context, index) {
-            return index != 0
-                ? Divider(
-                    color: colorScheme.secondary.withOpacity(0.07),
-                    height: 30,
-                    indent: 20,
-                    endIndent: 20,
-                  )
-                : const SizedBox(height: 20);
+            return index != 0 ? const Divider(height: 30, indent: 20, endIndent: 20) : const SizedBox(height: 20);
           },
           itemCount: 1 + _items.length, //first (0) for categories
           itemBuilder: (context, index) {
@@ -89,7 +84,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child: Material(
-                            color: colorScheme.secondaryContainer,
+                            color: colors.secondary.withOpacity(0.08),
                             child: InkWell(
                               onTap: () {
                                 _selectedCategory = _categories[categoryIndex].code;
@@ -100,7 +95,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  border: _selectedCategory == _categories[categoryIndex].code ? Border.all(color: colorScheme.secondary) : null,
+                                  border: _selectedCategory == _categories[categoryIndex].code ? Border.all(color: colors.secondary.withOpacity(0.5)) : null,
                                 ),
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                 child: Text(_categories[categoryIndex].name),
@@ -153,7 +148,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                               ),
                               Icon(
                                 Icons.more_vert,
-                                color: colorScheme.secondary.withOpacity(0.5),
+                                color: colors.secondary.withOpacity(0.5),
                                 size: 23,
                               ),
                             ],
@@ -163,7 +158,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                             '${item.distanceFromMe} • ${item.datePosted}',
                             style: TextStyle(
                               fontSize: 14,
-                              color: colorScheme.secondary,
+                              color: colors.secondary,
                             ),
                           ),
                           const SizedBox(height: 3),
@@ -218,13 +213,36 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(60),
               ),
-              backgroundColor: colorScheme.primary,
-              foregroundColor: colorScheme.onPrimary,
+              // backgroundColor: colorScheme.primary,
+              // foregroundColor: colorScheme.onPrimary,
               padding: EdgeInsets.zero,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 200,
+                    // decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Text('Modal bottom sheet'),
+                          ElevatedButton(
+                            child: const Text('Close'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
             child: AnimatedSize(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               child: _isScrollAtTop
                   ? Container(
                       height: 50,

@@ -1,63 +1,117 @@
 import 'package:flutter/material.dart';
 
-final lightTheme = ThemeData(
-  colorScheme: ColorScheme.light(
-    background: Colors.white, //background
-    primary: Colors.green, //buttons, containers, checkboxes, radios etc...
-    // onPrimary: Colors.white,
+class AppColorPalette {
+  final Color main;
+  final Color onMain;
+  final Color background;
+  final Color secondary;
+  // final Color terniary;
+  final Color text;
+  final Color button;
+  final Color buttonText;
 
-    secondary: Colors.grey.shade700,
-    secondaryContainer: Colors.grey.shade200,
+  const AppColorPalette._({
+    required this.main,
+    required this.onMain,
+    required this.background,
+    required this.secondary,
+    // required this.terniary,
+    required this.text,
+    required this.button,
+    required this.buttonText,
+  });
 
-    // primaryContainer: Colors.white, //popups background color
-    // secondaryContainer: Colors.grey.shade200,
+  static const light = AppColorPalette._(
+    main: Colors.green,
+    onMain: Colors.white,
+    background: Colors.white,
+    // secondary: Color.fromARGB(255, 32, 32, 32), //blackish
+    secondary: Colors.black,
 
-    // outline: Colors.grey.shade300, //outlined button, textfield outlines
-  ),
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.white,
-    titleSpacing: 20,
-  ),
-  iconTheme: const IconThemeData(
-    applyTextScaling: true,
-  ),
-  splashColor: Colors.transparent,
-  // highlightColor: Colors.transparent,
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    selectedItemColor: Colors.black,
-    unselectedItemColor: Colors.black.withOpacity(0.8),
+    text: Colors.black87,
+    button: Colors.green,
+    buttonText: Colors.white,
+  );
 
-    // selectedIconTheme: const IconThemeData(color: Colors.black),
-    // selectedLabelStyle: const TextStyle(color: Colors.black),
-    // unselectedIconTheme: IconThemeData(color: Colors.black.withOpacity(0.8)),
-  ),
-);
+  static const dark = AppColorPalette._(
+    main: Colors.green,
+    onMain: Colors.white,
+    background: Color.fromARGB(255, 33, 33, 34),
+    // secondary: Color.fromARGB(255, 228, 228, 228), //whitish
+    secondary: Colors.white,
 
-final darkTheme = ThemeData(
-  colorScheme: ColorScheme.dark(
-    background: const Color.fromARGB(255, 44, 44, 44), //background
-    primary: Colors.green, //buttons, containers, checkboxes, radios etc...
-    // onPrimary: Colors.white,
-    secondary: Colors.white60,
+    text: Colors.white,
+    button: Colors.green,
+    buttonText: Colors.white,
+  );
 
-    secondaryContainer: Colors.grey.shade900,
+  static AppColorPalette of(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.light ? light : dark;
+  }
+}
 
-    // onPrimary: Colors.white, // color of items on primary
-    // outline: Colors.grey.shade300, //outlined button, textfield outlines
-  ),
-  appBarTheme: const AppBarTheme(
-    titleSpacing: 20,
-    backgroundColor: Color.fromARGB(255, 44, 44, 44),
-  ),
-  iconTheme: const IconThemeData(
-    applyTextScaling: true,
-  ),
-  splashColor: Colors.transparent,
-  // highlightColor: Colors.transparent,
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    selectedItemColor: Colors.white,
-    unselectedItemColor: Colors.white,
-    unselectedIconTheme: IconThemeData(color: Colors.white),
-    selectedIconTheme: IconThemeData(color: Colors.white),
-  ),
-);
+ThemeData lightTheme() {
+  AppColorPalette palette = AppColorPalette.light;
+
+  return ThemeData(
+    colorScheme: ColorScheme.light(
+      background: palette.background,
+      primary: palette.main,
+      surfaceTint: Colors.transparent,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: palette.background,
+      titleSpacing: 20,
+    ),
+    iconTheme: const IconThemeData(
+      applyTextScaling: true,
+    ),
+    splashColor: Colors.transparent,
+
+    // highlightColor: Colors.transparent,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: palette.secondary,
+      unselectedItemColor: palette.secondary.withOpacity(0.8),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: palette.background,
+      constraints: const BoxConstraints(maxWidth: 500),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    ),
+    dividerTheme: DividerThemeData(
+      color: palette.secondary.withOpacity(0.08),
+    ),
+  );
+}
+
+ThemeData darkTheme() {
+  AppColorPalette palette = AppColorPalette.dark;
+
+  return ThemeData(
+    colorScheme: ColorScheme.dark(
+      background: palette.background,
+      primary: palette.main,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: palette.background,
+      titleSpacing: 20,
+    ),
+    iconTheme: const IconThemeData(
+      applyTextScaling: true,
+    ),
+    splashColor: Colors.transparent,
+
+    // highlightColor: Colors.transparent,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: palette.secondary,
+      unselectedItemColor: palette.secondary.withOpacity(0.8),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: palette.background,
+      constraints: const BoxConstraints(maxWidth: 500),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    ),
+    dividerTheme: DividerThemeData(color: palette.secondary.withOpacity(0.1)),
+  );
+}
