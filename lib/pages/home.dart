@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:sabzi_mobile/components/home_page_action_button.dart';
 import 'package:sabzi_mobile/models/category.dart';
 import 'package:sabzi_mobile/models/item.dart';
 import 'package:sabzi_mobile/pages/test.dart';
+import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 import 'package:sabzi_mobile/utils/custom_localizers.dart';
 import 'package:uicons/uicons.dart';
@@ -40,6 +43,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void initState() {
     super.initState();
 
+    context.read<OverlayProvider>().updateOverlayWidget(
+          HomePageActionButton(isScrollAtTop: _isScrollAtTop),
+          _buttonKey,
+        );
+
     _scrollController.addListener(() {
       print(_scrollController.offset);
       setState(() {
@@ -55,11 +63,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     super.dispose();
   }
 
+  final GlobalKey _buttonKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    // ColorScheme colorScheme = Theme.of(context).colorScheme;
     final colors = AppColorPalette.of(context);
 
     return Stack(
@@ -109,8 +117,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                 ),
               );
             }
-            Item item = _items[index - 1];
 
+            //ITEM CARD
+            Item item = _items[index - 1];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: InkWell(
@@ -140,9 +149,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                               Flexible(
                                 child: Text(
                                   item.title,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 16,
                                     // fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w500,
+                                    color: colors.text,
                                   ),
                                 ),
                               ),
@@ -164,9 +175,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           const SizedBox(height: 3),
                           Text(
                             item.price.toString(),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
+                              color: colors.text,
                             ),
                           ),
                           Align(
@@ -206,93 +218,34 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           },
         ),
         Positioned(
-          bottom: 15,
-          right: 15,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(60),
-              ),
-              // backgroundColor: colorScheme.primary,
-              // foregroundColor: colorScheme.onPrimary,
-              padding: EdgeInsets.zero,
-            ),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 200,
-                    // decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Text('Modal bottom sheet'),
-                          ElevatedButton(
-                            child: const Text('Close'),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-            child: AnimatedSize(
-              duration: const Duration(milliseconds: 200),
-              child: _isScrollAtTop
-                  ? Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        children: [
-                          Icon(
-                            UIcons.boldRounded.plus,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 7),
-                          const Text(
-                            'Add product',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: Icon(
-                        UIcons.boldRounded.plus,
-                        size: 20,
-                      ),
-                    ),
-            ),
-          ),
-        )
+            key: _buttonKey,
+            bottom: 15,
+            right: 15,
+            // child: HomePageActionButton(
+            //   isScrollAtTop: _isScrollAtTop,
+            // ),
+            child: const SizedBox()),
       ],
     );
   }
 
   Widget _actionCountBuilder(int count, IconData icon) {
+    final colors = AppColorPalette.of(context);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Icon(
           icon,
-          color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+          color: colors.secondary.withOpacity(0.5),
           size: 13,
         ),
         const SizedBox(width: 3),
         Text(
           CustomFormatters().commafy(count),
           style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
+            color: colors.secondary.withOpacity(0.5),
             fontSize: 13,
           ),
         ),
@@ -300,3 +253,27 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     );
   }
 }
+
+     
+ // showPopupMenu(context, _buttonKey);
+              // showModalBottomSheet(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return SizedBox(
+              //       // height: 200,
+              //       child: Center(
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           mainAxisSize: MainAxisSize.min,
+              //           children: <Widget>[
+              //             const Text('Modal bottom sheet'),
+              //             ElevatedButton(
+              //               child: const Text('Close'),
+              //               onPressed: () => Navigator.pop(context),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // );

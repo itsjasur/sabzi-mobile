@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_mobile/components/menu_popup_text_button.dart';
-import 'package:sabzi_mobile/providers/neighborhood.dart';
+import 'package:sabzi_mobile/components/neighborhood_menu_button.dart';
+import 'package:sabzi_mobile/providers/neighborhood_provider.dart';
 import 'package:sabzi_mobile/providers/theme_provider.dart';
 import 'package:uicons/uicons.dart';
 
@@ -58,7 +58,7 @@ class _WrapperAppbarState extends State<WrapperAppbar> {
     // NeighborhoodProvider neighborhoodProvider = Provider.of<NeighborhoodProvider>(context, listen: false);
     final neighborhoodProvider = context.read<NeighborhoodProvider>();
 
-    return MenuPopupTextButton(
+    return NeighborhoodMenuButton(
       title: neighborhoodProvider.currentNeighborHood ?? "Add neighborhood",
       textStyle: const TextStyle(
         fontSize: 16,

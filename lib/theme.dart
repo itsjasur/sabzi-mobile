@@ -5,9 +5,9 @@ class AppColorPalette {
   final Color onMain;
   final Color background;
   final Color secondary;
-  // final Color terniary;
+  final Color terniary;
   final Color text;
-  final Color button;
+  // final Color button;
   final Color buttonText;
 
   const AppColorPalette._({
@@ -15,9 +15,9 @@ class AppColorPalette {
     required this.onMain,
     required this.background,
     required this.secondary,
-    // required this.terniary,
+    required this.terniary,
     required this.text,
-    required this.button,
+    // required this.button,
     required this.buttonText,
   });
 
@@ -27,9 +27,10 @@ class AppColorPalette {
     background: Colors.white,
     // secondary: Color.fromARGB(255, 32, 32, 32), //blackish
     secondary: Colors.black,
+    terniary: Colors.grey,
 
     text: Colors.black87,
-    button: Colors.green,
+    // button: Colors.green,
     buttonText: Colors.white,
   );
 
@@ -39,9 +40,9 @@ class AppColorPalette {
     background: Color.fromARGB(255, 33, 33, 34),
     // secondary: Color.fromARGB(255, 228, 228, 228), //whitish
     secondary: Colors.white,
-
+    terniary: Colors.white,
     text: Colors.white,
-    button: Colors.green,
+    // button: Colors.green,
     buttonText: Colors.white,
   );
 
@@ -82,6 +83,17 @@ ThemeData lightTheme() {
     dividerTheme: DividerThemeData(
       color: palette.secondary.withOpacity(0.08),
     ),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(
+        color: palette.text,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: palette.main,
+        foregroundColor: palette.onMain,
+      ),
+    ),
   );
 }
 
@@ -112,6 +124,14 @@ ThemeData darkTheme() {
       constraints: const BoxConstraints(maxWidth: 500),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
-    dividerTheme: DividerThemeData(color: palette.secondary.withOpacity(0.1)),
+    dividerTheme: DividerThemeData(
+      color: palette.secondary.withOpacity(0.1),
+    ),
+
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(
+        color: palette.text,
+      ),
+    ),
   );
 }

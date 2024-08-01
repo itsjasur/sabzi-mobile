@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class MenuPopupTextButton extends StatefulWidget {
+class NeighborhoodMenuButton extends StatefulWidget {
   final String title;
   final TextStyle? textStyle;
   final List<Map> items;
-  const MenuPopupTextButton({super.key, required this.title, this.textStyle, required this.items});
+  const NeighborhoodMenuButton({super.key, required this.title, this.textStyle, required this.items});
 
   @override
-  State<MenuPopupTextButton> createState() => _MenuPopupTextButtonState();
+  State<NeighborhoodMenuButton> createState() => NeighborhoodMenuButtonState();
 }
 
-class _MenuPopupTextButtonState extends State<MenuPopupTextButton> with TickerProviderStateMixin {
+class NeighborhoodMenuButtonState extends State<NeighborhoodMenuButton> with TickerProviderStateMixin {
   final GlobalKey _menuTextButtonKey = GlobalKey();
 
   @override
