@@ -1,63 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_mobile/providers/overlay_provider.dart';
+import 'package:sabzi_mobile/globals/keys.dart';
+import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 import 'package:uicons/uicons.dart';
 
 class HomePageActionButton extends StatefulWidget {
-  final bool isScrollAtTop;
-  const HomePageActionButton({super.key, required this.isScrollAtTop});
+  const HomePageActionButton({super.key});
 
   @override
   State<HomePageActionButton> createState() => _HomePageActionButtonState();
 }
 
 class _HomePageActionButtonState extends State<HomePageActionButton> with TickerProviderStateMixin {
-  final GlobalKey _buttonKey = GlobalKey();
+  @override
+  void initState() {
+    super.initState();
 
-  bool _menuOpen = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _calculatePosition();
+    });
+  }
+
+  double _right = 0;
+  double _bottom = 0;
+
+  _calculatePosition() {
+    final RenderBox renderBox = context.read<HomeActionButtonProvider>().key?.currentContext?.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    final offset = renderBox.localToGlobal(Offset.zero);
+    _right = offset.dx + size.width;
+    _bottom = offset.dy + size.height;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColorPalette.of(context);
 
-    return Consumer<OverlayProvider>(
-      builder: (context, overlayProvider, child) {
-        final RenderBox renderBox = overlayProvider.widgetKey?.currentContext!.findRenderObject() as RenderBox;
-        final offset = renderBox.localToGlobal(Offset.zero);
-        // final size = renderBox.size;
-        // final bottomEndPosition = offset.dy + size.height;
-        // final rightEndPosition = offset.dx + size.width;
-
-        return Positioned(
-          right: MediaQuery.of(context).size.width - offset.dx,
-          bottom: MediaQuery.of(context).size.height - offset.dy,
-          child: ElevatedButton(
-            key: _buttonKey,
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(60),
-              ),
-              padding: EdgeInsets.zero,
+    return Consumer<HomeActionButtonProvider>(
+      builder: (context, provider, child) => Positioned(
+        right: MediaQuery.of(context).size.width - _right,
+        bottom: MediaQuery.of(context).size.height - _bottom,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: provider.menuActive ? colors.terniary : null,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(60),
             ),
-            // onPressed: showCustomAnchorMenu,
-            onPressed: () {
-              // OverlayState? overlayState = Overlay.of(context);
-              // late OverlayEntry overlayEntry;
-              // final RenderBox renderBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
-              // final size = renderBox.size;
-
-              // final offset = renderBox.localToGlobal(Offset.zero);
-              // final bottomEndPosition = offset.dy + size.height;
-              // final rightEndPosition = offset.dx + size.width;
-
-              overlayProvider.activate();
-            },
-            child: AnimatedSize(
+            padding: EdgeInsets.zero,
+          ),
+          // onPressed: showCustomAnchorMenu,
+          onPressed: () {
+            provider.openMenu();
+          },
+          child: AnimatedSize(
               duration: const Duration(milliseconds: 200),
-              child: !overlayProvider.active && widget.isScrollAtTop
-                  ? Container(
+              child: !provider.scrollAtTop || provider.menuActive
+                  ? SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: Icon(
+                        UIcons.boldRounded.plus,
+                        size: 20,
+                      ),
+                    )
+                  : Container(
                       height: 50,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
@@ -75,19 +83,9 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
                           ),
                         ],
                       ),
-                    )
-                  : SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: Icon(
-                        UIcons.boldRounded.plus,
-                        size: 20,
-                      ),
-                    ),
-            ),
-          ),
-        );
-      },
+                    )),
+        ),
+      ),
     );
   }
 
@@ -95,9 +93,9 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
     OverlayState? overlayState = Overlay.of(context);
     late OverlayEntry overlayEntry;
 
-    final RenderBox renderBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
+    // final RenderBox renderBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
+    // final size = renderBox.size;
+    // final offset = renderBox.localToGlobal(Offset.zero);
 
     // animation controller
     final animationController = AnimationController(
@@ -146,8 +144,8 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
               ),
             ),
             Positioned(
-              top: offset.dy,
-              left: offset.dx,
+              // top: offset.dy,
+              // left: offset.dx,
               child: ElevatedButton(
                 onPressed: () {},
                 child: SizedBox(

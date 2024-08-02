@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabzi_mobile/pages/wrapper/wrapper.dart';
 import 'package:sabzi_mobile/providers/bottom_navigation_provider.dart';
+import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
 import 'package:sabzi_mobile/providers/neighborhood_provider.dart';
 import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/providers/theme_provider.dart';
@@ -15,6 +16,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => OverlayProvider()),
+        ChangeNotifierProvider(create: (_) => HomeActionButtonProvider(Provider.of<OverlayProvider>(_, listen: false))),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
         ChangeNotifierProvider(create: (_) => NeighborhoodProvider()),
       ],

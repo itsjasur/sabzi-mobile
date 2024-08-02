@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sabzi_mobile/components/home_page_action_button.dart';
+import 'package:sabzi_mobile/globals/keys.dart';
 import 'package:sabzi_mobile/models/category.dart';
 import 'package:sabzi_mobile/models/item.dart';
 import 'package:sabzi_mobile/pages/test.dart';
+import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
 import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 import 'package:sabzi_mobile/utils/custom_localizers.dart';
@@ -21,11 +24,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   @override
   bool get wantKeepAlive => true;
 
-  // final List _pageContentList = ['categories', 'items', 'loadingMoreIcon'];
-
   final ScrollController _scrollController = ScrollController();
-
-  bool _isScrollAtTop = true;
 
   final List<ItemCategory> _categories = [
     ItemCategory(id: 1, name: 'All', code: 'all'),
@@ -43,17 +42,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void initState() {
     super.initState();
 
-    context.read<OverlayProvider>().updateOverlayWidget(
-          HomePageActionButton(isScrollAtTop: _isScrollAtTop),
-          _buttonKey,
-        );
-
     _scrollController.addListener(() {
-      print(_scrollController.offset);
-      setState(() {
-        _isScrollAtTop = _scrollController.offset <= _scrollController.position.minScrollExtent;
-      });
-      print('scrolled');
+      bool isScrollAtTop = _scrollController.offset <= _scrollController.position.minScrollExtent;
+      context.read<HomeActionButtonProvider>().setIsScrollAtTop(isScrollAtTop);
     });
   }
 
@@ -62,8 +53,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     _scrollController.dispose();
     super.dispose();
   }
-
-  final GlobalKey _buttonKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -217,14 +206,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
             );
           },
         ),
+
+        //this determines homeaction button positions
         Positioned(
-            key: _buttonKey,
-            bottom: 15,
-            right: 15,
-            // child: HomePageActionButton(
-            //   isScrollAtTop: _isScrollAtTop,
-            // ),
-            child: const SizedBox()),
+          key: context.read<HomeActionButtonProvider>().key,
+          bottom: 15,
+          right: 15,
+          child: const SizedBox.shrink(),
+        ),
       ],
     );
   }

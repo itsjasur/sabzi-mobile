@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabzi_mobile/components/home_page_action_button.dart';
 import 'package:sabzi_mobile/pages/home.dart';
 import 'package:sabzi_mobile/pages/search.dart';
 import 'package:sabzi_mobile/pages/wrapper/wrapper_appbar.dart';
@@ -32,18 +33,18 @@ class _WrapperState extends State<Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OverlayProvider>(
-      builder: (context, overlayProvider, child) {
-        return Stack(
-          children: [
-            Consumer<BottomNavigationProvider>(
-              builder: (context, provider, child) => Scaffold(
+    return Consumer<BottomNavigationProvider>(
+      builder: (context, bottomNavigationProvider, child) => Consumer<OverlayProvider>(
+        builder: (context, overlayProvider, child) {
+          return Stack(
+            children: [
+              Scaffold(
                 appBar: const WrapperAppbar(),
                 // body: _pages[provider.currentIndex],
                 body: PageView(
                   controller: _pageController,
                   onPageChanged: (index) {
-                    provider.change(index);
+                    bottomNavigationProvider.change(index);
                   },
                   physics: const NeverScrollableScrollPhysics(),
                   children: _pages,
@@ -53,11 +54,11 @@ class _WrapperState extends State<Wrapper> {
                   selectedLabelStyle: const TextStyle(fontSize: 12),
                   unselectedLabelStyle: const TextStyle(fontSize: 12),
                   showUnselectedLabels: true,
-                  currentIndex: provider.currentIndex,
+                  currentIndex: bottomNavigationProvider.currentIndex,
                   useLegacyColorScheme: true,
                   iconSize: 22,
                   onTap: (newValue) {
-                    provider.change(newValue);
+                    bottomNavigationProvider.change(newValue);
                     _pageController.jumpToPage(newValue);
                     // print(_pageController.initialPage);
                     // print(newValue);
@@ -87,20 +88,23 @@ class _WrapperState extends State<Wrapper> {
                   ],
                 ),
               ),
-            ),
-            if (overlayProvider.active)
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: () {
-                    overlayProvider.deactivate();
-                  },
-                  child: Container(color: Colors.black54),
+              if (overlayProvider.active)
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: () {
+                      overlayProvider.deactivate();
+                    },
+                    child: Container(color: Colors.black54),
+                  ),
                 ),
-              ),
-            if (overlayProvider.overlayWidget != null) overlayProvider.overlayWidget!
-          ],
-        );
-      },
+              // if (overlayProvider.overlayWidget != null) overlayProvider.overlayWidget!
+
+              //showing
+              if (bottomNavigationProvider.currentIndex == 0) const HomePageActionButton()
+            ],
+          );
+        },
+      ),
     );
   }
 }
