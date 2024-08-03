@@ -94,20 +94,6 @@ class _WrapperState extends State<Wrapper> {
                     child: Container(color: Colors.black38),
                   ),
                 ),
-
-              // Positioned.fill(
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       overlayProvider.deactivate();
-              //     },
-              //     child: AnimatedContainer(
-              //       curve: Curves.easeIn,
-              //       duration: const Duration(milliseconds: 150),
-              //       color: overlayProvider.active ? Colors.black54 : Colors.transparent,
-              //     ),
-              //   ),
-              // ),
-
               if (bottomNavigationProvider.currentIndex == 0) const HomePageActionButton()
             ],
           );

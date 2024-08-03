@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sabzi_mobile/pages/item.dart';
 import 'package:sabzi_mobile/pages/wrapper/wrapper.dart';
 import 'package:sabzi_mobile/providers/bottom_navigation_provider.dart';
 import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
@@ -10,6 +12,10 @@ import 'package:sabzi_mobile/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     MultiProvider(
@@ -35,9 +41,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
         darkTheme: darkTheme(),
-        // themeMode: ThemeMode.light,
         themeMode: themeProvider.themeMode,
-        home: const Wrapper(),
+        // home: const Wrapper(),
+        home: const ItemPage(itemId: 1),
       ),
     );
   }

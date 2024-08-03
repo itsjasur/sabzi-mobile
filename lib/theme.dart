@@ -65,12 +65,12 @@ ThemeData lightTheme() {
       backgroundColor: palette.background,
       titleSpacing: 20,
     ),
-    iconTheme: const IconThemeData(
-      applyTextScaling: true,
-    ),
-    splashColor: Colors.transparent,
+    // iconTheme: const IconThemeData(
+    //   applyTextScaling: true,
+    // ),
 
-    // highlightColor: Colors.transparent,
+    // splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: palette.secondary,
       unselectedItemColor: palette.secondary.withOpacity(0.8),
@@ -109,9 +109,9 @@ ThemeData darkTheme() {
       backgroundColor: palette.background,
       titleSpacing: 20,
     ),
-    iconTheme: const IconThemeData(
-      applyTextScaling: true,
-    ),
+    // iconTheme: const IconThemeData(
+    //   applyTextScaling: true,
+    // ),
     splashColor: Colors.transparent,
 
     // highlightColor: Colors.transparent,
@@ -125,7 +125,7 @@ ThemeData darkTheme() {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
     dividerTheme: DividerThemeData(
-      color: palette.secondary.withOpacity(0.1),
+      color: palette.secondary.withOpacity(0.08),
     ),
 
     textTheme: TextTheme(

@@ -1,14 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_mobile/components/home_page_action_button.dart';
-import 'package:sabzi_mobile/globals/keys.dart';
 import 'package:sabzi_mobile/models/category.dart';
 import 'package:sabzi_mobile/models/item.dart';
+import 'package:sabzi_mobile/pages/item.dart';
 import 'package:sabzi_mobile/pages/test.dart';
 import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
-import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 import 'package:sabzi_mobile/utils/custom_localizers.dart';
 import 'package:uicons/uicons.dart';
@@ -64,10 +60,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         ListView.separated(
           controller: _scrollController,
           padding: EdgeInsets.zero,
-          separatorBuilder: (context, index) {
-            return index != 0 ? const Divider(height: 30, indent: 20, endIndent: 20) : const SizedBox(height: 20);
-          },
           itemCount: 1 + _items.length, //first (0) for categories
+          separatorBuilder: (context, index) {
+            return index != 0 ? const Divider(height: 10, indent: 14, endIndent: 14) : const SizedBox(height: 10);
+          },
           itemBuilder: (context, index) {
             if (index == 0) {
               return SingleChildScrollView(
@@ -109,11 +105,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
             //ITEM CARD
             Item item = _items[index - 1];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () {},
+            return InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ItemPage(itemId: 1)));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

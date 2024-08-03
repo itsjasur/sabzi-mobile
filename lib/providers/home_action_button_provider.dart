@@ -21,17 +21,17 @@ class HomeActionButtonProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // void openMenu() {
-  //   _overlayProvider.activate();
-  //   _menuActive = true;
-  //   notifyListeners();
-  // }
+  void openMenu() {
+    _overlayProvider.activate();
+    _menuActive = true;
+    notifyListeners();
+  }
 
-  // void closeMenu() {
-  //   _overlayProvider.deactivate();
-  //   _menuActive = false;
-  //   notifyListeners();
-  // }
+  void closeMenu() {
+    _overlayProvider.deactivate();
+    _menuActive = false;
+    notifyListeners();
+  }
 
   void setIsScrollAtTop(bool isAtTop) {
     if (_scrollAtTop != isAtTop) {

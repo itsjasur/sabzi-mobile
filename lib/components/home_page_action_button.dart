@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_mobile/globals/keys.dart';
 import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
 import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
@@ -32,6 +31,7 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
     final offset = renderBox.localToGlobal(Offset.zero);
     _right = offset.dx + size.width;
     _bottom = offset.dy + size.height;
+
     setState(() {});
   }
 
@@ -43,168 +43,75 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
       builder: (context, homeActionButtonProvider, child) => Positioned(
         right: MediaQuery.of(context).size.width - _right,
         bottom: MediaQuery.of(context).size.height - _bottom,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            splashFactory: NoSplash.splashFactory,
-            backgroundColor: homeActionButtonProvider.menuActive ? colors.background : colors.main,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(60),
-            ),
-            padding: EdgeInsets.zero,
-          ),
-          onPressed: () {
-            context.read<OverlayProvider>().toggle();
-          },
-          child: AnimatedSize(
-            reverseDuration: Duration.zero,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.ease,
-            child: !homeActionButtonProvider.scrollAtTop || homeActionButtonProvider.menuActive
-                ? SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Icon(
-                      UIcons.boldRounded.plus,
-                      size: 20,
-                      color: colors.secondary,
-                    ),
-                  )
-                : Container(
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      children: [
-                        Icon(
-                          UIcons.boldRounded.plus,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 7),
-                        const Text(
-                          'Add product',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void showCustomAnchorMenu() {
-    OverlayState? overlayState = Overlay.of(context);
-    late OverlayEntry overlayEntry;
-
-    // final RenderBox renderBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
-    // final size = renderBox.size;
-    // final offset = renderBox.localToGlobal(Offset.zero);
-
-    // animation controller
-    final animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-
-    // scale animation
-    final scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeIn,
-        reverseCurve: Curves.easeIn,
-      ),
-    );
-
-    // opacity animation for overlay background
-    final opacityAnimation = Tween<double>(begin: 0.0, end: 0.4).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeIn,
-        reverseCurve: Curves.easeIn,
-      ),
-    );
-
-    overlayEntry = OverlayEntry(
-      builder: (context) => AnimatedBuilder(
-        animation: animationController,
-        builder: (context, child) => Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Overlay background with animated opacity
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () {
-                  animationController.reverse().then((_) {
-                    overlayEntry.remove();
-                    animationController.dispose();
-                  });
-                },
-                child: AnimatedBuilder(
-                  animation: opacityAnimation,
-                  builder: (context, child) => Container(
-                    color: Colors.black.withOpacity(opacityAnimation.value),
-                  ),
-                ),
-              ),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+              child: homeActionButtonProvider.menuActive
+                  ? Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                  : const SizedBox(width: 100),
             ),
-            Positioned(
-              // top: offset.dy,
-              // left: offset.dx,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: Icon(
-                    UIcons.boldRounded.plus,
-                    size: 20,
-                  ),
+
+            // Animated
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                splashFactory: NoSplash.splashFactory,
+                backgroundColor: homeActionButtonProvider.menuActive ? colors.background : colors.main,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60),
                 ),
+                padding: EdgeInsets.zero,
+              ),
+              onPressed: () {
+                // context.read<OverlayProvider>().toggle();
+              },
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+                child: !homeActionButtonProvider.scrollAtTop || homeActionButtonProvider.menuActive
+                    ? SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          UIcons.boldRounded.plus,
+                          size: 20,
+                          color: !homeActionButtonProvider.scrollAtTop ? colors.onMain : colors.secondary,
+                        ),
+                      )
+                    : Container(
+                        height: 50,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          children: [
+                            Icon(
+                              UIcons.boldRounded.plus,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 7),
+                            const Text(
+                              'Add product',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ),
           ],
         ),
       ),
     );
-
-    overlayState.insert(overlayEntry);
-    animationController.forward();
   }
 }
-
-
-
-
-  // Popup content
-            // Positioned(
-            //   left: offset.dx,
-            //   // right: 20,
-            //   top: offset.dy - size.height,
-            //   // top: offset.dy - size.height - 20,
-            //   child: ScaleTransition(
-            //     alignment: Alignment.bottomCenter,
-            //     scale: scaleAnimation,
-            //     child: Material(
-            //       // color: Theme.of(context).colorScheme.primaryContainer,
-            //       // color: Theme.of(context).colorScheme.onPrimary,
-            //       // elevation: 1,
-            //       borderRadius: BorderRadius.circular(6),
-            //       child: ConstrainedBox(
-            //         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 35, minWidth: 150),
-            //         child: const Material(
-            //           color: Colors.transparent,
-            //           child: IntrinsicWidth(
-            //             child: Column(
-            //               children: [
-            //                 Text('Item 1'),
-            //                 Text('Item 2'),
-            //                 Text('Item 3'),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
