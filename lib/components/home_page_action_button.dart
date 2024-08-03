@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabzi_mobile/globals/keys.dart';
 import 'package:sabzi_mobile/providers/home_action_button_provider.dart';
+import 'package:sabzi_mobile/providers/overlay_provider.dart';
 import 'package:sabzi_mobile/theme.dart';
 import 'package:uicons/uicons.dart';
 
@@ -39,51 +40,55 @@ class _HomePageActionButtonState extends State<HomePageActionButton> with Ticker
     final colors = AppColorPalette.of(context);
 
     return Consumer<HomeActionButtonProvider>(
-      builder: (context, provider, child) => Positioned(
+      builder: (context, homeActionButtonProvider, child) => Positioned(
         right: MediaQuery.of(context).size.width - _right,
         bottom: MediaQuery.of(context).size.height - _bottom,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: provider.menuActive ? colors.terniary : null,
+            splashFactory: NoSplash.splashFactory,
+            backgroundColor: homeActionButtonProvider.menuActive ? colors.background : colors.main,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60),
             ),
             padding: EdgeInsets.zero,
           ),
-          // onPressed: showCustomAnchorMenu,
           onPressed: () {
-            provider.openMenu();
+            context.read<OverlayProvider>().toggle();
           },
           child: AnimatedSize(
-              duration: const Duration(milliseconds: 200),
-              child: !provider.scrollAtTop || provider.menuActive
-                  ? SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: Icon(
-                        UIcons.boldRounded.plus,
-                        size: 20,
-                      ),
-                    )
-                  : Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        children: [
-                          Icon(
-                            UIcons.boldRounded.plus,
-                            size: 14,
+            reverseDuration: Duration.zero,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.ease,
+            child: !homeActionButtonProvider.scrollAtTop || homeActionButtonProvider.menuActive
+                ? SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Icon(
+                      UIcons.boldRounded.plus,
+                      size: 20,
+                      color: colors.secondary,
+                    ),
+                  )
+                : Container(
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        Icon(
+                          UIcons.boldRounded.plus,
+                          size: 14,
+                        ),
+                        const SizedBox(width: 7),
+                        const Text(
+                          'Add product',
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
-                          const SizedBox(width: 7),
-                          const Text(
-                            'Add product',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
         ),
       ),
     );

@@ -10,6 +10,11 @@ class OverlayProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
+  void toggle() {
+    _active = !_active;
+    notifyListeners();
+  }
+
   void activate() {
     _active = true;
     notifyListeners();

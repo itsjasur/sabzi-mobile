@@ -60,9 +60,6 @@ class _WrapperState extends State<Wrapper> {
                   onTap: (newValue) {
                     bottomNavigationProvider.change(newValue);
                     _pageController.jumpToPage(newValue);
-                    // print(_pageController.initialPage);
-                    // print(newValue);
-                    // setState(() {});
                   },
                   items: [
                     BottomNavigationBarItem(
@@ -94,12 +91,23 @@ class _WrapperState extends State<Wrapper> {
                     onTap: () {
                       overlayProvider.deactivate();
                     },
-                    child: Container(color: Colors.black54),
+                    child: Container(color: Colors.black38),
                   ),
                 ),
-              // if (overlayProvider.overlayWidget != null) overlayProvider.overlayWidget!
 
-              //showing
+              // Positioned.fill(
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       overlayProvider.deactivate();
+              //     },
+              //     child: AnimatedContainer(
+              //       curve: Curves.easeIn,
+              //       duration: const Duration(milliseconds: 150),
+              //       color: overlayProvider.active ? Colors.black54 : Colors.transparent,
+              //     ),
+              //   ),
+              // ),
+
               if (bottomNavigationProvider.currentIndex == 0) const HomePageActionButton()
             ],
           );

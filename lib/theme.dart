@@ -133,5 +133,12 @@ ThemeData darkTheme() {
         color: palette.text,
       ),
     ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: palette.main,
+        foregroundColor: palette.onMain,
+      ),
+    ),
   );
 }
