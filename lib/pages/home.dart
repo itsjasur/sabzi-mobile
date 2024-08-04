@@ -151,13 +151,26 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                             ],
                           ),
                           const SizedBox(height: 3),
-                          Text(
-                            '${item.distanceFromMe} • ${item.datePosted}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: colors.secondary,
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: colors.secondary.withOpacity(0.5),
+                              ),
+                              children: [
+                                TextSpan(text: item.distanceFromMe),
+                                const TextSpan(text: ' • '),
+                                TextSpan(text: item.datePosted),
+                              ],
                             ),
                           ),
+                          // Text(
+                          //   '${item.distanceFromMe} • ${item.datePosted}',
+                          //   style: TextStyle(
+                          //     fontSize: 14,
+                          //     color: colors.secondary,
+                          //   ),
+                          // ),
                           const SizedBox(height: 3),
                           Text(
                             item.price.toString(),
