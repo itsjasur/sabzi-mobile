@@ -19,6 +19,12 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
 
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+  ));
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
+
   // await AndroidYandexMap.init();
   // AndroidYandexMap.register(apiKey: "YOUR_API_KEY");
 
