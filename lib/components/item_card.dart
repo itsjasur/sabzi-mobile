@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:sabzi_app/models/item.dart';
+
+class ItemCard extends StatefulWidget {
+  final Item item;
+  const ItemCard({super.key, required this.item});
+
+  @override
+  State<ItemCard> createState() => _ItemCardState();
+}
+
+class _ItemCardState extends State<ItemCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
