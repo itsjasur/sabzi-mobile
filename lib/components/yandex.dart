@@ -51,10 +51,13 @@ class _YandexTestState extends State<YandexTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: YandexMap(
-        // scale: 13,
-        onMapCreated: _onMapCreated,
-        platformViewType: PlatformViewType.Compat,
+      body: IgnorePointer(
+        ignoring: !widget.scrollGesturesEnabled,
+        child: YandexMap(
+          // scale: 13,
+          onMapCreated: _onMapCreated,
+          platformViewType: PlatformViewType.Compat,
+        ),
       ),
     );
   }
@@ -71,9 +74,9 @@ class _YandexTestState extends State<YandexTest> {
         tilt: 0,
       ),
     );
-    // final imageProvider = ImageProvider.fromImageProvider(const AssetImage("assets/ic_pin.png"));
+    // final imageProvider = ImageProvider.fromImageProvider(const AssetImage("assets/images/ic_pin.png"));
     final imageProvider = yanimage.ImageProvider.fromImageProvider(
-      const AssetImage("assets/placeholder.png"),
+      const AssetImage("assets/images/placeholder.png"),
       cacheable: true,
     );
 

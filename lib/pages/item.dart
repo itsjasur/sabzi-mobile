@@ -5,7 +5,8 @@ import 'package:sabzi_app/components/appbar_back_button.dart';
 import 'package:sabzi_app/components/custom_icon_button.dart';
 import 'package:sabzi_app/components/map_with_marker.dart';
 import 'package:sabzi_app/components/scaled_tap.dart';
-import 'package:sabzi_app/components%20copy/yandex.dart';
+import 'package:sabzi_app/components/yandex.dart';
+
 import 'package:sabzi_app/models/item.dart';
 import 'package:sabzi_app/pages/main.dart';
 import 'package:sabzi_app/providers/theme_provider.dart';
@@ -69,7 +70,7 @@ class _ItemPageState extends State<ItemPage> {
           const SizedBox(width: 20),
           CustomIconButton(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const Main()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Main()));
             },
             icon: UIcons.regularRounded.home,
             iconSize: 22,
@@ -223,7 +224,7 @@ class _ItemPageState extends State<ItemPage> {
                                     Text(
                                       'Selling location',
                                       style: TextStyle(
-                                        color: colors.secondary.withOpacity(0.7),
+                                        color: colors.secondary.withOpacity(0.5),
                                         fontSize: 15,
                                         height: 1.2,
                                       ),

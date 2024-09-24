@@ -52,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.only(top: 10),
                     color: colors.secondary.withOpacity(0.1),
                     child: Image.asset(
-                      'lib/assets/user.png',
+                      'assets/images/user.png',
                       color: colors.secondary.withOpacity(0.2),
                     ),
                   ),

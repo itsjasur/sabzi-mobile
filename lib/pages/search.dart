@@ -211,7 +211,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(6),
                                         child: Image.asset(
-                                          _categories[index].imagUrl ?? "lib/assets/smartphone.jpg",
+                                          _categories[index].imagUrl ?? "assets/images/smartphone.jpg",
                                           height: 60,
                                           width: 60,
                                         ),

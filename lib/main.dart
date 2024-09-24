@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabzi_app/components%20copy/yandex.dart';
+import 'package:sabzi_app/pages/home.dart';
 import 'package:sabzi_app/pages/item.dart';
+import 'package:sabzi_app/pages/main.dart';
 import 'package:sabzi_app/providers/bottom_navigation_provider.dart';
 import 'package:sabzi_app/providers/neighborhood_provider.dart';
 import 'package:sabzi_app/providers/theme_provider.dart';
@@ -42,10 +43,22 @@ class MyApp extends StatelessWidget {
         theme: lightTheme(),
         darkTheme: darkTheme(),
         themeMode: themeProvider.themeMode,
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute(builder: (_) => const Main());
+            case '/item':
+              final args = settings.arguments as Map<String, dynamic>;
+              return MaterialPageRoute(builder: (_) => ItemPage(itemId: args['id']));
+          }
+        },
+
+        initialRoute: '/',
+
         // themeMode: ThemeMode.dark,
         // home: const TestPage(),
         // home: const Main(),
-        home: const ItemPage(itemId: 1),
+        // home: const ItemPage(itemId: 1),
         // home: const YandexTest(),
         // home: AddItemPage(),
       ),

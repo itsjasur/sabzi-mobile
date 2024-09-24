@@ -23,14 +23,14 @@
 
 //   Future<void> _initPlacemark() async {
 //     try {
-//       // final Uint8List imageData = await rootBundle.load('lib/assets/pin.png').then((byteData) => byteData.buffer.asUint8List());
+//       // final Uint8List imageData = await rootBundle.load('assets/images/pin.png').then((byteData) => byteData.buffer.asUint8List());
 //       placemarkMapObject = PlacemarkMapObject(
 //         mapId: const MapObjectId('placemark_1'),
 //         point: const Point(latitude: 55.751244, longitude: 37.618423),
 //         // text: const PlacemarkText(text: 'asasdas', style: PlacemarkTextStyle(color: Colors.red)),
 //         icon: PlacemarkIcon.single(
 //           PlacemarkIconStyle(
-//             image: BitmapDescriptor.fromAssetImage('lib/assets/pin.png'),
+//             image: BitmapDescriptor.fromAssetImage('assets/images/pin.png'),
 //             scale: 0.6,
 //           ),
 //         ),
