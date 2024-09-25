@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ScaledTap extends StatefulWidget {
+  final bool haptic;
   final Widget child;
   final GestureTapCallback? onTap;
   final GestureTapCallback? onTapDown;
@@ -42,6 +44,7 @@ class ScaledTap extends StatefulWidget {
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
+    this.haptic = false,
   });
 
   @override
@@ -59,7 +62,7 @@ class _ScaledTapState extends State<ScaledTap> with SingleTickerProviderStateMix
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -71,23 +74,32 @@ class _ScaledTapState extends State<ScaledTap> with SingleTickerProviderStateMix
   }
 
   void _handleTapDown(TapDownDetails details) {
-    _controller.forward();
     widget.onTapDown?.call();
+    _controller.forward();
+    // _controller.forward().whenComplete(() => widget.onTapDown?.call());
   }
 
   void _handleTapUp(TapUpDetails details) {
-    _controller.reverse();
     widget.onTapUp?.call();
+    _controller.reverse();
+    // _controller.reverse().whenComplete(() => widget.onTapUp?.call());
   }
 
   void _handleTapCancel() {
-    _controller.reverse();
     widget.onTapCancel?.call();
+    _controller.reverse();
+    // _controller.reverse().whenComplete(() => widget.onTapCancel?.call());
   }
 
-  void _handleTap() {
-    // _controller.reverse().then((_) => _controller.forward().then((_) => widget.onTap?.call()));
-    _controller.forward().whenComplete(() => _controller.reverse().whenComplete(() => widget.onTap?.call()));
+  Future<void> _handleTap() async {
+    if (widget.haptic) {
+      await HapticFeedback.lightImpact();
+      await SystemSound.play(SystemSoundType.click);
+    }
+
+    _controller.forward().whenComplete(() => _controller.reverse());
+    await Future.delayed(const Duration(milliseconds: 50));
+    widget.onTap?.call();
   }
 
   @override

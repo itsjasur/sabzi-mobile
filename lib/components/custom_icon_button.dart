@@ -12,7 +12,7 @@ class CustomIconButton extends StatelessWidget {
     super.key,
     this.onTap,
     required this.icon,
-    required this.iconSize,
+    this.iconSize = 26,
     this.color,
     this.padding = const EdgeInsets.all(5),
   });

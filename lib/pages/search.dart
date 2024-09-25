@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:sabzi_app/components/scaled_tap.dart';
 import 'package:sabzi_app/models/category.dart';
 import 'package:sabzi_app/test/categories.dart';
 import 'package:sabzi_app/theme.dart';
-import 'package:uicons/uicons.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -99,7 +100,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
                   itemCount: _suggestedSearchWords.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 10),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return ScaledTap(
                       onTap: () {
                         print('suggested word tapped');
                       },
@@ -108,10 +109,11 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
                         child: Row(
                           children: [
                             Icon(
-                              UIcons.regularRounded.search,
-                              size: 15,
+                              // UIcons.regularRounded.search,
+                              PhosphorIcons.magnifyingGlass(PhosphorIconsStyle.regular),
+                              size: 17,
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             Expanded(
                               child: Text(
                                 _suggestedSearchWords[index],
@@ -146,7 +148,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
                                   style: TextStyle(fontSize: 14),
                                 ),
                                 const Spacer(),
-                                GestureDetector(
+                                ScaledTap(
                                   onTap: () {
                                     setState(() => _previousSearchList.clear());
                                   },
@@ -195,7 +197,7 @@ class _SearchPageState extends State<SearchPage> with AutomaticKeepAliveClientMi
                             _categories.length,
                             (index) => Container(
                               margin: const EdgeInsets.only(bottom: 20),
-                              child: GestureDetector(
+                              child: ScaledTap(
                                 onTap: () {
                                   print(_categories[index].name);
                                 },

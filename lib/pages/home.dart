@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sabzi_app/components/custom_icon_button.dart';
 import 'package:sabzi_app/components/home_page_add_product_button.dart';
+import 'package:sabzi_app/components/icon_buttons/notifications.dart';
+import 'package:sabzi_app/components/icon_buttons/theme_toggle.dart';
 import 'package:sabzi_app/components/neighborhood_menu_button.dart';
 import 'package:sabzi_app/components/scaled_tap.dart';
 import 'package:sabzi_app/models/category.dart';
@@ -59,23 +62,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          const SizedBox(width: 15),
-          const NeighborhoodMenuButton(),
-          const Spacer(),
-          const SizedBox(width: 20),
-          CustomIconButton(
-            onTap: Provider.of<ThemeProvider>(context, listen: false).toggleTheme,
-            icon: UIcons.regularRounded.moon,
-            iconSize: 22,
-          ),
-          const SizedBox(width: 20),
-          CustomIconButton(
-            onTap: () {},
-            icon: UIcons.regularRounded.bell,
-            iconSize: 22,
-          ),
-          const SizedBox(width: 15),
+        actions: const [
+          SizedBox(width: 15),
+          NeighborhoodMenuButton(),
+          Spacer(),
+          SizedBox(width: 20),
+          ThemeToggleButton(),
+          SizedBox(width: 15),
+          NotificationsButton(),
+          SizedBox(width: 15),
         ],
       ),
       body: Stack(
@@ -129,9 +124,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                     return Column(
                       children: [
                         ScaledTap(
+                          haptic: true,
                           onTap: () {
                             print('ontap called');
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => const ItemPage(itemId: 1)));
+                            Navigator.pushNamed(context, '/item', arguments: {'itemId': 1});
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -174,8 +171,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                             },
                                             child: Icon(
                                               Icons.more_vert,
-                                              color: colors.secondary.withOpacity(0.5),
-                                              size: 23,
+                                              color: colors.secondary.withOpacity(0.3),
+                                              size: 21,
                                             ),
                                           ),
                                         ],
@@ -215,17 +212,20 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                             if (item.viewCount != null)
                                               _countsBuilder(
                                                 item.viewCount!,
-                                                UIcons.regularStraight.eye,
+                                                // UIcons.regularStraight.eye,
+                                                PhosphorIcons.eye(PhosphorIconsStyle.regular),
                                               ),
                                             if (item.likeCount != null)
                                               _countsBuilder(
                                                 item.likeCount!,
-                                                UIcons.regularStraight.heart,
+                                                // UIcons.regularStraight.heart,
+                                                PhosphorIcons.heart(PhosphorIconsStyle.regular),
                                               ),
                                             if (item.chatCount != null)
                                               _countsBuilder(
                                                 item.chatCount!,
-                                                UIcons.regularStraight.comments,
+                                                // UIcons.regularStraight.comments,
+                                                PhosphorIcons.chatsTeardrop(PhosphorIconsStyle.regular),
                                               )
                                           ],
                                         ),
@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         Icon(
           icon,
           color: colors.secondary.withOpacity(0.5),
-          size: 13,
+          size: 15,
         ),
         const SizedBox(width: 3),
         Text(

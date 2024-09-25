@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:sabzi_app/components/appbar_back_button.dart';
+import 'package:sabzi_app/components/icon_buttons/appbar_back.dart';
 import 'package:sabzi_app/components/custom_icon_button.dart';
-import 'package:sabzi_app/components/map_with_marker.dart';
+import 'package:sabzi_app/components/icon_buttons/go_to_home.dart';
+import 'package:sabzi_app/components/icon_buttons/share.dart';
+import 'package:sabzi_app/components/icon_buttons/theme_toggle.dart';
 import 'package:sabzi_app/components/scaled_tap.dart';
-import 'package:sabzi_app/components/yandex.dart';
-
 import 'package:sabzi_app/models/item.dart';
-import 'package:sabzi_app/pages/main.dart';
-import 'package:sabzi_app/providers/theme_provider.dart';
 import 'package:sabzi_app/theme.dart';
 import 'package:sabzi_app/utils/custom_localizers.dart';
-import 'package:uicons/uicons.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ItemPage extends StatefulWidget {
   final int itemId;
@@ -64,45 +60,24 @@ class _ItemPageState extends State<ItemPage> {
         leadingWidth: 0,
         leading: const SizedBox.shrink(),
         actions: [
+          const SizedBox(width: 15),
           const AppBarBackButton(
             iconColor: Colors.white,
           ),
-          const SizedBox(width: 20),
-          CustomIconButton(
-            onTap: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Main()));
-            },
-            icon: UIcons.regularRounded.home,
-            iconSize: 22,
-            color: Colors.white,
-            padding: const EdgeInsets.all(5),
-          ),
+          const SizedBox(width: 15),
+          GoToHomeButton(iconColor: colors.onMain),
           const Spacer(),
           const SizedBox(width: 15),
-          CustomIconButton(
-            onTap: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-            icon: UIcons.regularRounded.moon,
-            iconSize: 22,
-            color: Colors.white,
-            padding: const EdgeInsets.all(5),
-          ),
+          ThemeToggleButton(iconColor: colors.onMain),
           const SizedBox(width: 15),
-          CustomIconButton(
-            onTap: () {},
-            icon: UIcons.regularRounded.share,
-            iconSize: 22,
-            color: Colors.white,
-            padding: const EdgeInsets.all(5),
-          ),
+          ShareButton(iconColor: colors.onMain),
           const SizedBox(width: 15),
           CustomIconButton(
             onTap: () {},
             icon: Icons.more_vert,
             iconSize: 30,
             color: Colors.white,
-            padding: const EdgeInsets.all(0),
+            // padding: const EdgeInsets.all(0),
           ),
           const SizedBox(width: 10)
         ],
@@ -112,10 +87,6 @@ class _ItemPageState extends State<ItemPage> {
           : Stack(
               children: [
                 CustomScrollView(
-                  // scrollBehavior: const ScrollBehavior(),
-                  // scrollBehavior: const CupertinoScrollBehavior(),
-                  // scrollBehavior: const MaterialScrollBehavior(),
-                  // scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
                   slivers: [
                     SliverToBoxAdapter(
                       child: SizedBox(
@@ -155,8 +126,8 @@ class _ItemPageState extends State<ItemPage> {
                                     const Text(
                                       'Seller Cat',
                                       style: TextStyle(
-                                        fontSize: 16,
-                                        // fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     Text(
@@ -171,8 +142,9 @@ class _ItemPageState extends State<ItemPage> {
                               ),
                               const Spacer(),
                               Icon(
-                                UIcons.regularRounded.info,
-                                color: colors.secondary.withOpacity(0.5),
+                                // UIcons.regularRounded.info,
+                                PhosphorIcons.info(PhosphorIconsStyle.regular),
+                                color: colors.secondary.withOpacity(0.4),
                               ),
                             ],
                           ),
@@ -221,20 +193,20 @@ class _ItemPageState extends State<ItemPage> {
                                 const SizedBox(height: 15),
                                 Row(
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Selling location',
                                       style: TextStyle(
-                                        color: colors.secondary.withOpacity(0.5),
+                                        // color: colors.secondary.withOpacity(0.8),
                                         fontSize: 15,
                                         height: 1.2,
                                       ),
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 3),
                                     Icon(
                                       // UIcons.regularStraight.angle_right,
                                       PhosphorIcons.caretRight(PhosphorIconsStyle.bold),
                                       size: 14,
-                                      color: colors.secondary.withOpacity(0.4),
+                                      // color: colors.secondary.withOpacity(0.4),
                                     )
                                   ],
                                 ),
@@ -245,9 +217,9 @@ class _ItemPageState extends State<ItemPage> {
                                     color: Colors.grey.shade50,
                                     height: 120,
                                     width: double.infinity,
-                                    child: const YandexTest(
-                                      scrollGesturesEnabled: false,
-                                    ),
+                                    // child: const YandexTest(
+                                    //   scrollGesturesEnabled: false,
+                                    // ),
                                   ),
                                 ),
                                 const SizedBox(height: 15),
@@ -316,11 +288,11 @@ class _ItemPageState extends State<ItemPage> {
                       child: IntrinsicHeight(
                         child: Row(
                           children: [
-                            const SizedBox(width: 5),
                             CustomIconButton(
-                              icon: _item.isAddedToFavourites ? UIcons.solidRounded.heart : UIcons.regularRounded.heart,
+                              // icon: _item.isAddedToFavourites ? UIcons.solidRounded.heart : UIcons.regularRounded.heart,
+                              icon: _item.isAddedToFavourites ? PhosphorIcons.heart(PhosphorIconsStyle.fill) : PhosphorIcons.heart(PhosphorIconsStyle.regular),
                               color: _item.isAddedToFavourites ? Colors.red : colors.secondary.withOpacity(0.5),
-                              iconSize: 25,
+                              iconSize: 30,
                               onTap: () {
                                 _item.isAddedToFavourites = !_item.isAddedToFavourites;
                                 setState(() {});
@@ -328,7 +300,7 @@ class _ItemPageState extends State<ItemPage> {
                             ),
                             VerticalDivider(
                               color: colors.secondary.withOpacity(0.1),
-                              width: 30,
+                              width: 20,
                             ),
                             const SizedBox(width: 15),
                             ConstrainedBox(

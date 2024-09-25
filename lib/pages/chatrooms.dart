@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
-import 'package:sabzi_app/components/custom_icon_button.dart';
+import 'package:sabzi_app/components/icon_buttons/notifications.dart';
+import 'package:sabzi_app/components/icon_buttons/theme_toggle.dart';
 import 'package:sabzi_app/models/chatroom.dart';
-import 'package:sabzi_app/providers/theme_provider.dart';
 import 'package:sabzi_app/test/chatrooms.dart';
 import 'package:sabzi_app/theme.dart';
-
 import 'package:sabzi_app/utils/custom_localizers.dart';
-import 'package:uicons/uicons.dart';
 
 class ChatRoomsPage extends StatefulWidget {
   const ChatRoomsPage({super.key});
@@ -26,26 +23,18 @@ class _ChatRoomsPageState extends State<ChatRoomsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          const SizedBox(width: 15),
-          const Text(
+        actions: const [
+          SizedBox(width: 15),
+          Text(
             'Chats',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          const Spacer(),
-          const SizedBox(width: 20),
-          CustomIconButton(
-            onTap: Provider.of<ThemeProvider>(context, listen: false).toggleTheme,
-            icon: UIcons.regularRounded.moon,
-            iconSize: 22,
-          ),
-          const SizedBox(width: 20),
-          CustomIconButton(
-            onTap: () {},
-            icon: UIcons.regularRounded.bell,
-            iconSize: 22,
-          ),
-          const SizedBox(width: 15),
+          Spacer(),
+          SizedBox(width: 15),
+          ThemeToggleButton(),
+          SizedBox(width: 15),
+          NotificationsButton(),
+          SizedBox(width: 15),
         ],
       ),
       body: RefreshIndicator(

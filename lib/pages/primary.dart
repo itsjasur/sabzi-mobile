@@ -5,14 +5,14 @@ import 'package:sabzi_app/enums/bottom_navigations.dart';
 import 'package:sabzi_app/providers/bottom_navigation_provider.dart';
 import 'package:sabzi_app/theme.dart';
 
-class Main extends StatefulWidget {
-  const Main({super.key});
+class Primary extends StatefulWidget {
+  const Primary({super.key});
 
   @override
-  State<Main> createState() => _MainState();
+  State<Primary> createState() => _PrimaryState();
 }
 
-class _MainState extends State<Main> {
+class _PrimaryState extends State<Primary> {
   late PageController _pageController;
 
   @override
@@ -42,7 +42,8 @@ class _MainState extends State<Main> {
           children: MainBottomNavs.values.map((nav) => nav.info.page).toList(),
         ),
         bottomNavigationBar: Container(
-          padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+          // constraints: const BoxConstraints(minHeight: 60),
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 5),
           decoration: BoxDecoration(
               color: colors.surface,
               border: Border(
@@ -52,7 +53,6 @@ class _MainState extends State<Main> {
                 ),
               )),
           child: SafeArea(
-            top: false,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: MainBottomNavs.values
@@ -63,19 +63,20 @@ class _MainState extends State<Main> {
                         _pageController.jumpToPage(nav.index);
                       },
                       child: Container(
+                        // color: Colors.amber,
                         color: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               nav == bottomNavigationProvider.currentNavPage ? nav.info.activeIcon : nav.info.icon,
-                              size: 20,
+                              size: 24,
                             ),
                             const SizedBox(height: 3),
                             Text(
                               nav.info.label,
-                              style: const TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 11),
                             ),
                           ],
                         ),

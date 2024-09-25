@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _itemMaker(
             // icon: UIcons.regularRounded.heart,
             icon: Theme.of(context).brightness == Brightness.light ? PhosphorIcons.moon(PhosphorIconsStyle.regular) : PhosphorIcons.sun(PhosphorIconsStyle.regular),
-            onTap: () {},
+            onTap: Provider.of<ThemeProvider>(context, listen: false).toggleTheme,
             text: "Theme",
           ),
           _itemMaker(
@@ -142,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: ScaledTap(
-        onTap: () {},
+        onTap: onTap,
         child: SizedBox(
           height: 40,
           child: Row(

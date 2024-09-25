@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabzi_app/pages/chats.dart';
 import 'package:sabzi_app/pages/home.dart';
 import 'package:sabzi_app/pages/item.dart';
-import 'package:sabzi_app/pages/main.dart';
+import 'package:sabzi_app/pages/primary.dart';
 import 'package:sabzi_app/providers/bottom_navigation_provider.dart';
 import 'package:sabzi_app/providers/neighborhood_provider.dart';
 import 'package:sabzi_app/providers/theme_provider.dart';
@@ -43,17 +44,18 @@ class MyApp extends StatelessWidget {
         theme: lightTheme(),
         darkTheme: darkTheme(),
         themeMode: themeProvider.themeMode,
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/':
-              return MaterialPageRoute(builder: (_) => const Main());
-            case '/item':
-              final args = settings.arguments as Map<String, dynamic>;
-              return MaterialPageRoute(builder: (_) => ItemPage(itemId: args['id']));
-          }
-        },
+        // onGenerateRoute: (settings) {
+        //   switch (settings.name) {
+        //     case '/':
+        //       return MaterialPageRoute(builder: (_) => const Primary());
+        //     case '/item':
+        //       final args = settings.arguments as Map<String, dynamic>;
+        //       return MaterialPageRoute(builder: (_) => ItemPage(itemId: args['itemId']));
+        //   }
+        //   return null;
+        // },
 
-        initialRoute: '/',
+        // initialRoute: '/',
 
         // themeMode: ThemeMode.dark,
         // home: const TestPage(),
@@ -61,43 +63,8 @@ class MyApp extends StatelessWidget {
         // home: const ItemPage(itemId: 1),
         // home: const YandexTest(),
         // home: AddItemPage(),
+        home: const ChatsPage(),
       ),
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         title: Text(widget.title),
-//       ),
-//       body: const YandexTest(
-//         scrollGesturesEnabled: true,
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
