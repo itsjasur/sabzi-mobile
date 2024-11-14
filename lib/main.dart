@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_sabzi/app/app.dart';
-import 'package:flutter_sabzi/app/bottom_navigation_bar_provider.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
+import 'package:flutter_sabzi/core/providers/theme_provider.dart';
+import 'package:flutter_sabzi/core/themes.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
       ],
       child: const MyApp(),
@@ -18,16 +21,36 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode: themeProvider.themeMode,
+        theme: lightMode,
+        darkTheme: darkMode,
+        home: const App(),
       ),
-      home: const App(),
     );
   }
 }
+
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     ThemeMode mode = Provider.of<ThemeProvider>(context, listen: true).themeMode;
+    
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       // themeMode: themeProvider.themeMode,
+//       themeMode: mode,
+//       theme: lightMode,
+//       darkTheme: darkMode,
+//       home: const App(),
+//     );
+//   }
+// }

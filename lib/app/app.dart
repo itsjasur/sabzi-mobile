@@ -1,19 +1,12 @@
 // app.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sabzi/app/bottom_navigation_bar_provider.dart';
-import 'package:flutter_sabzi/app/bottom_navigation_bar_widget.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_widget.dart';
 import 'package:provider/provider.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
-
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  final PageController _pageController = PageController(keepPage: true);
 
   @override
   Widget build(BuildContext context) {

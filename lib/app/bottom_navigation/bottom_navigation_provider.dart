@@ -1,7 +1,8 @@
 // bottom_navigation_bar_provider.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sabzi/app/bottom_navigation_model.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_model.dart';
+import 'package:flutter_sabzi/pages/home/home_page.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum BottomNavs {
@@ -14,7 +15,8 @@ enum BottomNavs {
     switch (this) {
       case BottomNavs.home:
         return BottomNavigationModel(
-          page: Container(color: Colors.orange, height: double.infinity, width: double.infinity),
+          // page: Container(color: Colors.orange, height: double.infinity, width: double.infinity),
+          page: const HomePage(),
           label: 'Home',
           icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
           activeIcon: PhosphorIcons.house(PhosphorIconsStyle.fill),

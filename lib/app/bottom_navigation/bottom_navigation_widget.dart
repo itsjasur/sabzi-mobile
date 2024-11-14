@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_sabzi/app/bottom_navigation_bar_provider.dart';
-import 'package:flutter_sabzi/app/bottom_navigation_model.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_model.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
