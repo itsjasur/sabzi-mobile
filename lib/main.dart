@@ -4,14 +4,17 @@ import 'package:flutter_sabzi/app/app.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:flutter_sabzi/core/providers/theme_provider.dart';
 import 'package:flutter_sabzi/core/themes.dart';
+import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
+        ChangeNotifierProvider(create: (_) => HomePageProvider()),
       ],
       child: const MyApp(),
     ),

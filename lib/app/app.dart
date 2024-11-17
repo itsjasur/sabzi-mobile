@@ -13,6 +13,7 @@ class App extends StatelessWidget {
     return Scaffold(
       body: Consumer<BottomNavigationProvider>(
         builder: (context, bottomNavigationProvider, _) => PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: bottomNavigationProvider.pageController,
           onPageChanged: bottomNavigationProvider.onPageChanged,
           children: BottomNavs.values.map((nav) => nav.info.page).toList(),
