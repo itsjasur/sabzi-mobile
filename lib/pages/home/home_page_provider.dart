@@ -49,6 +49,7 @@ class HomePageNotifier extends StateNotifier<HomePageState> with ScrollMixin<Hom
 }
 
 final homePageProvider = StateNotifierProvider<HomePageNotifier, HomePageState>((ref) {
-  final apiService = ref.watch(apiServiceProvider);
-  return HomePageNotifier(apiService: apiService);
+  return HomePageNotifier(
+    apiService: ref.watch(apiServiceProvider),
+  );
 });
