@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:provider/provider.dart';
 
 class HoomeAddProductButton extends StatelessWidget {
   final bool homePageScrolled;
@@ -10,8 +8,6 @@ class HoomeAddProductButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<HomeProvider>(context, listen: true);
-
     return ScaledTap(
       child: Material(
         color: Theme.of(context).colorScheme.primary,
