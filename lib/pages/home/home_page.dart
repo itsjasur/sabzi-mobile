@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/category_model.dart';
+import 'package:flutter_sabzi/core/models/item_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/home/area_button/area_button.dart';
 import 'package:flutter_sabzi/pages/home/home_add_product_button.dart';
+import 'package:flutter_sabzi/pages/home/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -15,12 +18,37 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
+    //  gets the notifier once
     final homeNotifier = ref.read(homePageProvider.notifier);
-    final homeState = ref.watch(homePageProvider);
+
+    // watchers for specific parts of the state
+    final categories = ref.watch(homePageProvider.select((state) => state.categories));
+    final selectedCategory = ref.watch(homePageProvider.select((state) => state.selectedCategory));
+    final items = ref.watch(homePageProvider.select((state) => state.items));
+    final isScrolled = ref.watch(homePageProvider.select((state) => state.isScrolled));
 
     return Scaffold(
       body: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            const SizedBox(width: 15),
+            AreaButton(),
+            const Spacer(),
+            const SizedBox(width: 20),
+            // CustomIconButton(
+            //   onTap: Provider.of<ThemeProvider>(context, listen: false).toggleTheme,
+            //   icon: UIcons.regularRounded.moon,
+            //   iconSize: 22,
+            // ),
+            // const SizedBox(width: 20),
+            // CustomIconButton(
+            //   onTap: () {},
+            //   icon: UIcons.regularRounded.bell,
+            //   iconSize: 22,
+            // ),
+            const SizedBox(width: 15),
+          ],
+        ),
         body: Stack(
           children: [
             CustomScrollView(
@@ -31,14 +59,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        const SizedBox(width: 20),
+                        const SizedBox(width: 15),
                         ...List.generate(
-                          homeState.categories.length,
+                          categories.length,
                           (categoryIndex) {
-                            CategoryModel category = homeState.categories[categoryIndex];
+                            CategoryModel category = categories[categoryIndex];
 
                             return ScaledTap(
-                              onTap: () => ref.watch(homePageProvider.notifier).selectCategory(category),
+                              onTap: () => homeNotifier.selectCategory(category),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 margin: const EdgeInsets.only(right: 10),
@@ -47,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
                                   color: Theme.of(context).colorScheme.tertiary,
-                                  border: homeState.selectedCategory?.code == category.code ? Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.5)) : null,
+                                  border: selectedCategory?.code == category.code ? Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)) : null,
                                 ),
                                 child: Text(category.name),
                               ),
@@ -59,11 +87,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ),
                 ),
+                const SliverToBoxAdapter(child: SizedBox(height: 15)),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    childCount: 100,
-                    (context, index) {
-                      return Text('data');
+                    childCount: items.length,
+                    (context, itemsIndex) {
+                      ItemModel item = items[itemsIndex];
+                      return ItemCard(
+                        item: item,
+                        isLastItem: itemsIndex == items.length - 1,
+                      );
                     },
                   ),
                 )
@@ -72,7 +105,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             Positioned(
               bottom: 20,
               right: 20,
-              child: HoomeAddProductButton(homePageScrolled: ref.watch(homePageProvider.select((state) => state.isScrolled))),
+              child: HoomeAddProductButton(homePageScrolled: isScrolled),
             )
           ],
         ),

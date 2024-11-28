@@ -40,15 +40,21 @@ class _ScaledTapState extends State<ScaledTap> with SingleTickerProviderStateMix
     super.dispose();
   }
 
+  static bool _isGestureActive = false; //this is used to prevent child gesture propagating to parent ScaleTap
   bool _scalingDown = false;
 
-  void _handleTapDown(TapDownDetails details) async {
+  void _handleTapDown(TapDownDetails? details) async {
+    if (_isGestureActive) return;
+    _isGestureActive = true;
     _scalingDown = true;
     await _controller.forward();
     _scalingDown = false;
   }
 
-  void _handleTapUp(TapUpDetails details) async {
+  void _handleTapUp(TapUpDetails? details) async {
+    if (!_isGestureActive) return;
+    _isGestureActive = false;
+
     if (_scalingDown) await _controller.forward();
     widget.onTap?.call();
     await _controller.reverse();
@@ -57,9 +63,10 @@ class _ScaledTapState extends State<ScaledTap> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,
-      behavior: HitTestBehavior.opaque,
+      onTapCancel: () => _handleTapUp(null),
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: widget.child,

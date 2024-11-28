@@ -3,6 +3,8 @@ import 'package:flutter_sabzi/core/mixins/scroll_mixin.dart';
 import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/core/utils/api_service.dart';
 import 'package:flutter_sabzi/pages/home/home_page_state.dart';
+import 'package:flutter_sabzi/test/categories.dart';
+import 'package:flutter_sabzi/test/items.dart';
 
 class HomePageNotifier extends StateNotifier<HomePageState> with ScrollMixin<HomePageState> {
   final ApiService _apiService;
@@ -10,28 +12,45 @@ class HomePageNotifier extends StateNotifier<HomePageState> with ScrollMixin<Hom
   HomePageNotifier({
     required ApiService apiService,
   })  : _apiService = apiService,
-        super(HomePageState(categories: [])) {
+        super(HomePageState(categories: [], items: [])) {
     initializeScroll(); // initializes scroll controller
     fetchCategories();
+    fetchItems();
   }
 
+// TODO: implement this
   void fetchCategories() async {
-    // This method has issues:
-    await Future.delayed(const Duration(seconds: 2)); // This line has no effect
-
+    // await Future.delayed(const Duration(seconds: 2));
     try {
-      final response = await _apiService.post('categories', {});
-      // final categories = state = state.copyWith(categories: categories);
+      state = state.copyWith(categories: categoriesList);
+      // final response = await _apiService.post('categories', {});
     } catch (e) {
-      // state = state.copyWith(error: e.toString());
+      print(e);
+    }
+  }
+
+// TODO: implement this
+  void fetchItems() async {
+    // await Future.delayed(const Duration(seconds: 2));
+    try {
+      state = state.copyWith(items: itemsList);
+      // final response = await _apiService.post('categories', {});
+
+      // change to this when item list comes empty
+      // state = state.copyWith(haveMoreItems: false);
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
-  void updateScrollState(bool isScrolled, double offset, bool isAtBottom) {
+  void updateScrollState(bool isScrolled, double offset, bool isScrollReachedBottom) {
     state = state.copyWith(isScrolled: isScrolled);
+
+    if (!state.isScrollReachedBottom && isScrollReachedBottom) {
+      state = state.copyWith(isScrollReachedBottom: true);
+    }
   }
-  // if (state.isScrolled != isScrolled)
 
   void setCategories(List<CategoryModel> categories) {
     state = state.copyWith(categories: categories);
