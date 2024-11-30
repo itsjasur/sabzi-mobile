@@ -7,6 +7,8 @@ import 'package:flutter_sabzi/pages/home/area_button/area_button.dart';
 import 'package:flutter_sabzi/pages/home/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
+import 'package:flutter_sabzi/theme/app_them_provider.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -18,9 +20,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    //  gets the notifier once
     final homeNotifier = ref.read(homePageProvider.notifier);
-
     // watchers for specific parts of the state
     final categories = ref.watch(homePageProvider.select((state) => state.categories));
     final selectedCategory = ref.watch(homePageProvider.select((state) => state.selectedCategory));
@@ -32,20 +32,13 @@ class _HomePageState extends ConsumerState<HomePage> {
         appBar: AppBar(
           actions: [
             const SizedBox(width: 15),
-            AreaButton(),
+            const AreaButton(),
             const Spacer(),
             const SizedBox(width: 20),
-            // CustomIconButton(
-            //   onTap: Provider.of<ThemeProvider>(context, listen: false).toggleTheme,
-            //   icon: UIcons.regularRounded.moon,
-            //   iconSize: 22,
-            // ),
-            // const SizedBox(width: 20),
-            // CustomIconButton(
-            //   onTap: () {},
-            //   icon: UIcons.regularRounded.bell,
-            //   iconSize: 22,
-            // ),
+            ScaledTap(
+              onTap: ref.read(themeProvider.notifier).toggleTheme,
+              child: Icon(ref.watch(themeProvider) == ThemeMode.light ? PhosphorIconsRegular.moon : PhosphorIconsBold.sun),
+            ),
             const SizedBox(width: 15),
           ],
         ),
@@ -93,9 +86,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                     childCount: items.length,
                     (context, itemsIndex) {
                       ItemModel item = items[itemsIndex];
-                      return ItemCard(
-                        item: item,
-                        isLastItem: itemsIndex == items.length - 1,
+                      return Column(
+                        children: [
+                          ItemCard(
+                            item: item,
+                          ),
+                          if (itemsIndex != items.length - 1)
+                            Divider(
+                              height: 20,
+                              indent: 20,
+                              endIndent: 20,
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                        ],
                       );
                     },
                   ),

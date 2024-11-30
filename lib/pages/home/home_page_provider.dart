@@ -6,10 +6,10 @@ import 'package:flutter_sabzi/pages/home/home_page_state.dart';
 import 'package:flutter_sabzi/test/categories.dart';
 import 'package:flutter_sabzi/test/items.dart';
 
-class HomePageNotifier extends StateNotifier<HomePageState> with ScrollMixin<HomePageState> {
+class HomePageProvider extends StateNotifier<HomePageState> with ScrollMixin<HomePageState> {
   final ApiService _apiService;
 
-  HomePageNotifier({
+  HomePageProvider({
     required ApiService apiService,
   })  : _apiService = apiService,
         super(HomePageState(categories: [], items: [])) {
@@ -67,8 +67,8 @@ class HomePageNotifier extends StateNotifier<HomePageState> with ScrollMixin<Hom
   }
 }
 
-final homePageProvider = StateNotifierProvider<HomePageNotifier, HomePageState>((ref) {
-  return HomePageNotifier(
+final homePageProvider = StateNotifierProvider<HomePageProvider, HomePageState>((ref) {
+  return HomePageProvider(
     apiService: ref.watch(apiServiceProvider),
   );
 });
