@@ -20,7 +20,6 @@ ThemeData lightMode = ThemeData(
     primary: Colors.orange,
     onPrimary: Colors.white,
     secondary: Colors.grey,
-
     tertiary: Colors.grey.shade200,
   ),
 );
@@ -34,6 +33,6 @@ ThemeData darkMode = ThemeData(
     primary: Colors.orange,
     onPrimary: Colors.white,
     secondary: Colors.white,
-    tertiary: Colors.white12,
+    tertiary: Colors.grey.shade800,
   ),
 );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/home/area_button/area_provider.dart';
+import 'package:flutter_sabzi/pages/my_area_settings/area_button/area_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AreaButton extends ConsumerWidget {
@@ -10,7 +10,7 @@ class AreaButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(areaProvider); //initialized here to avoid loading once sheet opened
+    final bottomSheetProvider = ref.watch(areaProvider); //initialized here to avoid loading once sheet opened
     return ScaledTap(
       onTap: () {
         showModalBottomSheet(
@@ -20,7 +20,6 @@ class AreaButton extends ConsumerWidget {
           builder: (context) {
             return Consumer(
               builder: (context, ref, child) {
-                final bottomSheetProvider = ref.watch(areaProvider);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

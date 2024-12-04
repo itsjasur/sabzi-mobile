@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/core/models/item_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/home/area_button/area_button.dart';
+import 'package:flutter_sabzi/pages/my_area_settings/area_button/area_button.dart';
 import 'package:flutter_sabzi/pages/home/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';

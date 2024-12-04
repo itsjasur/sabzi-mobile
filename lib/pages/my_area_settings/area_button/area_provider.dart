@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/area_model.dart';
-import 'package:flutter_sabzi/pages/home/area_button/area_state.dart';
+import 'package:flutter_sabzi/pages/my_area_settings/area_button/area_state.dart';
 
 class AreaProvider extends StateNotifier<AreaState> {
   AreaProvider() : super(AreaState(areas: [], selectedAreaId: 1)) {
