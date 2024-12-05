@@ -32,7 +32,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         appBar: AppBar(
           actions: [
             const SizedBox(width: 15),
-            const AreaButton(),
+            // const AreaButton(),
             const Spacer(),
             const SizedBox(width: 20),
             ScaledTap(

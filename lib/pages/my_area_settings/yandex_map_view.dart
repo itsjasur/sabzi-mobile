@@ -8,9 +8,9 @@ import 'package:yandex_maps_mapkit_lite/image.dart' as yanimage;
 class YandexMapView extends StatefulWidget {
   // final double latitude;
   // final double longitude;
-  final MapPosition myPosition;
-  final AreaRadius areaRadius;
-  const YandexMapView({super.key, required this.myPosition, required this.areaRadius});
+  final LocationCordinates currenLocationCordinates;
+  final AreaRadiusModel areaRadius;
+  const YandexMapView({super.key, required this.currenLocationCordinates, required this.areaRadius});
 
   @override
   State<YandexMapView> createState() => YandexMapViewState();
@@ -67,14 +67,14 @@ class YandexMapViewState extends State<YandexMapView> {
     super.dispose();
   }
 
-  _updateView(AreaRadius areaRadius) {
+  _updateView(AreaRadiusModel areaRadius) {
     if (_mapWindow == null) return;
 
     _mapWindow!.map.mapObjects.clear();
 
     //adding circle radis from user's location * meters
     _mapWindow!.map.mapObjects.addCircle(yandex_mapkit.Circle(
-      yandex_mapkit.Point(latitude: widget.myPosition.latitude, longitude: widget.myPosition.longitude),
+      yandex_mapkit.Point(latitude: widget.currenLocationCordinates.latitude, longitude: widget.currenLocationCordinates.longitude),
       radius: areaRadius.circleRadius,
     ))
       ..visible = false
@@ -86,7 +86,7 @@ class YandexMapViewState extends State<YandexMapView> {
     // this sets camera position
     _mapWindow!.map.moveWithAnimation(
       yandex_mapkit.CameraPosition(
-        yandex_mapkit.Point(latitude: widget.myPosition.latitude, longitude: widget.myPosition.longitude),
+        yandex_mapkit.Point(latitude: widget.currenLocationCordinates.latitude, longitude: widget.currenLocationCordinates.longitude),
         zoom: areaRadius.zoomLevel,
         azimuth: 150.0,
         tilt: 0,
@@ -99,7 +99,7 @@ class YandexMapViewState extends State<YandexMapView> {
 
     // this addds placemark to initial position
     _mapWindow!.map.mapObjects.addPlacemark()
-      ..geometry = yandex_mapkit.Point(latitude: widget.myPosition.latitude, longitude: widget.myPosition.longitude)
+      ..geometry = yandex_mapkit.Point(latitude: widget.currenLocationCordinates.latitude, longitude: widget.currenLocationCordinates.longitude)
       ..setIcon(_imageProvider)
       ..setIconStyle(const yandex_mapkit.IconStyle(scale: 0.3));
 
