@@ -1,12 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sabzi/app/app_state.dart';
 
-class AppProvider with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
+class AppProvider extends Notifier<AppState> {
+  @override
+  AppState build() {
+    return AppState(isGlobalLoading: false);
+  }
 
-  ThemeMode get themeMode => _themeMode;
-
-  void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners();
+  void setLoading(bool isLoading) {
+    state = state.copyWith(isGlobalLoading: isLoading);
   }
 }
+
+final appProvider = NotifierProvider<AppProvider, AppState>(() {
+  return AppProvider();
+});

@@ -26,7 +26,7 @@ class ItemCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                color: Colors.amber,
+                color: Colors.grey.shade100,
                 height: 100,
                 width: 100,
               ),

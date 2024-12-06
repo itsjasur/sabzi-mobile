@@ -1,25 +1,48 @@
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
 
+// class MyAreaSettingsState {
+//   final AreaRadiusModel? selectedAreaRadius;
+//   final int selectedAreaIndex;
+//   final List<AreaRadiusModel> areaRadiusList;
+
+//   MyAreaSettingsState({
+//     required this.selectedAreaRadius,
+//     required this.areaRadiusList,
+//     required this.selectedAreaIndex,
+//   });
+
+//   MyAreaSettingsState copyWith({
+//     AreaRadiusModel? selectedAreaRadius,
+//     List<AreaRadiusModel>? areaRadiusList,
+//     int? selectedAreaIndex,
+//   }) {
+//     return MyAreaSettingsState(
+//       selectedAreaRadius: selectedAreaRadius ?? this.selectedAreaRadius,
+//       areaRadiusList: areaRadiusList ?? this.areaRadiusList,
+//       selectedAreaIndex: selectedAreaIndex ?? this.selectedAreaIndex,
+//     );
+//   }
+// }
+
 class MyAreaSettingsState {
-  final AreaRadiusModel? selectedAreaRadius;
-  final int selectedAreaIndex;
   final List<AreaRadiusModel> areaRadiusList;
+  final int selectedIndex;
+
+  // Computed property instead of storing separately
+  AreaRadiusModel? get selectedAreaRadius => areaRadiusList.isNotEmpty ? areaRadiusList[selectedIndex] : null;
 
   MyAreaSettingsState({
-    required this.selectedAreaRadius,
     required this.areaRadiusList,
-    required this.selectedAreaIndex,
+    required this.selectedIndex,
   });
 
   MyAreaSettingsState copyWith({
-    AreaRadiusModel? selectedAreaRadius,
     List<AreaRadiusModel>? areaRadiusList,
-    int? selectedAreaIndex,
+    int? selectedIndex,
   }) {
     return MyAreaSettingsState(
-      selectedAreaRadius: selectedAreaRadius ?? this.selectedAreaRadius,
       areaRadiusList: areaRadiusList ?? this.areaRadiusList,
-      selectedAreaIndex: selectedAreaIndex ?? this.selectedAreaIndex,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/core/models/item_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/area_button/area_button.dart';
 import 'package:flutter_sabzi/pages/home/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
@@ -32,7 +31,27 @@ class _HomePageState extends ConsumerState<HomePage> {
         appBar: AppBar(
           actions: [
             const SizedBox(width: 15),
-            // const AreaButton(),
+            ScaledTap(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true, // Makes it full-screen if needed
+                  backgroundColor: Colors.white,
+
+                  // shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                  builder: (BuildContext context) {
+                    return Container(
+                      color: Colors.pink,
+                      // You can adjust height as needed
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: double.infinity,
+                      child: Text('data'),
+                    );
+                  },
+                );
+              },
+              child: const Text('My radius'),
+            ),
             const Spacer(),
             const SizedBox(width: 20),
             ScaledTap(
@@ -88,9 +107,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ItemModel item = items[itemsIndex];
                       return Column(
                         children: [
-                          ItemCard(
-                            item: item,
-                          ),
+                          ItemCard(item: item),
                           if (itemsIndex != items.length - 1)
                             Divider(
                               height: 20,

@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_state.dart';
 
-// navigation notifier
-class BottomNavigationProvider extends StateNotifier<NavigationState> {
-  BottomNavigationProvider() : super(NavigationState(currentPage: BottomNavs.home, pageController: PageController()));
+class BottomNavigationNotifier extends Notifier<NavigationState> {
+  @override
+  NavigationState build() {
+    final pageController = PageController();
+
+    // Register cleanup for PageController
+    ref.onDispose(() {
+      pageController.dispose();
+    });
+
+    return NavigationState(currentPage: BottomNavs.home, pageController: pageController);
+  }
 
   void setPage(BottomNavs navItem) {
     if (state.currentPage == navItem) return;
@@ -16,12 +25,8 @@ class BottomNavigationProvider extends StateNotifier<NavigationState> {
   void onPageChanged(int index) {
     state = state.copyWith(currentPage: BottomNavs.values[index]);
   }
-
-  @override
-  void dispose() {
-    state.pageController.dispose();
-    super.dispose();
-  }
 }
 
-final navigationProvider = StateNotifierProvider<BottomNavigationProvider, NavigationState>((ref) => BottomNavigationProvider());
+final navigationProvider = NotifierProvider<BottomNavigationNotifier, NavigationState>(() {
+  return BottomNavigationNotifier();
+});
