@@ -3,48 +3,52 @@ import 'package:flutter_sabzi/core/models/item_model.dart';
 
 class HomePageState {
   final bool isScrolled;
-  final bool isScrollReachedBottom;
+  // final bool hasScrollReachedEnd;
 
   final List<CategoryModel> categories;
   final CategoryModel? selectedCategory;
 
   final List<ItemModel> items;
-  final bool isMoreItemsLoading;
-  final bool haveMoreItems;
+  final int currentItemsPageNumber;
+  final bool isLoadingMoreItems;
+  final bool hasMoreItems;
 
   HomePageState({
     this.isScrolled = false,
-    this.isScrollReachedBottom = false,
+    // this.hasScrollReachedEnd = false,
     //
     required this.categories,
     this.selectedCategory,
     //
     required this.items,
-    this.isMoreItemsLoading = false,
-    this.haveMoreItems = false,
+    required this.currentItemsPageNumber,
+    this.isLoadingMoreItems = false,
+    required this.hasMoreItems,
   });
 
   HomePageState copyWith({
     bool? isScrolled,
-    bool? isScrollReachedBottom,
+    bool? hasScrollReachedEnd,
     //
     List<CategoryModel>? categories,
     CategoryModel? selectedCategory,
     //
     List<ItemModel>? items,
-    bool? isMoreItemsLoading,
-    bool? haveMoreItems,
+    int? currentItemsPageNumber,
+    bool? isLoadingMoreItems,
+    bool? hasMoreItems,
   }) {
     return HomePageState(
       isScrolled: isScrolled ?? this.isScrolled,
-      isScrollReachedBottom: isScrollReachedBottom ?? this.isScrollReachedBottom,
+      // hasScrollReachedEnd: hasScrollReachedEnd ?? this.hasScrollReachedEnd,
       //
       categories: categories ?? this.categories,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       //
       items: items ?? this.items,
-      isMoreItemsLoading: isMoreItemsLoading ?? this.isMoreItemsLoading,
-      haveMoreItems: haveMoreItems ?? this.haveMoreItems,
+      currentItemsPageNumber: currentItemsPageNumber ?? this.currentItemsPageNumber,
+      isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
+      hasMoreItems: hasMoreItems ?? this.hasMoreItems,
     );
   }
 }

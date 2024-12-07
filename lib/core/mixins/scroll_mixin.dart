@@ -9,9 +9,9 @@ mixin ScrollMixin<T> {
     _scrollController.addListener(() {
       final offset = _scrollController.offset;
       final isScrolled = offset > 50;
-      final isScrollReachedBottom = offset >= _scrollController.position.maxScrollExtent;
+      final hasScrollReachedBottom = offset >= _scrollController.position.maxScrollExtent;
 
-      updateScrollState(isScrolled, offset, isScrollReachedBottom);
+      updateScrollState(isScrolled, offset, hasScrollReachedBottom);
     });
   }
 
@@ -37,5 +37,5 @@ mixin ScrollMixin<T> {
     _scrollController.dispose();
   }
 
-  void updateScrollState(bool isScrolled, double offset, bool isScrollReachedBottom);
+  void updateScrollState(bool isScrolled, double offset, bool hasScrollReachedBottom);
 }

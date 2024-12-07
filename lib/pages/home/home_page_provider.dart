@@ -17,35 +17,77 @@ class HomePageNotifier extends Notifier<HomePageState> with ScrollMixin<HomePage
       disposeScroll();
     });
 
-    // call fetchCategories in the next frame update
-    Future.microtask(() {
-      _fetchCategories();
-      fetchItems();
+    // calls _fetchCategories & _fetchNextItems in the next frame update
+    Future.microtask(() async {
+      ref.read(appProvider.notifier).setLoading(true);
+      await _fetchCategories();
+      await _fetchNextItems();
+      ref.read(appProvider.notifier).setLoading(false);
     });
 
-    return HomePageState(categories: [], items: []);
+    return HomePageState(categories: [], items: [], currentItemsPageNumber: 1, hasMoreItems: true);
   }
 
   // ApiService get _apiService => ref.watch(apiServiceProvider);
-  void _fetchCategories() async {
-    ref.read(appProvider.notifier).setLoading(true);
-    await Future.delayed(const Duration(seconds: 2));
-    state = state.copyWith(categories: categoriesList);
-    ref.read(appProvider.notifier).setLoading(false);
+  Future<void> _fetchCategories() async {
+    await Future.delayed(const Duration(microseconds: 100));
+
+    try {
+      state = state.copyWith(categories: categoriesList, selectedCategory: categoriesList[0]);
+
+      // FETCH ITEMS ARE CALLED AFTER CATEGORIES with categoryId
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void fetchItems() async {
-    await Future.delayed(const Duration(seconds: 2));
-    state = state.copyWith(items: itemsList);
+  Future<void> refreshItems() async {
+    state = state.copyWith(currentItemsPageNumber: 1, hasMoreItems: true);
+    await _fetchNextItems();
+  }
+
+  Future<void> _fetchNextItems() async {
+    // return if not more items or currently loading more
+    if (state.isLoadingMoreItems || !state.hasMoreItems) return;
+
+    print('fetch items calleld');
+    print('isLoadingMoreItems ${state.isLoadingMoreItems}');
+    print('hasMoreItems ${state.hasMoreItems}');
+    print('pageNumber ${state.currentItemsPageNumber}');
+
+    // change to loading more items
+    state = state.copyWith(isLoadingMoreItems: true);
+
+    // API CALL HERE
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      // has no more items
+      if (itemsList.isEmpty) {
+        state = state.copyWith(hasMoreItems: false);
+        return;
+      }
+
+      // if more items received
+      state = state.copyWith(items: [...state.items + itemsList], currentItemsPageNumber: state.currentItemsPageNumber + 1);
+    } catch (e) {
+      print(e);
+    } finally {
+      state = state.copyWith(isLoadingMoreItems: false);
+    }
   }
 
   @override
-  void updateScrollState(bool isScrolled, double offset, bool isScrollReachedBottom) {
+  void updateScrollState(bool isScrolled, double offset, bool hasScrollReachedBottom) {
     state = state.copyWith(isScrolled: isScrolled);
 
-    if (!state.isScrollReachedBottom && isScrollReachedBottom) {
-      state = state.copyWith(isScrollReachedBottom: true);
+    if (hasScrollReachedBottom && !state.isLoadingMoreItems && state.hasMoreItems) {
+      print('scrolled reached bottom');
+      _fetchNextItems();
     }
+
+    // if (!state.hasScrollReachedEnd && hasScrollReachedBottom) {
+    //   state = state.copyWith(hasScrollReachedEnd: true);
+    // }
   }
 
   void setCategories(List<CategoryModel> categories) {
