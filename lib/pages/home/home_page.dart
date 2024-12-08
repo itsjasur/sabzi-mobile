@@ -6,6 +6,7 @@ import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
+import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -40,16 +41,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                   context: context,
                   isScrollControlled: true, // Makes it full-screen if needed
                   backgroundColor: Colors.white,
+                  useSafeArea: true,
+                  isDismissible: false,
+                  barrierColor: Theme.of(context).colorScheme.surface,
+
+                  // useRootNavigator: true,
 
                   // shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                   builder: (BuildContext context) {
-                    return Container(
-                      color: Colors.pink,
-                      // You can adjust height as needed
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      width: double.infinity,
-                      child: Text('data'),
-                    );
+                    return const MyAreaSettingsPage();
                   },
                 );
               },

@@ -1,19 +1,3 @@
-// enum AreaRadius {
-//   small(zoomLevel: 14.0, circleRadius: 1000),
-//   medium(zoomLevel: 13.0, circleRadius: 2000),
-//   large(zoomLevel: 12.4, circleRadius: 3000),
-//   huge(zoomLevel: 12, circleRadius: 4000);
-
-//   final double zoomLevel;
-//   final double circleRadius;
-
-//   const AreaRadius({required this.zoomLevel, required this.circleRadius});
-
-//   static AreaRadius fromString(String value) {
-//     return AreaRadius.values.firstWhere((e) => e.name == value.toLowerCase(), orElse: () => AreaRadius.small);
-//   }
-// }
-
 class AreaRadiusModel {
   final double zoomLevel;
   final double circleRadius;
@@ -23,19 +7,19 @@ class AreaRadiusModel {
     required this.circleRadius,
   });
 
-  factory AreaRadiusModel.fromJson(Map<String, dynamic> json) {
+  factory AreaRadiusModel.fromMap(Map<String, dynamic> map) {
     return AreaRadiusModel(
-      zoomLevel: json['zoomLevel'] as double,
-      circleRadius: json['circleRadius'] as double,
+      zoomLevel: (map['zoom_level'] as num).toDouble(),
+      circleRadius: (map['circle_radius'] as num).toDouble(),
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'zoomLevel': zoomLevel,
-      'circleRadius': circleRadius,
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'zoomLevel': zoomLevel,
+  //     'circleRadius': circleRadius,
+  //   };
+  // }
 }
 
 class LocationCordinates {
@@ -49,16 +33,9 @@ class LocationCordinates {
 
   factory LocationCordinates.fromMap(Map<String, dynamic> map) {
     return LocationCordinates(
-      latitude: map['latitude'] as double,
-      longitude: map['longitude'] as double,
+      latitude: (map['latitude'] as num).toDouble(),
+      longitude: (map['longitude'] as num).toDouble(),
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-    };
   }
 
   // == operator: Defines when two LocationCordinates objects should be considered equal (same latitude and longitude)

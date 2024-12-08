@@ -1,48 +1,46 @@
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
 
-// class MyAreaSettingsState {
-//   final AreaRadiusModel? selectedAreaRadius;
-//   final int selectedAreaIndex;
-//   final List<AreaRadiusModel> areaRadiusList;
-
-//   MyAreaSettingsState({
-//     required this.selectedAreaRadius,
-//     required this.areaRadiusList,
-//     required this.selectedAreaIndex,
-//   });
-
-//   MyAreaSettingsState copyWith({
-//     AreaRadiusModel? selectedAreaRadius,
-//     List<AreaRadiusModel>? areaRadiusList,
-//     int? selectedAreaIndex,
-//   }) {
-//     return MyAreaSettingsState(
-//       selectedAreaRadius: selectedAreaRadius ?? this.selectedAreaRadius,
-//       areaRadiusList: areaRadiusList ?? this.areaRadiusList,
-//       selectedAreaIndex: selectedAreaIndex ?? this.selectedAreaIndex,
-//     );
-//   }
-// }
-
 class MyAreaSettingsState {
   final List<AreaRadiusModel> areaRadiusList;
-  final int selectedIndex;
+  final LocationCordinates currentLocationCordination;
+  final AreaRadiusModel? currentRadius;
+  final bool isLoading;
 
-  // Computed property instead of storing separately
-  AreaRadiusModel? get selectedAreaRadius => areaRadiusList.isNotEmpty ? areaRadiusList[selectedIndex] : null;
+  // getter for selected index
+  int get selectedIndex {
+    if (currentRadius == null) return 0;
+    final index = areaRadiusList.indexWhere((item) => item.zoomLevel == currentRadius?.zoomLevel && item.circleRadius == currentRadius?.circleRadius);
+    return index == -1 ? 0 : index;
+  }
 
   MyAreaSettingsState({
     required this.areaRadiusList,
-    required this.selectedIndex,
+    required this.currentLocationCordination,
+    this.currentRadius,
+    required this.isLoading,
   });
 
   MyAreaSettingsState copyWith({
     List<AreaRadiusModel>? areaRadiusList,
     int? selectedIndex,
+    LocationCordinates? currentLocationCordination,
+    AreaRadiusModel? currentRadius,
+    bool? isLoading,
   }) {
     return MyAreaSettingsState(
       areaRadiusList: areaRadiusList ?? this.areaRadiusList,
-      selectedIndex: selectedIndex ?? this.selectedIndex,
+      currentLocationCordination: currentLocationCordination ?? this.currentLocationCordination,
+      isLoading: isLoading ?? this.isLoading,
+      currentRadius: currentRadius ?? this.currentRadius,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'latitude': currentLocationCordination.latitude,
+      'longitude': currentLocationCordination.longitude,
+      "zoom_level": currentRadius?.zoomLevel,
+      "circle_radius": currentRadius?.circleRadius,
+    };
   }
 }

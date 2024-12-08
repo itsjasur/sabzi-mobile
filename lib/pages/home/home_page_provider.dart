@@ -60,7 +60,7 @@ class HomePageNotifier extends Notifier<HomePageState> with ScrollMixin<HomePage
 
     // API CALL HERE
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(microseconds: 100));
       // has no more items
       if (itemsList.isEmpty) {
         state = state.copyWith(hasMoreItems: false);

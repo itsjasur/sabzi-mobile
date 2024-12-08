@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app.dart';
 import 'package:flutter_sabzi/core/utils/snackbar_service.dart';
+import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_page.dart';
 
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:flutter_sabzi/theme/app_theme.dart';
