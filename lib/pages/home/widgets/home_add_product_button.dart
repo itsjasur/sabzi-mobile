@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/theme/app_them_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/add_item_page.dart';
+
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class HoomeAddProductButton extends ConsumerWidget {
@@ -11,7 +12,9 @@ class HoomeAddProductButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ScaledTap(
-      onTap: ref.read(themeProvider.notifier).toggleTheme,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddItemPage()));
+      },
       child: Material(
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(50),

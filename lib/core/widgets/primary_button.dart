@@ -3,9 +3,12 @@ import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 
 class PrimaryButton extends StatelessWidget {
   final void Function()? onTap;
+
   final Widget child;
   final double borderRadius;
   final double? height;
+  final Color? backgroundColor;
+  final double? elevation;
   // final double? width;
   const PrimaryButton({
     super.key,
@@ -13,6 +16,8 @@ class PrimaryButton extends StatelessWidget {
     required this.child,
     this.borderRadius = 4,
     this.height = 50,
+    this.backgroundColor,
+    this.elevation,
     // this.width = 50,
   });
 
@@ -27,14 +32,14 @@ class PrimaryButton extends StatelessWidget {
         ),
         type: MaterialType.button,
         borderRadius: BorderRadius.circular(borderRadius),
-        elevation: 1,
-        color: Theme.of(context).colorScheme.primary,
+        elevation: elevation ?? 1,
+        color: backgroundColor ?? Theme.of(context).colorScheme.primary,
         child: IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
           child: Container(
             constraints: const BoxConstraints(minWidth: 50),
             // width: width,
-            // padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             height: height,
             alignment: Alignment.center,
             child: child,

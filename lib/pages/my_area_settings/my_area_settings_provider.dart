@@ -11,17 +11,15 @@ class MyAreaSettingsNotifier extends Notifier<MyAreaSettingsState> {
     });
 
     // Initial state
-    return MyAreaSettingsState(
-      // selectedIndex: 0,
-      currentRadius: const AreaRadiusModel(zoomLevel: 13, circleRadius: 2000),
-      areaRadiusList: [],
-      currentLocationCordination: const LocationCordinates(latitude: 41.302542, longitude: 69.238718),
-      isLoading: true,
-    );
+    return MyAreaSettingsState(areaRadiusList: [], isLoading: true);
   }
 
-  void updateSliderValue(AreaRadiusModel value) {
+  Future<void> updateSliderValue(AreaRadiusModel value) async {
+    if (state.currentLocationCordination == null) {
+      await ref.read(areaSettingsProvider.notifier).updateLocationCordinates();
+    }
     state = state.copyWith(currentRadius: value);
+
     _updateUserLocationInfo();
   }
 
@@ -47,13 +45,14 @@ class MyAreaSettingsNotifier extends Notifier<MyAreaSettingsState> {
   Future<void> _fetchUserLocationInfo() async {
     try {
       final userRadius = AreaRadiusModel.fromMap({'zoom_level': 13.0, 'circle_radius': 2000.0});
-      final userCordinated = LocationCordinates.fromMap({'latitude': 41.302542, 'longitude': 69.238718});
+      // final userCordinated = LocationCordinates.fromMap({'latitude': 41.302542, 'longitude': 69.238718});
 
       print('AAAA');
-      print(userCordinated);
+      // print(userCordinated);
 
       await Future.delayed(const Duration(microseconds: 200));
-      state = state.copyWith(currentLocationCordination: userCordinated, currentRadius: userRadius);
+      // state = state.copyWith(currentLocationCordination: userCordinated, currentRadius: userRadius);
+      state = state.copyWith(currentRadius: userRadius);
     } catch (e, trace) {
       print(e);
       print(trace);
@@ -62,9 +61,14 @@ class MyAreaSettingsNotifier extends Notifier<MyAreaSettingsState> {
 
   final _locationService = LocationService();
 
-  void updateLocationCordinates() async {
+  Future<void> updateLocationCordinates() async {
     LocationCordinates location = await _locationService.getCurrentLocation();
     state = state.copyWith(currentLocationCordination: location);
+    if (state.currentRadius == null && state.areaRadiusList.isNotEmpty) {
+      state = state.copyWith(currentRadius: state.areaRadiusList[0]);
+    }
+    state = state.copyWith(currentLocationCordination: location);
+
     _updateUserLocationInfo();
   }
 

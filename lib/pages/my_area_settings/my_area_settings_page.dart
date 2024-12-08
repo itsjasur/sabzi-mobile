@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sabzi/core/utils/location_service.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
@@ -13,7 +14,7 @@ class MyAreaSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     int selectedIndex = ref.watch(areaSettingsProvider.select((state) => state.selectedIndex));
-    LocationCordinates currentLocationCordination = ref.watch(areaSettingsProvider.select((state) => state.currentLocationCordination));
+    LocationCordinates? currentLocationCordination = ref.watch(areaSettingsProvider.select((state) => state.currentLocationCordination));
     bool isLoading = ref.watch(areaSettingsProvider.select((state) => state.isLoading));
     AreaRadiusModel? currentRadius = ref.watch(areaSettingsProvider.select((state) => state.currentRadius));
     List<AreaRadiusModel> areaRadiusList = ref.watch(areaSettingsProvider.select((state) => state.areaRadiusList));
@@ -114,7 +115,9 @@ class MyAreaSettingsPage extends ConsumerWidget {
                           ),
                           const SizedBox(height: 15),
                           PrimaryButton(
-                            onTap: ref.read(areaSettingsProvider.notifier).updateLocationCordinates,
+                            onTap: () {
+                              ref.read(areaSettingsProvider.notifier).updateLocationCordinates();
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

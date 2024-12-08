@@ -2,7 +2,7 @@ import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dar
 
 class MyAreaSettingsState {
   final List<AreaRadiusModel> areaRadiusList;
-  final LocationCordinates currentLocationCordination;
+  final LocationCordinates? currentLocationCordination;
   final AreaRadiusModel? currentRadius;
   final bool isLoading;
 
@@ -15,7 +15,7 @@ class MyAreaSettingsState {
 
   MyAreaSettingsState({
     required this.areaRadiusList,
-    required this.currentLocationCordination,
+    this.currentLocationCordination,
     this.currentRadius,
     required this.isLoading,
   });
@@ -37,8 +37,8 @@ class MyAreaSettingsState {
 
   Map<String, dynamic> toMap() {
     return {
-      'latitude': currentLocationCordination.latitude,
-      'longitude': currentLocationCordination.longitude,
+      'latitude': currentLocationCordination?.latitude,
+      'longitude': currentLocationCordination?.longitude,
       "zoom_level": currentRadius?.zoomLevel,
       "circle_radius": currentRadius?.circleRadius,
     };

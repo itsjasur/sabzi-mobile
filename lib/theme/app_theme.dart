@@ -5,6 +5,10 @@ final BottomSheetThemeData _bottomSheetTheme = BottomSheetThemeData(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
 );
 
+final DialogTheme dialogTheme = DialogTheme(
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+);
+
 // final RadioThemeData _radioThemeData = RadioThemeData(
 //   fillColor: WidgetStatePropertyAll(Colors.red),
 //   visualDensity: VisualDensity.compact,
@@ -13,6 +17,7 @@ final BottomSheetThemeData _bottomSheetTheme = BottomSheetThemeData(
 ThemeData lightMode = ThemeData(
   useMaterial3: true,
   applyElevationOverlayColor: true,
+  dialogTheme: dialogTheme,
   bottomSheetTheme: _bottomSheetTheme,
   appBarTheme: _appBarTheme,
   colorScheme: ColorScheme.light(
@@ -26,6 +31,7 @@ ThemeData lightMode = ThemeData(
 ThemeData darkMode = ThemeData(
   useMaterial3: true,
   applyElevationOverlayColor: true,
+  dialogTheme: dialogTheme,
   appBarTheme: _appBarTheme,
   bottomSheetTheme: _bottomSheetTheme,
   colorScheme: ColorScheme.dark(

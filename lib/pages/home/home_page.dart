@@ -44,9 +44,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   useSafeArea: true,
                   isDismissible: false,
                   barrierColor: Theme.of(context).colorScheme.surface,
-
                   // useRootNavigator: true,
-
                   // shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                   builder: (BuildContext context) {
                     return const MyAreaSettingsPage();

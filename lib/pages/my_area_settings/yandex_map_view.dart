@@ -6,12 +6,12 @@ import 'package:yandex_maps_mapkit_lite/yandex_map.dart';
 import 'package:yandex_maps_mapkit_lite/image.dart' as yanimage;
 
 class YandexMapView extends StatefulWidget {
-  final LocationCordinates currenLocationCordinates;
+  final LocationCordinates? currenLocationCordinates;
   // final AreaRadiusModel? areaRadius;
   final double? zoomLevel;
   final double? circleRadius;
   final bool? isProduct;
-  const YandexMapView({super.key, required this.currenLocationCordinates, this.zoomLevel, this.isProduct, this.circleRadius});
+  const YandexMapView({super.key, this.currenLocationCordinates, this.zoomLevel, this.isProduct, this.circleRadius});
 
   @override
   State<YandexMapView> createState() => YandexMapViewState();
@@ -77,15 +77,15 @@ class YandexMapViewState extends State<YandexMapView> {
   }
 
   void _updateView() {
-    print('BBBBBBB update view called');
     if (_mapWindow == null) return;
+    if (widget.currenLocationCordinates == null) return;
 
     _mapWindow!.map.mapObjects.clear();
 
     // this sets camera position to cordinates provided
     _mapWindow!.map.moveWithAnimation(
       yandex_mapkit.CameraPosition(
-        yandex_mapkit.Point(latitude: widget.currenLocationCordinates.latitude, longitude: widget.currenLocationCordinates.longitude),
+        yandex_mapkit.Point(latitude: widget.currenLocationCordinates!.latitude, longitude: widget.currenLocationCordinates!.longitude),
         // const yandex_mapkit.Point(latitude: 41.302542, longitude: 69.238718),
         zoom: widget.zoomLevel ?? 12,
         azimuth: 150.0,
@@ -94,14 +94,20 @@ class YandexMapViewState extends State<YandexMapView> {
       const yandex_mapkit.Animation(yandex_mapkit.AnimationType.Smooth, duration: 0.5),
     );
 
+    // this addds placemark to initial position
+    _mapWindow!.map.mapObjects.addPlacemark()
+      ..geometry = yandex_mapkit.Point(latitude: widget.currenLocationCordinates!.latitude, longitude: widget.currenLocationCordinates!.longitude)
+      ..setIcon(widget.isProduct ?? false ? _productImageProvider : _humanImageProvider)
+      ..setIconStyle(const yandex_mapkit.IconStyle(scale: 0.7));
+
     // adding circle radis from user's location * meters
     // circle can be null
     if (widget.circleRadius != null && widget.circleRadius! > 0) {
       _mapWindow!.map.mapObjects.addCircle(
         yandex_mapkit.Circle(
           yandex_mapkit.Point(
-            latitude: widget.currenLocationCordinates.latitude,
-            longitude: widget.currenLocationCordinates.longitude,
+            latitude: widget.currenLocationCordinates!.latitude,
+            longitude: widget.currenLocationCordinates!.longitude,
           ),
           radius: widget.circleRadius!,
         ),
@@ -114,12 +120,6 @@ class YandexMapViewState extends State<YandexMapView> {
         ..visible = true;
     }
 
-    //   // this addds placemark to initial position
-    _mapWindow!.map.mapObjects.addPlacemark()
-      ..geometry = yandex_mapkit.Point(latitude: widget.currenLocationCordinates.latitude, longitude: widget.currenLocationCordinates.longitude)
-      ..setIcon(widget.isProduct ?? false ? _productImageProvider : _humanImageProvider)
-      ..setIconStyle(const yandex_mapkit.IconStyle(scale: 0.7));
-
     setState(() {});
   }
 
@@ -128,6 +128,10 @@ class YandexMapViewState extends State<YandexMapView> {
     return YandexMap(
       onMapCreated: (yandex_mapkit.MapWindow mapWindow) {
         mapWindow.map.scrollGesturesEnabled = false;
+
+        // initial location
+        mapWindow.map.move(const yandex_mapkit.CameraPosition(yandex_mapkit.Point(latitude: 41.302542, longitude: 69.238718), zoom: 12, azimuth: 150.0, tilt: 0));
+
         _mapWindow = mapWindow;
         _mapWindow?.map.logo.setAlignment(const yandex_mapkit.LogoAlignment(yandex_mapkit.LogoHorizontalAlignment.Right, yandex_mapkit.LogoVerticalAlignment.Top));
 
