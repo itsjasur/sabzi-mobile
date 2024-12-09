@@ -50,5 +50,10 @@
 	<string>This app needs access to location when open to show your current location on the map.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background to update your location on the map.</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>In order to access your photo library</string>
+
+
 </dict>
 </plist>

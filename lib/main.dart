@@ -44,11 +44,11 @@ class MyApp extends ConsumerWidget {
       theme: lightMode,
       darkTheme: darkMode,
 
-      home: const App(),
+      // home: const App(),
       // home: const MyAreaSettingsPage(),
       // home: ScreenPointDemo(),
       // home: const MainTestPage(),
-      // home: const AddItemPage(),
+      home: const AddItemPage(),
     );
   }
 }
