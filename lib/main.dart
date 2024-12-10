@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app.dart';
 import 'package:flutter_sabzi/core/utils/snackbar_service.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_page.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view.dart';
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_page.dart';
-
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:flutter_sabzi/theme/app_theme.dart';
 import 'package:yandex_maps_mapkit_lite/init.dart' as inityandex;
@@ -21,9 +21,13 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      // statusBarColor: Colors.red,
+      // systemStatusBarContrastEnforced: true,
+    ),
+  );
 
   runApp(
     const ProviderScope(
@@ -48,7 +52,8 @@ class MyApp extends ConsumerWidget {
       // home: const MyAreaSettingsPage(),
       // home: ScreenPointDemo(),
       // home: const MainTestPage(),
-      home: const AddItemPage(),
+      // home: const AddItemPage(),
+      home: const GalleryView(),
     );
   }
 }

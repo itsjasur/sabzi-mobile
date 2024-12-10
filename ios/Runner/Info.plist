@@ -51,8 +51,11 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background to update your location on the map.</string>
 
+
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to take photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>In order to access your photo library</string>
+	<string>This app needs photos access to save captured images</string>
 
 
 </dict>
