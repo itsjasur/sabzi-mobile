@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 const AppBarTheme _appBarTheme = AppBarTheme(scrolledUnderElevation: 0);
 final BottomSheetThemeData _bottomSheetTheme = BottomSheetThemeData(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  dragHandleSize: const Size(40, 3),
+  surfaceTintColor: Colors.transparent,
 );
 
 final DialogTheme dialogTheme = DialogTheme(

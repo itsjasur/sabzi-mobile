@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/add_item/widgets/gallery_grid_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -14,29 +15,163 @@ class GalleryView extends StatefulWidget {
 }
 
 class _GalleryViewState extends State<GalleryView> {
-  List<AssetPathEntity> _albums = [];
-  List<AssetEntity> _images = [];
-
-  AssetPathEntity? _selectedAlbum;
-
   @override
   void initState() {
     super.initState();
     _fetchAlbums();
   }
 
-  bool _isShowingAlbums = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _selectedAlbum != null
-            ? ScaledTap(
-                onTap: () {},
-                child: Text(_selectedAlbum!.name),
-              )
-            : const Text('Unknown'),
+        centerTitle: true,
+        title: ScaledTap(
+          onTap: () async {
+            await showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              enableDrag: true,
+              clipBehavior: Clip.hardEdge,
+              builder: (_) => Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
+                    itemCount: _foldersInfoList.length,
+                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 40),
+                    itemBuilder: (context, index) {
+                      CustomFolderModel folderInfo = _foldersInfoList[index];
+
+                      // only show if there is an image in the folder
+                      if (folderInfo.count <= 0) return null;
+
+                      return ScaledTap(
+                        onTap: () {
+                          _currentFolder = _folders[index];
+                          _fetchMediaForCurrentAlbum();
+                          Navigator.pop(context);
+                        },
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: folderInfo.entityBytes != null
+                                  ? Image.memory(
+                                      height: 70,
+                                      width: 70,
+                                      folderInfo.entityBytes!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(
+                                      height: 70,
+                                      width: 70,
+                                      color: Theme.of(context).colorScheme.tertiary,
+                                    ),
+                            ),
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    folderInfo.name,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    folderInfo.count.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  // custom drag handle
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    width: double.infinity,
+                    height: 35,
+                    child: Align(
+                      child: Container(
+                        width: 50,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  _currentFolder != null
+                      ? _currentFolder!.name
+                      : _folders.isNotEmpty
+                          ? 'Select folder'
+                          : '',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 5),
+              Icon(
+                PhosphorIcons.caretDown(PhosphorIconsStyle.fill),
+                size: 14,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          const SizedBox(width: 10),
+          ScaledTap(
+            onTap: () {},
+            child: RichText(
+              maxLines: 1,
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                children: [
+                  TextSpan(
+                    // text: _selectedAssetEntityList.length.toString(),
+                    text: '000',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const TextSpan(text: ' '),
+                  const TextSpan(text: 'Done'),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
       body: Stack(
         children: [
@@ -73,8 +208,8 @@ class _GalleryViewState extends State<GalleryView> {
               SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
+                  mainAxisSpacing: 3,
+                  crossAxisSpacing: 3,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -103,17 +238,17 @@ class _GalleryViewState extends State<GalleryView> {
                     }
 
                     int imageIndex = index - 1;
+
                     if (imageIndex < _images.length) {
+                      final asset = _images[imageIndex];
                       return FutureBuilder<Uint8List?>(
-                        future: _images[imageIndex].thumbnailData,
+                        future: asset.thumbnailData,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
-                            return Image.memory(
-                              snapshot.data!,
-                              fit: BoxFit.cover,
-                            );
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData && snapshot.data != null) {
+                            return GalleryGridImage(assetEntity: asset, image: snapshot.data!);
                           }
-                          return Container(color: Colors.grey);
+
+                          return const SizedBox.shrink();
                         },
                       );
                     }
@@ -122,46 +257,6 @@ class _GalleryViewState extends State<GalleryView> {
                 ),
               )
             ],
-          ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Theme.of(context).colorScheme.surface,
-            child: ListView.builder(
-              itemCount: _albumsInfoList.length,
-              itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: _albumsInfoList[index].entityBytes != null
-                            ? Image.file(
-                                height: 70,
-                                width: 70,
-                                _albumsInfoList[index].entityBytes!,
-                                fit: BoxFit.cover,
-                              )
-                            : Container()),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _albumsInfoList[index].name,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            _albumsInfoList.length.toString(),
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
           ),
         ],
       ),
@@ -173,7 +268,7 @@ class _GalleryViewState extends State<GalleryView> {
     try {
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 85, // Adjust quality as needed (0-100)
+        imageQuality: 90, // Adjust quality as needed (0-100)
       );
 
       if (photo != null) {
@@ -210,63 +305,55 @@ class _GalleryViewState extends State<GalleryView> {
     }
   }
 
+  List<AssetPathEntity> _folders = [];
+  AssetPathEntity? _currentFolder;
+  final List<CustomFolderModel> _foldersInfoList = [];
+  List<AssetEntity> _images = [];
+
   Future<void> _fetchAlbums() async {
-    // Request permissions if not already granted
+    // rquests permissions if not already granted
     var permissionStatus = await PhotoManager.requestPermissionExtend();
     // print(permissionStatus);
     if (permissionStatus == PermissionState.authorized || permissionStatus == PermissionState.limited) {
-      // Fetch only image folders
-      List<AssetPathEntity> folders = await PhotoManager.getAssetPathList(
-        // onlyAll: true,
-        // hasAll: true,
-        type: RequestType.image,
-      );
-      _albums = folders;
+      // fetchs only image folders
+      _folders = await PhotoManager.getAssetPathList(type: RequestType.image);
+      setState(() {});
 
-      // print(_albums);
-
-      if (_albums.isNotEmpty) {
-        _selectedAlbum = _albums.first;
+      if (_folders.isNotEmpty) {
+        _currentFolder = _folders.first;
         await _fetchMediaForCurrentAlbum();
       }
 
-      _fetchlbumsInfolist();
-
-      setState(() {});
+      _getFolderInfoList();
     } else {
       // Handle the case where permissions are denied
       PhotoManager.openSetting();
     }
   }
 
-  Future<void> _fetchMediaForCurrentAlbum() async {
-    final List<AssetEntity> media = await _selectedAlbum!.getAssetListPaged(page: 0, size: 600);
-    _images = media;
-    setState(() {});
+  void _getFolderInfoList() async {
+    _foldersInfoList.clear();
+    // List<CustomFolderModel> foldersInfo = [];
+    for (AssetPathEntity folder in _folders) {
+      final entity = await folder.getAssetListPaged(page: 0, size: 1);
+      // final firsEntityBytes = entity.isNotEmpty ? await entity.first.file : null;
+      final firsEntityBytes = entity.isNotEmpty ? await entity.first.thumbnailData : null;
+      final name = folder.name;
+      final count = await folder.assetCountAsync;
+      _foldersInfoList.add(CustomFolderModel(name: name, count: count, entityBytes: firsEntityBytes));
+    }
   }
 
-  bool _albumsInfoListLoaded = false;
-  final List<AlbumInfo> _albumsInfoList = [];
-
-  void _fetchlbumsInfolist() async {
-    for (var album in _albums) {
-      final entity = await album.getAssetListPaged(page: 0, size: 1);
-      // final firsEntity = entity.isNotEmpty ? entity.first : null;
-      final firsEntityBytes = entity.isNotEmpty ? await entity.first.file : null;
-      final name = album.name;
-      final count = await album.assetCountAsync;
-
-      _albumsInfoList.add(AlbumInfo(name: name, count: count, entityBytes: firsEntityBytes));
-    }
-
+  Future<void> _fetchMediaForCurrentAlbum() async {
+    _images = await _currentFolder!.getAssetListPaged(page: 0, size: 20);
     setState(() {});
   }
 }
 
-class AlbumInfo {
+class CustomFolderModel {
   final String name;
   final int count;
-  final File? entityBytes;
+  final Uint8List? entityBytes;
 
-  AlbumInfo({required this.name, required this.count, required this.entityBytes});
+  CustomFolderModel({required this.name, required this.count, required this.entityBytes});
 }
