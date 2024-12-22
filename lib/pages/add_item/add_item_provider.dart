@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_state.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class AddItemNotifier extends Notifier<AddItemState> {
+class AddItemProvider extends Notifier<AddItemState> {
   @override
   AddItemState build() {
     return AddItemState(selectedAssetEntityList: []);
@@ -21,6 +21,6 @@ class AddItemNotifier extends Notifier<AddItemState> {
   }
 }
 
-final addItemNotifier = NotifierProvider<AddItemNotifier, AddItemState>(() {
-  return AddItemNotifier();
+final addItemProvider = NotifierProvider<AddItemProvider, AddItemState>(() {
+  return AddItemProvider();
 });

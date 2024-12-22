@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
 
 class ImagePickerContainer extends StatefulWidget {
   final bool multipleUploable;
@@ -14,8 +14,8 @@ class ImagePickerContainer extends StatefulWidget {
 }
 
 class _ImagePickerContainerState extends State<ImagePickerContainer> {
-  List<File> _images = [];
-  double _containerSize = 75;
+  final List<File> _images = [];
+  final double _containerSize = 75;
 
   @override
   void initState() {

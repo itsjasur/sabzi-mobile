@@ -52,7 +52,7 @@ class _MainTestPageState extends State<MainTestPage> {
                   // enabled: false,
                   // horizontalTitleGap: 20,
                   onTap: () {
-                    print('printed ${index}');
+                    print('printed $index');
                   },
                   title: Text('Item $index item item item item item item item item item item item item item'),
                 );
@@ -66,5 +66,5 @@ class _MainTestPageState extends State<MainTestPage> {
     );
   }
 
-  final _testItems = List.generate(100, (i) => 'Item ${i}');
+  final _testItems = List.generate(100, (i) => 'Item $i');
 }

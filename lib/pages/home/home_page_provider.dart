@@ -6,7 +6,7 @@ import 'package:flutter_sabzi/pages/home/home_page_state.dart';
 import 'package:flutter_sabzi/test/categories.dart';
 import 'package:flutter_sabzi/test/items.dart';
 
-class HomePageNotifier extends Notifier<HomePageState> with ScrollMixin<HomePageState> {
+class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePageState> {
   @override
   HomePageState build() {
     // Initialize
@@ -99,6 +99,6 @@ class HomePageNotifier extends Notifier<HomePageState> with ScrollMixin<HomePage
   }
 }
 
-final homePageProvider = NotifierProvider<HomePageNotifier, HomePageState>(() {
-  return HomePageNotifier();
+final homePageProvider = NotifierProvider<HomePageProvider, HomePageState>(() {
+  return HomePageProvider();
 });

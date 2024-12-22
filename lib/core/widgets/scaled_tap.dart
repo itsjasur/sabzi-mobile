@@ -63,6 +63,7 @@ class _ScaledTapState extends State<ScaledTap> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: widget.key,
       behavior: HitTestBehavior.translucent,
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,

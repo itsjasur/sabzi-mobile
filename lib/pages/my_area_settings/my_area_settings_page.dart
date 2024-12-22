@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/core/utils/location_service.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
