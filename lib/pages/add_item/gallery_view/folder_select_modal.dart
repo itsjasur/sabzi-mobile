@@ -1,24 +1,26 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_provider.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_state.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:photo_manager/photo_manager.dart';
 
-class FoldersListview extends ConsumerStatefulWidget {
-  const FoldersListview({super.key});
+class CustomFolderModel {
+  final String name;
+  final int count;
+  final Uint8List? entityBytes;
 
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FoldersListviewState();
+  CustomFolderModel({required this.name, required this.count, required this.entityBytes});
 }
 
-class _FoldersListviewState extends ConsumerState<FoldersListview> {
+class FolderSelectModal extends StatelessWidget {
+  final List<CustomFolderModel> foldersInfoList;
+  final List<AssetPathEntity> folders;
+  final AssetPathEntity? currentFolder;
+  final Function(AssetPathEntity) changeFolder;
+  const FolderSelectModal({super.key, required this.foldersInfoList, required this.folders, this.currentFolder, required this.changeFolder});
+
   @override
   Widget build(BuildContext context) {
-    final selectedFolder = ref.watch(galleryViewProvider.select((state) => state.selectedFolder));
-    final foldersInfolist = ref.watch(galleryViewProvider.select((state) => state.foldersInfoList));
-    final folders = ref.watch(galleryViewProvider.select((state) => state.folders));
-
     return ScaledTap(
       onTap: () async {
         await showModalBottomSheet(
@@ -33,16 +35,16 @@ class _FoldersListviewState extends ConsumerState<FoldersListview> {
               ListView.separated(
                 shrinkWrap: true,
                 separatorBuilder: (context, index) => const SizedBox(height: 10),
-                itemCount: foldersInfolist.length,
+                itemCount: foldersInfoList.length,
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 40),
                 itemBuilder: (context, index) {
-                  CustomFolderModel folderInfo = foldersInfolist[index];
+                  CustomFolderModel folderInfo = foldersInfoList[index];
                   // only show if there is an image in the folder
                   if (folderInfo.count <= 0) return null;
 
                   return ScaledTap(
                     onTap: () {
-                      ref.read(galleryViewProvider.notifier).changeFolder(folders[index]);
+                      changeFolder(folders[index]);
                       Navigator.pop(context);
                     },
                     child: Row(
@@ -110,8 +112,8 @@ class _FoldersListviewState extends ConsumerState<FoldersListview> {
         children: [
           Flexible(
             child: Text(
-              selectedFolder != null
-                  ? selectedFolder.name
+              currentFolder != null
+                  ? currentFolder!.name
                   : folders.isNotEmpty
                       ? 'Select folder'
                       : '',
@@ -133,5 +135,6 @@ class _FoldersListviewState extends ConsumerState<FoldersListview> {
         ],
       ),
     );
+    ;
   }
 }

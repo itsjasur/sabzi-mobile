@@ -1,52 +1,29 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
-import 'package:photo_manager/photo_manager.dart';
 
-class GalleryGridFutureImage extends ConsumerStatefulWidget {
-  final AssetEntity asset;
-  const GalleryGridFutureImage({super.key, required this.asset});
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _GalleryGridFutureImageState();
-}
-
-class _GalleryGridFutureImageState extends ConsumerState<GalleryGridFutureImage> {
-  Uint8List? _image;
+class GalleryGridImage extends ConsumerWidget {
+  final Uint8List image;
+  final String assetId;
+  const GalleryGridImage({super.key, required this.image, required this.assetId});
 
   @override
-  void initState() {
-    super.initState();
-    print('gallery stfl grid image initiated');
-    Future.microtask(() async {
-      _loadImage();
-    });
-  }
-
-  Future<void> _loadImage() async {
-    _image = await widget.asset.thumbnailData;
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final selectedAssetEntityList = ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList));
-
-    int index = selectedAssetEntityList.indexWhere((entity) => entity.id == widget.asset.id) + 1;
+    int index = selectedAssetEntityList.indexWhere((entity) => entity.id == assetId) + 1;
     bool isSelected = index != 0;
 
     final notifier = ref.read(addItemProvider.notifier);
 
     return ScaledTap(
-      key: ValueKey(widget.asset.id),
+      // key: ObjectKey(widget.asset),
       onTap: () {
         if (isSelected) {
-          notifier.removeAssetEntity(widget.asset);
+          // notifier.removeAssetEntity(widget.assetId);
         } else {
-          notifier.addAssetEntity(widget.asset);
+          // notifier.addAssetEntity(widget.assetId);
         }
       },
       child: Stack(
@@ -62,15 +39,7 @@ class _GalleryGridFutureImageState extends ConsumerState<GalleryGridFutureImage>
                       )
                     : null,
               ),
-              child: _image != null
-                  ? Image.memory(
-                      key: ValueKey(widget.asset.id),
-                      _image!,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      color: Colors.grey.shade100,
-                    ),
+              child: Image.memory(image, fit: BoxFit.cover),
             ),
           ),
           if (isSelected)
