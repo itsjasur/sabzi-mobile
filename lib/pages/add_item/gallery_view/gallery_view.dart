@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view/camera_grid_item.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/folder_select_modal.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_grid_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -124,59 +125,7 @@ class _GalleryViewState extends State<GalleryView> {
                 ),
                 itemCount: _currentFolderImagesCache.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return ScaledTap(
-                      onTap: () async {
-                        try {
-                          final XFile? photo = await _picker.pickImage(source: ImageSource.camera, imageQuality: 90);
-
-                          if (photo != null) {
-                            final File photoFile = File(photo.path);
-                            final Uint8List bytes = await photoFile.readAsBytes();
-                            final AssetEntity asset = await PhotoManager.editor.saveImage(
-                              bytes,
-                              title: 'Camera_${DateTime.now().millisecondsSinceEpoch}.jpg',
-                              filename: 'image',
-                            );
-                            _insertImage(asset);
-                          }
-                        } catch (e) {
-                          if (context.mounted) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Error'),
-                                  content: Text('Failed to take picture: ${e.toString()}'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.of(context).pop(),
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        }
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            PhosphorIcons.camera(PhosphorIconsStyle.regular),
-                            size: 35,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          const SizedBox(height: 3),
-                          const Text(
-                            'Camera',
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+                  if (index == 0) return CameraGridItem(onImageCaptured: _insertImage);
 
                   final imageIndex = index - 1;
                   MapEntry<String, Uint8List?> entry = _currentFolderImagesCache[imageIndex];
@@ -248,7 +197,7 @@ class _GalleryViewState extends State<GalleryView> {
     }
 
     for (AssetEntity asset in newAssets) {
-      final img = await asset.thumbnailData;
+      final img = await asset.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80);
       _currentFolderImagesCache.add(MapEntry(asset.id, img));
     }
 
@@ -258,7 +207,7 @@ class _GalleryViewState extends State<GalleryView> {
   }
 
   Future<void> _insertImage(AssetEntity asset) async {
-    Uint8List? image = await asset.thumbnailData;
+    Uint8List? image = await asset.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80);
     _currentFolderImagesCache.insert(0, MapEntry(asset.id, image));
     setState(() {});
   }
@@ -268,7 +217,7 @@ class _GalleryViewState extends State<GalleryView> {
 
     for (AssetPathEntity folder in _folders) {
       final entity = await folder.getAssetListPaged(page: 0, size: 1);
-      final firsEntityBytes = entity.isNotEmpty ? await entity.first.thumbnailData : null;
+      final firsEntityBytes = entity.isNotEmpty ? await entity.first.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80) : null;
       final name = folder.name;
       final count = await folder.assetCountAsync;
       _foldersInfoList.add(CustomFolderModel(name: name, count: count, entityBytes: firsEntityBytes));

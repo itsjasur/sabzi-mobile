@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_state.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class AddItemProvider extends Notifier<AddItemState> {
   @override
@@ -8,14 +7,14 @@ class AddItemProvider extends Notifier<AddItemState> {
     return AddItemState(selectedAssetEntityList: []);
   }
 
-  void removeAssetEntity(AssetEntity assetEntity) {
-    final updatedList = state.selectedAssetEntityList.where((entity) => entity.id != assetEntity.id).toList();
+  void removeAssetEntity(String assetId) {
+    final updatedList = state.selectedAssetEntityList.where((id) => id != assetId).toList();
     state = state.copyWith(selectedAssetEntityList: updatedList);
   }
 
-  void addAssetEntity(AssetEntity assetEntity) {
-    if (!state.selectedAssetEntityList.any((entity) => entity.id == assetEntity.id)) {
-      final updatedList = [...state.selectedAssetEntityList, assetEntity];
+  void addAssetEntity(String assetId) {
+    if (!state.selectedAssetEntityList.any((id) => id == assetId)) {
+      final updatedList = [...state.selectedAssetEntityList, assetId];
       state = state.copyWith(selectedAssetEntityList: updatedList);
     }
   }

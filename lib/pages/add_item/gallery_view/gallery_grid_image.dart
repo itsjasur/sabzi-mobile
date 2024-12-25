@@ -3,27 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class GalleryGridImage extends ConsumerWidget {
   final Uint8List image;
   final String assetId;
+
   const GalleryGridImage({super.key, required this.image, required this.assetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedAssetEntityList = ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList));
-    int index = selectedAssetEntityList.indexWhere((entity) => entity.id == assetId) + 1;
+    int index = selectedAssetEntityList.indexWhere((id) => id == assetId) + 1;
     bool isSelected = index != 0;
 
     final notifier = ref.read(addItemProvider.notifier);
 
     return ScaledTap(
-      // key: ObjectKey(widget.asset),
       onTap: () {
         if (isSelected) {
-          // notifier.removeAssetEntity(widget.assetId);
+          notifier.removeAssetEntity(assetId);
         } else {
-          // notifier.addAssetEntity(widget.assetId);
+          notifier.addAssetEntity(assetId);
         }
       },
       child: Stack(

@@ -1,11 +1,11 @@
 import 'package:photo_manager/photo_manager.dart';
 
 class AddItemState {
-  final List<AssetEntity> selectedAssetEntityList;
+  final List<String> selectedAssetEntityList;
 
   AddItemState({required this.selectedAssetEntityList});
 
-  AddItemState copyWith({List<AssetEntity>? selectedAssetEntityList}) {
+  AddItemState copyWith({List<String>? selectedAssetEntityList}) {
     return AddItemState(selectedAssetEntityList: selectedAssetEntityList ?? this.selectedAssetEntityList);
   }
 }
