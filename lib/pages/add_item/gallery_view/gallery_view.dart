@@ -3,7 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/camera_grid_item.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view/done_action_button.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/folder_select_modal.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_grid_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +20,9 @@ class GalleryView extends StatefulWidget {
 }
 
 class _GalleryViewState extends State<GalleryView> {
+  PermissionState _permissionStatus = PermissionState.notDetermined;
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -37,14 +42,23 @@ class _GalleryViewState extends State<GalleryView> {
     super.dispose();
   }
 
-  final ScrollController _scrollController = ScrollController();
-  final ImagePicker _picker = ImagePicker();
-
   @override
   Widget build(BuildContext context) {
-    if (_isPageLoading) return const Center(child: CircularProgressIndicator());
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 10,
+        // leadingWidth: 24,
+        // automaticallyImplyLeading: false,
+        leading: ScaledTap(
+          child: Container(
+            color: Colors.amber,
+            child: Icon(
+              PhosphorIcons.caretLeft(PhosphorIconsStyle.bold),
+              // size: 26,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ),
         centerTitle: true,
         title: FolderSelectModal(
           foldersInfoList: _foldersInfoList,
@@ -55,96 +69,77 @@ class _GalleryViewState extends State<GalleryView> {
             _changeFolder();
           },
         ),
-        actions: [
-          const SizedBox(width: 10),
-          ScaledTap(
-            onTap: () {},
-            child: RichText(
-              maxLines: 1,
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                ),
-                children: [
-                  TextSpan(
-                    text: '24',
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                  ),
-                  const TextSpan(text: ' '),
-                  const TextSpan(text: 'Done'),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 15),
+        actions: const [
+          SizedBox(width: 10),
+          DoneActionButton(),
+          SizedBox(width: 15),
         ],
       ),
-      body: Stack(
-        children: [
-          CustomScrollView(
-            controller: _scrollController,
-            cacheExtent: 1000,
-            slivers: [
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  // height: 200,
-                  color: Theme.of(context).colorScheme.tertiary,
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'If you allow access to all images you can easily upload images.',
-                        style: TextStyle(fontSize: 14.5),
-                      ),
-                      SizedBox(height: 7),
-                      ScaledTap(
-                        onTap: PhotoManager.openSetting,
-                        child: Text(
-                          'Allow access',
-                          style: TextStyle(
-                            fontSize: 14.5,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500,
+      body: _isPageLoading
+          ? null
+          : Stack(
+              children: [
+                CustomScrollView(
+                  controller: _scrollController,
+                  cacheExtent: 1000,
+                  slivers: [
+                    if (_permissionStatus != PermissionState.authorized)
+                      SliverToBoxAdapter(
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'If you allow access to all images you can easily upload images.',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              SizedBox(height: 7),
+                              ScaledTap(
+                                onTap: PhotoManager.openSetting,
+                                child: Text(
+                                  'Allow access',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    SliverGrid.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 3,
+                        crossAxisSpacing: 3,
+                        // childAspectRatio: 1.0,
+                      ),
+                      itemCount: _currentFolderImagesCache.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) return CameraGridItem(onImageCaptured: _insertImage);
+
+                        final imageIndex = index - 1;
+                        MapEntry<String, Uint8List?> entry = _currentFolderImagesCache[imageIndex];
+
+                        if (entry.value != null) {
+                          return GalleryGridImage(
+                            // key: ValueKey(entry.key),
+                            image: entry.value!,
+                            assetId: entry.key,
+                          );
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
-              ),
-              SliverGrid.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 3,
-                  // childAspectRatio: 1.0,
-                ),
-                itemCount: _currentFolderImagesCache.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) return CameraGridItem(onImageCaptured: _insertImage);
-
-                  final imageIndex = index - 1;
-                  MapEntry<String, Uint8List?> entry = _currentFolderImagesCache[imageIndex];
-
-                  if (entry.value != null) {
-                    return GalleryGridImage(
-                      key: ValueKey(entry.key),
-                      image: entry.value!,
-                      assetId: entry.key,
-                    );
-                  }
-
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 
@@ -159,9 +154,9 @@ class _GalleryViewState extends State<GalleryView> {
   AssetPathEntity? _currentFolder;
 
   Future<void> _fetchFolders() async {
-    var permissionStatus = await PhotoManager.requestPermissionExtend();
+    _permissionStatus = await PhotoManager.requestPermissionExtend();
 
-    if (permissionStatus == PermissionState.authorized || permissionStatus == PermissionState.limited) {
+    if (_permissionStatus == PermissionState.authorized || _permissionStatus == PermissionState.limited) {
       _folders = await PhotoManager.getAssetPathList(type: RequestType.image);
 
       await _convertToFolderInfoList();
@@ -197,6 +192,7 @@ class _GalleryViewState extends State<GalleryView> {
     }
 
     for (AssetEntity asset in newAssets) {
+      print(asset);
       final img = await asset.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80);
       _currentFolderImagesCache.add(MapEntry(asset.id, img));
     }

@@ -14,7 +14,7 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     this.onTap,
     required this.child,
-    this.borderRadius = 4,
+    this.borderRadius = 6,
     this.height = 50,
     this.backgroundColor,
     this.elevation,

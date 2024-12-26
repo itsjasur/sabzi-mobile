@@ -10,7 +10,7 @@ class VerifyLocationAlert extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(20),
-      // title: const Text('Welcome'),
+      alignment: Alignment.center,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,11 +68,6 @@ class VerifyLocationAlert extends ConsumerWidget {
           ),
         ],
       ),
-      actionsAlignment: MainAxisAlignment.center,
-      alignment: Alignment.center,
-      // actions: [
-
-      // ],
     );
   }
 }

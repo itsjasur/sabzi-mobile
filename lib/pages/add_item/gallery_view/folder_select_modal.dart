@@ -85,7 +85,7 @@ class FolderSelectModal extends StatelessWidget {
                   );
                 },
               ),
-              // custom drag handle
+              // custom drag handle icon
               Container(
                 color: Theme.of(context).colorScheme.surface,
                 width: double.infinity,
@@ -118,15 +118,15 @@ class FolderSelectModal extends StatelessWidget {
                       ? 'Select folder'
                       : '',
               style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
+                fontSize: 19,
+                fontWeight: FontWeight.w600,
                 height: 1,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 5),
+          const SizedBox(width: 7),
           Icon(
             PhosphorIcons.caretDown(PhosphorIconsStyle.fill),
             size: 14,
