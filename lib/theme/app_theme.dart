@@ -36,7 +36,7 @@ ThemeData lightMode = ThemeData(
     surface: Colors.white, //appbar background, scaffold background etc...
     primary: Colors.orange,
     onPrimary: Colors.white,
-    secondary: Colors.grey.shade500,
+    secondary: Colors.grey.shade400,
     tertiary: Colors.grey.shade100,
   ),
 );
@@ -51,7 +51,7 @@ ThemeData darkMode = ThemeData(
     surface: Colors.grey.shade900, //appbar background, scaffold background etc...
     primary: Colors.orange,
     onPrimary: Colors.white,
-    secondary: Colors.grey.shade600,
+    secondary: Colors.grey.shade700,
     tertiary: Colors.grey.shade800,
   ),
 );

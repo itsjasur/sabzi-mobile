@@ -118,7 +118,7 @@ class FolderSelectModal extends StatelessWidget {
                       ? 'Select folder'
                       : '',
               style: const TextStyle(
-                fontSize: 19,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
                 height: 1,
               ),

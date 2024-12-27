@@ -11,8 +11,72 @@ class ImagesRow extends ConsumerWidget {
 
   @override
   build(BuildContext context, WidgetRef ref) {
-    double containerSize = 70;
+    double containerSize = 65;
     final images = ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList));
+
+    Widget itemBuilder(int index) {
+      return Container(
+        alignment: Alignment.bottomCenter,
+        key: ValueKey(images[index].key),
+        margin: const EdgeInsets.only(left: 12),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          clipBehavior: Clip.none,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.memory(
+                images[index].value,
+                height: containerSize,
+                width: containerSize,
+                fit: BoxFit.cover,
+              ),
+            ),
+            if (index == 0)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
+                  child: Container(
+                    color: Colors.black87,
+                    height: 20,
+                    child: const Text(
+                      'Main',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            Positioned(
+              top: -5,
+              right: -5,
+              child: ScaledTap(
+                onTap: () {
+                  ref.read(addItemProvider.notifier).removeAssetEntity(images[index].key);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).colorScheme.inverseSurface,
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    color: Theme.of(context).colorScheme.surface,
+                    size: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Material(
       child: Align(
@@ -23,6 +87,7 @@ class ImagesRow extends ConsumerWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 15, right: 30),
             shrinkWrap: true,
+            proxyDecorator: (child, index, animation) => itemBuilder(index),
             onReorder: (int oldIndex, int newIndex) {
               print('oldindex, $oldIndex');
               print('newindex $newIndex');
@@ -86,67 +151,7 @@ class ImagesRow extends ConsumerWidget {
               ...List.generate(
                 images.length,
                 (index) {
-                  return Container(
-                    alignment: Alignment.bottomCenter,
-                    key: ValueKey(images[index].key),
-                    margin: const EdgeInsets.only(left: 15),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      clipBehavior: Clip.none,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.memory(
-                            images[index].value,
-                            height: containerSize,
-                            width: containerSize,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        if (index == 0)
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
-                              child: Container(
-                                color: Colors.black87,
-                                height: 20,
-                                child: const Text(
-                                  'Main',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        Positioned(
-                          top: -5,
-                          right: -5,
-                          child: ScaledTap(
-                            onTap: () {
-                              ref.read(addItemProvider.notifier).removeAssetEntity(images[index].key);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Theme.of(context).colorScheme.inverseSurface,
-                              ),
-                              child: Icon(
-                                Icons.close,
-                                color: Theme.of(context).colorScheme.surface,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return itemBuilder(index);
                 },
               ),
             ],

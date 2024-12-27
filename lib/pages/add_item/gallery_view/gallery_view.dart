@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_sabzi/core/widgets/back_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/camera_grid_item.dart';
@@ -47,18 +48,7 @@ class _GalleryViewState extends State<GalleryView> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 10,
-        // leadingWidth: 24,
-        // automaticallyImplyLeading: false,
-        leading: ScaledTap(
-          child: Container(
-            color: Colors.amber,
-            child: Icon(
-              PhosphorIcons.caretLeft(PhosphorIconsStyle.bold),
-              // size: 26,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-        ),
+        leading: const AppBarBackButton(isX: true),
         centerTitle: true,
         title: FolderSelectModal(
           foldersInfoList: _foldersInfoList,
