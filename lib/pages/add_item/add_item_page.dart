@@ -6,6 +6,7 @@ import 'package:flutter_sabzi/core/formatters/currency_with_suffix_formatter.dar
 import 'package:flutter_sabzi/core/models/currency_model.dart';
 import 'package:flutter_sabzi/core/widgets/back_button.dart';
 import 'package:flutter_sabzi/core/widgets/custom_text_form_field.dart';
+import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_sabzi/pages/add_item/images_row.dart';
 import 'package:flutter_sabzi/pages/add_item/widgets/verify_location_alert.dart';
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
 import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_provider.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddItemPage extends ConsumerStatefulWidget {
   const AddItemPage({super.key});
@@ -75,19 +77,13 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
               ImagesRow(
                 key: ValueKey(ref.read(addItemProvider).selectedAssetEntityList.length),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Title',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    _titleBuilder('Title'),
                     const SizedBox(height: 10),
                     CustomTextFormField(
                       controller: _titleController,
@@ -97,27 +93,18 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
                         setState(() {});
                       },
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Price',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    const SizedBox(height: 30),
+                    _titleBuilder('Price'),
                     const SizedBox(height: 10),
                     CustomTextFormField(
                       keyboardType: TextInputType.number,
                       controller: _priceController,
                       hintText: '${_selectedCurrency.label} price',
-                      errorText: _validator('title'),
                       prefixIcon: Container(
-                        // color: Colors.amber,
-                        padding: const EdgeInsets.only(left: 12),
+                        margin: const EdgeInsets.only(left: 12),
                         child: IntrinsicWidth(
                           child: ScaledTap(
                             onTap: () {
-                              print('currency tapped');
                               showDialog(
                                 context: context,
                                 barrierDismissible: true,
@@ -128,20 +115,19 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     spacing: 20,
-                                    // runSpacing: 20,
-                                    // spacing: 20,
                                     children: List.generate(
                                       _currencyList.length,
-                                      (index) => CustomRadio(
-                                        onChanged: (value) {
-                                          _selectedCurrency = value;
-                                          Navigator.pop(context);
-                                          setState(() {});
-                                          // print(value);
-                                        },
-                                        value: _currencyList[index],
-                                        groupValue: _selectedCurrency,
-                                        child: Text("${_currencyList[index].code} ${_currencyList[index].label}"),
+                                      (index) => SizedBox(
+                                        width: double.infinity,
+                                        child: CustomRadio(
+                                          onChanged: (value) {
+                                            _selectedCurrency = _currencyList.firstWhere((currency) => currency.code == value);
+                                            Navigator.pop(context);
+                                          },
+                                          value: _currencyList[index].code,
+                                          groupValue: _selectedCurrency.code,
+                                          child: Text("${_currencyList[index].code} ${_currencyList[index].label}"),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -153,13 +139,18 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    constraints: const BoxConstraints(minWidth: 20),
-                                    child: Text(
-                                      _selectedCurrency.label,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                                      textAlign: TextAlign.center,
+                                  Icon(
+                                    PhosphorIcons.arrowsClockwise(PhosphorIconsStyle.regular),
+                                    size: 14,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    _selectedCurrency.label,
+                                    style: TextStyle(
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                      fontSize: 15,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                   VerticalDivider(
                                     width: 20,
@@ -174,14 +165,60 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
                           ),
                         ),
                       ),
-                      inputFormatters: [
-                        // CurrencyInputFormatterWithSuffix(currencyName: _currency.label),
-                        CurrencyTextInputFormatter(),
-                      ],
+                      inputFormatters: [CurrencyTextInputFormatter()],
+                      onChanged: (String value) {
+                        // setState(() {});
+                      },
+                    ),
+                    const SizedBox(height: 7),
+                    ScaledTap(
+                      onTap: () {
+                        _priceNegotiable = !_priceNegotiable;
+                        setState(() {});
+                      },
+                      child: IntrinsicWidth(
+                        child: Row(
+                          spacing: 7,
+                          children: [
+                            SizedBox(
+                              height: 18.5,
+                              width: 18.5,
+                              child: IgnorePointer(
+                                child: Checkbox(
+                                  side: BorderSide(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    width: 1,
+                                  ),
+                                  value: _priceNegotiable,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ),
+                            const Text("Open to offers"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    _titleBuilder('Description'),
+                    const SizedBox(height: 10),
+                    CustomTextFormField(
+                      controller: _descriptionController,
+                      maxLines: null,
+                      textInputAction: TextInputAction.newline,
+                      hintMaxLines: null,
+                      hintText: """Write about your item. e.g. brand, material, condition and size. \n \nInclude anything that you think your neighbors would like to know\n""",
+                      errorText: _validator('description'),
                       onChanged: (String value) {
                         setState(() {});
                       },
                     ),
+                    const SizedBox(height: 30),
+                    PrimaryButton(
+                      onTap: () {},
+                      child: const Text('Post'),
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -192,6 +229,18 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
     );
   }
 
+  Widget _titleBuilder(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  bool _priceNegotiable = true;
+
   CurrencyModel _selectedCurrency = CurrencyModel(code: 'UZS', label: "So'm");
   final List<CurrencyModel> _currencyList = [
     CurrencyModel(code: 'UZS', label: "So'm"),
@@ -199,12 +248,16 @@ class _AddItemPageState extends ConsumerState<AddItemPage> {
   ];
 
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController(text: '0');
+  final TextEditingController _descriptionController = TextEditingController();
 
   String? _validator(String? value) {
-    print('validator called');
-    if (_titleController.text.isEmpty) return 'Please fill title';
-    if (_titleController.text.length < 5) return 'Title is too short';
+    if (value == 'title') {
+      if (_titleController.text.isEmpty) return 'Please fill in the title.';
+    }
+    if (value == 'description') {
+      if (_descriptionController.text.isEmpty) return 'Please fill in the description.';
+    }
 
     return null;
   }

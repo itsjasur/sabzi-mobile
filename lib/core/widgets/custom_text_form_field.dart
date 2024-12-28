@@ -8,7 +8,8 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final Function(String value)? onChanged;
   final TextEditingController? controller;
-  final int maxLines;
+  final int? maxLines;
+  final int? hintMaxLines;
   final bool expands;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.controller,
     this.maxLines = 1,
+    this.hintMaxLines = 1,
     this.expands = false,
     this.keyboardType,
     this.inputFormatters,
@@ -38,9 +40,11 @@ class CustomTextFormField extends StatelessWidget {
           onChanged: onChanged,
           style: const TextStyle(fontSize: 15),
           cursorColor: Theme.of(context).colorScheme.onSurface,
+          cursorWidth: 1.5,
+          cursorHeight: 19,
           expands: expands,
           maxLines: maxLines,
-          textInputAction: TextInputAction.done,
+          textInputAction: textInputAction,
           inputFormatters: inputFormatters,
           keyboardType: keyboardType,
           decoration: InputDecoration(
@@ -48,6 +52,7 @@ class CustomTextFormField extends StatelessWidget {
             isDense: true,
             contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
             hintText: hintText,
+            hintMaxLines: hintMaxLines,
             hintStyle: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontSize: 15,

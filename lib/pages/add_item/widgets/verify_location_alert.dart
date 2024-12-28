@@ -29,38 +29,42 @@ class VerifyLocationAlert extends ConsumerWidget {
             // mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
-                child: PrimaryButton(
-                  elevation: 0,
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                child: SizedBox(
                   height: 40,
-                  onTap: () {
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //   MaterialPageRoute(builder: (context) => const HomePage()),
-                    //   (route) => false,
-                    // );
+                  child: PrimaryButton(
+                    elevation: 0,
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    onTap: () {
+                      // Navigator.of(context).pushAndRemoveUntil(
+                      //   MaterialPageRoute(builder: (context) => const HomePage()),
+                      //   (route) => false,
+                      // );
 
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                  child: Text(
-                    'Cancel',
-                    maxLines: 1,
-                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    child: Text(
+                      'Cancel',
+                      maxLines: 1,
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: PrimaryButton(
-                  elevation: 0,
+                child: SizedBox(
                   height: 40,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyAreaSettingsPage()));
-                  },
-                  child: const Text(
-                    'Verify location',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  child: PrimaryButton(
+                    elevation: 0,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyAreaSettingsPage()));
+                    },
+                    child: const Text(
+                      'Verify location',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ),
