@@ -26,19 +26,20 @@ class CustomRadio<T> extends StatelessWidget {
         }
       },
       child: Row(
+        spacing: 7,
         mainAxisSize: MainAxisSize.min,
         children: [
           Stack(
             alignment: AlignmentDirectional.center,
             children: [
               Container(
-                height: 20,
-                width: 20,
+                height: 18.5,
+                width: 18.5,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: Colors.transparent,
                   border: Border.all(
-                    width: 2,
+                    width: 1.5,
                     color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
                   ),
                 ),
@@ -54,11 +55,7 @@ class CustomRadio<T> extends StatelessWidget {
                 ),
             ],
           ),
-          if (child != null)
-            Padding(
-              padding: const EdgeInsets.only(left: 7),
-              child: child!,
-            ),
+          if (child != null) child!,
         ],
       ),
     );

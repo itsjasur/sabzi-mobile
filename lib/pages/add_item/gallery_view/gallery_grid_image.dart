@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 
 class GalleryGridImage extends ConsumerWidget {
   final Uint8List image;
@@ -12,12 +12,12 @@ class GalleryGridImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedAssetEntityList = ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList));
+    final selectedAssetEntityList = ref.watch(addListingProvider.select((state) => state.selectedAssetEntityList));
     final index = selectedAssetEntityList.indexWhere((item) => item.key == assetId) + 1;
     // print('INDEX BELOW');
     // print(index);
     bool isSelected = index != 0;
-    final notifier = ref.read(addItemProvider.notifier);
+    final notifier = ref.read(addListingProvider.notifier);
 
     return ScaledTap(
       onTap: () {
@@ -27,18 +27,9 @@ class GalleryGridImage extends ConsumerWidget {
           if (selectedAssetEntityList.length >= 9) {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'You can select up to 9 images',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                duration: const Duration(seconds: 4),
+              const SnackBar(
+                content: Text('You can select up to 9 images'),
+                duration: Duration(seconds: 4),
               ),
             );
           } else {

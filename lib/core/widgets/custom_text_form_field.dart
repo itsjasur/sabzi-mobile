@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
   final Widget? prefixIcon;
+  final FocusNode? focusNode;
 
   const CustomTextFormField({
     super.key,
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.textInputAction,
     this.prefixIcon,
+    this.focusNode,
   });
 
   @override
@@ -36,6 +38,7 @@ class CustomTextFormField extends StatelessWidget {
     return Column(
       children: [
         TextField(
+          focusNode: focusNode,
           controller: controller,
           onChanged: onChanged,
           style: const TextStyle(fontSize: 15),

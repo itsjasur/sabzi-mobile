@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/back_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/camera_grid_item.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/done_action_button.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/folder_select_modal.dart';

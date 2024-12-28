@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -12,7 +12,7 @@ class ImagesRow extends ConsumerWidget {
   @override
   build(BuildContext context, WidgetRef ref) {
     double containerSize = 65;
-    final images = ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList));
+    final images = ref.watch(addListingProvider.select((state) => state.selectedAssetEntityList));
 
     Widget itemBuilder(int index) {
       return Container(
@@ -58,7 +58,7 @@ class ImagesRow extends ConsumerWidget {
               right: -5,
               child: ScaledTap(
                 onTap: () {
-                  ref.read(addItemProvider.notifier).removeAssetEntity(images[index].key);
+                  ref.read(addListingProvider.notifier).removeAssetEntity(images[index].key);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -92,7 +92,7 @@ class ImagesRow extends ConsumerWidget {
               print('oldindex, $oldIndex');
               print('newindex $newIndex');
               HapticFeedback.lightImpact();
-              ref.read(addItemProvider.notifier).swapItemPosition(oldIndex, newIndex);
+              ref.read(addListingProvider.notifier).swapItemPosition(oldIndex, newIndex);
             },
             header: ScaledTap(
               onTap: () {
@@ -130,7 +130,7 @@ class ImagesRow extends ConsumerWidget {
                       RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           children: [

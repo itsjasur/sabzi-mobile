@@ -28,9 +28,8 @@ ThemeData lightMode = ThemeData(
   useMaterial3: true,
   // applyElevationOverlayColor: true,
   dialogTheme: dialogTheme,
-  snackBarTheme: _sanckbarTheme,
+  snackBarTheme: _sanckbarTheme.copyWith(contentTextStyle: const TextStyle(fontSize: 15, color: Colors.white)),
   bottomSheetTheme: _bottomSheetTheme,
-
   appBarTheme: _appBarTheme,
   colorScheme: ColorScheme.light(
     surface: Colors.white, //appbar background, scaffold background etc...
@@ -44,7 +43,7 @@ ThemeData darkMode = ThemeData(
   useMaterial3: true,
   // applyElevationOverlayColor: true,
   dialogTheme: dialogTheme,
-  snackBarTheme: _sanckbarTheme,
+  snackBarTheme: _sanckbarTheme.copyWith(contentTextStyle: const TextStyle(fontSize: 15, color: Colors.black)),
   appBarTheme: _appBarTheme,
   bottomSheetTheme: _bottomSheetTheme,
   colorScheme: ColorScheme.dark(

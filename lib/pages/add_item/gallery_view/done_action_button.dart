@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/add_item_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 
 class DoneActionButton extends ConsumerWidget {
   const DoneActionButton({super.key});
@@ -25,7 +25,7 @@ class DoneActionButton extends ConsumerWidget {
             ),
             children: [
               TextSpan(
-                text: ref.watch(addItemProvider.select((state) => state.selectedAssetEntityList.length.toString())),
+                text: ref.watch(addListingProvider.select((state) => state.selectedAssetEntityList.length.toString())),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
