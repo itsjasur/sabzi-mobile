@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_sabzi/core/widgets/radio_widget.dart';
-import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? errorText;
@@ -9,13 +8,17 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String value)? onChanged;
   final TextEditingController? controller;
   final int? maxLines;
+  final int? maxLength;
   final int? hintMaxLines;
   final bool expands;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final FocusNode? focusNode;
+  final double? textSize;
+  final FontWeight? fontWeight;
 
   const CustomTextFormField({
     super.key,
@@ -30,7 +33,11 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.textInputAction,
     this.prefixIcon,
+    this.suffixIcon,
     this.focusNode,
+    this.textSize = 15,
+    this.fontWeight,
+    this.maxLength,
   });
 
   @override
@@ -41,24 +48,31 @@ class CustomTextFormField extends StatelessWidget {
           focusNode: focusNode,
           controller: controller,
           onChanged: onChanged,
-          style: const TextStyle(fontSize: 15),
+          style: TextStyle(
+            fontSize: textSize,
+            fontWeight: fontWeight,
+          ),
           cursorColor: Theme.of(context).colorScheme.onSurface,
           cursorWidth: 1.5,
           cursorHeight: 19,
           expands: expands,
           maxLines: maxLines,
+          maxLength: maxLength,
           textInputAction: textInputAction,
           inputFormatters: inputFormatters,
           keyboardType: keyboardType,
           decoration: InputDecoration(
+            counter: const SizedBox.shrink(),
             prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
             isDense: true,
-            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+            contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 12),
             hintText: hintText,
             hintMaxLines: hintMaxLines,
             hintStyle: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
-              fontSize: 15,
+              fontSize: textSize,
+              fontWeight: fontWeight,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
@@ -83,18 +97,23 @@ class CustomTextFormField extends StatelessWidget {
         const SizedBox(height: 7),
         if (errorText != null)
           Row(
+            spacing: 3,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.info,
-                size: 20,
+              Icon(
+                PhosphorIcons.info(PhosphorIconsStyle.fill),
+                size: 18,
                 color: Colors.red,
               ),
-              const SizedBox(width: 5),
-              Text(
-                errorText!,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.red,
+              Flexible(
+                child: Text(
+                  errorText!,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.red,
+                    height: 1.3,
+                  ),
                 ),
               ),
             ],

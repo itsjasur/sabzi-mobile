@@ -12,7 +12,7 @@ class PrimaryButton extends StatelessWidget {
 
   const PrimaryButton({
     super.key,
-    this.onTap,
+    required this.onTap,
     required this.child,
     this.borderRadius = 6,
     this.backgroundColor,
@@ -35,7 +35,7 @@ class PrimaryButton extends StatelessWidget {
           type: MaterialType.button,
           borderRadius: BorderRadius.circular(borderRadius),
           elevation: elevation ?? 1,
-          color: backgroundColor ?? Theme.of(context).colorScheme.primary,
+          color: onTap == null ? Theme.of(context).colorScheme.secondary : backgroundColor ?? Theme.of(context).colorScheme.primary,
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
             child: Align(

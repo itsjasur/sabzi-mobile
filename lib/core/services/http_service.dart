@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/auth/auth_provider.dart';
 import 'package:http/http.dart' as http;
 
-class ApiException implements Exception {
+class CustomHttpException implements Exception {
   final String message;
   final int? statusCode;
 
-  ApiException(this.message, {this.statusCode});
+  CustomHttpException(this.message, {this.statusCode});
 
   @override
-  String toString() => 'ApiException: $message (Status Code: $statusCode)';
+  String toString() => 'CustomHttpException: $message (Status Code: $statusCode)';
 }
 
 // HTTP service class
@@ -43,7 +43,7 @@ class HttpService {
     // Check for authentication errors
     if (statusCode == 401 || statusCode == 403) {
       ref.read(authProvider.notifier).logout();
-      throw ApiException('Authentication failed', statusCode: statusCode);
+      throw CustomHttpException('Authentication failed', statusCode: statusCode);
     }
 
     // Handle successful responses
@@ -53,7 +53,7 @@ class HttpService {
     }
 
     // Handle other errors
-    throw ApiException(
+    throw CustomHttpException(
       'Request failed with status: $statusCode',
       statusCode: statusCode,
     );
@@ -67,15 +67,11 @@ class HttpService {
       );
       return _handleResponse(response);
     } catch (e) {
-      throw ApiException(e.toString());
+      throw CustomHttpException(e.toString());
     }
   }
 
-  Future<dynamic> post(
-    String endpoint, {
-    dynamic body,
-    Map<String, String>? headers,
-  }) async {
+  Future<dynamic> post(String endpoint, {dynamic body, Map<String, String>? headers}) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl$endpoint'),
@@ -84,11 +80,11 @@ class HttpService {
       );
       return _handleResponse(response);
     } catch (e) {
-      throw ApiException(e.toString());
+      throw CustomHttpException(e.toString());
     }
   }
 }
 
 final httpServiceProvider = Provider((ref) {
-  return HttpService(ref, baseUrl: 'https://your-api-base-url.com');
+  return HttpService(ref, baseUrl: 'https://api-base-url.com');
 });

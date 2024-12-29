@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class ScaledTap extends StatefulWidget {
   final Widget child;
-  final GestureTapCallback? onTap;
-  // final Function(TapDownDetails)? onTapDown;
-  // final Function(TapUpDetails)? onTapUp;
+  final Function()? onTap;
+  // final GestureTapCallback? onTap;
 
   const ScaledTap({
     super.key,

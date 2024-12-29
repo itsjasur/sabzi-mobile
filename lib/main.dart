@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app.dart';
+import 'package:flutter_sabzi/app/auth/signin_page.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_page.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
@@ -49,7 +50,8 @@ class MyApp extends ConsumerWidget {
       // home: const MyAreaSettingsPage(),
       // home: ScreenPointDemo(),
       // home: const MainTestPage(),
-      home: const AddListingPage(),
+      // home: const AddListingPage(),
+      home: const SigninPage(),
       // home: const GalleryView(),
     );
   }
