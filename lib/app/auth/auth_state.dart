@@ -6,7 +6,7 @@ class AuthState {
   final String? error;
   final String? verificationToken;
   final bool isNewUser;
-  // final bool isCodeRequested;
+  final bool isCodeRequested;
 
   // final Map<String, dynamic>? userData;
   final TextEditingController phoneNumberController;
@@ -18,7 +18,7 @@ class AuthState {
     required this.isNewUser,
     this.error,
     this.verificationToken,
-    // required this.isCodeRequested,
+    required this.isCodeRequested,
     // this.userData,
     required this.phoneNumberController,
     required this.verCodeController,
@@ -28,7 +28,7 @@ class AuthState {
     bool? isLoggedIn,
     bool? isLoading,
     bool? isNewUser,
-    // bool? isCodeRequested,
+    bool? isCodeRequested,
     String? error,
     String? verificationToken,
     // Map<String, dynamic>? userData,
@@ -41,7 +41,7 @@ class AuthState {
       error: error ?? this.error,
       verificationToken: verificationToken ?? this.verificationToken,
       // userData: userData ?? this.userData,
-      // isCodeRequested: isCodeRequested ?? this.isCodeRequested,
+      isCodeRequested: isCodeRequested ?? this.isCodeRequested,
       phoneNumberController: phoneNumberController ?? this.phoneNumberController,
       verCodeController: verCodeController ?? this.verCodeController,
       isNewUser: isNewUser ?? this.isNewUser,

@@ -22,6 +22,10 @@ class _SigningPageState extends ConsumerState<SigninPage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pageFocusNode.requestFocus();
+    });
   }
 
   @override
@@ -32,17 +36,17 @@ class _SigningPageState extends ConsumerState<SigninPage> {
   }
 
   Timer? _timer;
-  int _seconds = 300; // 5 mins to enter code
-  bool _codeRequested = false;
+  late int _seconds = 120; // 5 mins to enter code
 
   void _startTimer() {
     if (_timer != null) _timer!.cancel();
-    _seconds = 300;
+    _seconds = 120;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds <= 0) {
         _timer?.cancel();
-        _codeRequested = false;
+        // _codeRequested = false;
+        ref.read(authProvider.notifier).changeIsCodeRequested(false);
       } else {
         _seconds--;
       }
@@ -81,6 +85,7 @@ class _SigningPageState extends ConsumerState<SigninPage> {
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormField(
+                    focusNode: !ref.watch(authProvider).isCodeRequested ? _pageFocusNode : null,
                     controller: ref.watch(authProvider).phoneNumberController,
                     keyboardType: TextInputType.number,
                     hintText: '00 000 0000',
@@ -105,8 +110,9 @@ class _SigningPageState extends ConsumerState<SigninPage> {
                       ),
                     ),
                   ),
-                  if (_codeRequested)
+                  if (ref.watch(authProvider).isCodeRequested)
                     CustomTextFormField(
+                      focusNode: ref.watch(authProvider).isCodeRequested ? _pageFocusNode : null,
                       controller: ref.watch(authProvider).verCodeController,
                       keyboardType: TextInputType.number,
                       hintText: '000000',
@@ -133,15 +139,19 @@ class _SigningPageState extends ConsumerState<SigninPage> {
                         ),
                       ),
                     ),
-                  if (!_codeRequested && ref.watch(authProvider).phoneNumberController.text.length >= 9)
+                  if (!ref.watch(authProvider).isCodeRequested && ref.watch(authProvider).phoneNumberController.text.length >= 9)
                     PrimaryButton(
                       onTap: ref.watch(authProvider).isLoading
                           ? null
                           : () async {
-                              // await ref.read(authProvider.notifier).getCode();
-                              _codeRequested = true;
+                              await ref.read(authProvider.notifier).getCode();
                               setState(() {});
                               _startTimer();
+
+                              // change focus once code is sent
+                              _pageFocusNode.unfocus();
+                              await Future.delayed(const Duration(milliseconds: 200));
+                              _pageFocusNode.requestFocus();
                             },
                       child: ref.watch(authProvider).isLoading
                           ? const SizedBox(
@@ -154,7 +164,7 @@ class _SigningPageState extends ConsumerState<SigninPage> {
                             )
                           : const Text('Request code'),
                     ),
-                  if (_codeRequested && ref.watch(authProvider).verCodeController.text.length >= 6)
+                  if (ref.watch(authProvider).isCodeRequested && ref.watch(authProvider).verCodeController.text.length >= 6)
                     PrimaryButton(
                       onTap: ref.watch(authProvider).isLoading
                           ? null

@@ -37,26 +37,38 @@ class HttpService {
   }
 
   Future<dynamic> _handleResponse(http.Response response) async {
-    final statusCode = response.statusCode;
-    final body = response.body;
+    try {
+      final statusCode = response.statusCode;
+      final body = response.body;
 
-    // Check for authentication errors
-    if (statusCode == 401 || statusCode == 403) {
-      ref.read(authProvider.notifier).logout();
-      throw CustomHttpException('Authentication failed', statusCode: statusCode);
+      // Check for authentication errors
+      if (statusCode == 401 || statusCode == 403) {
+        ref.read(authProvider.notifier).logout();
+        throw CustomHttpException('Authentication failed', statusCode: statusCode);
+      }
+
+      // Handle successful responses
+      if (statusCode >= 200 && statusCode < 300) {
+        if (body.isEmpty) return null;
+        return json.decode(body);
+      }
+
+      // Handle other errors
+      String errorMessage;
+      try {
+        final errorBody = json.decode(body);
+        errorMessage = errorBody["detail"] ?? errorBody["message"] ?? "Unexpected error";
+      } catch (_) {
+        errorMessage = body.isNotEmpty ? body : "Unexpected error";
+      }
+
+      // throw Exception(body);
+      throw CustomHttpException(errorMessage, statusCode: statusCode);
+    } on FormatException {
+      throw CustomHttpException("Invalid response format");
+    } catch (e) {
+      rethrow;
     }
-
-    // Handle successful responses
-    if (statusCode >= 200 && statusCode < 300) {
-      if (body.isEmpty) return null;
-      return json.decode(body);
-    }
-
-    // Handle other errors
-    throw CustomHttpException(
-      'Request failed with status: $statusCode',
-      statusCode: statusCode,
-    );
   }
 
   Future<dynamic> get(String endpoint, {Map<String, String>? headers}) async {
@@ -67,7 +79,9 @@ class HttpService {
       );
       return _handleResponse(response);
     } catch (e) {
-      throw CustomHttpException(e.toString());
+      rethrow;
+      // print(e);
+      // throw CustomHttpException(e.toString());
     }
   }
 
@@ -80,11 +94,13 @@ class HttpService {
       );
       return _handleResponse(response);
     } catch (e) {
-      throw CustomHttpException(e.toString());
+      rethrow;
+      // print(e);
+      // throw CustomHttpException(e.toString());
     }
   }
 }
 
 final httpServiceProvider = Provider((ref) {
-  return HttpService(ref, baseUrl: 'https://api-base-url.com');
+  return HttpService(ref, baseUrl: 'http://127.0.0.1:8000/api');
 });

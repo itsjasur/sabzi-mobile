@@ -7,10 +7,8 @@ class AuthRepository {
 
   AuthRepository(this._httpService);
 
-  Future<Map<String, String>> getCode(String phoneNumber) async {
+  Future<Map<String, dynamic>> getCode(String phoneNumber) async {
     final response = await _httpService.post('/auth/send-code', body: {'phone_number': phoneNumber});
-
-    //  "verification_token": verification_token,
     return response;
   }
 
