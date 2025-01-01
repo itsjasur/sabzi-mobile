@@ -40,7 +40,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true, // Makes it full-screen if needed
-                  backgroundColor: Colors.white,
                   useSafeArea: true,
                   isDismissible: false,
                   barrierColor: Theme.of(context).colorScheme.surface,

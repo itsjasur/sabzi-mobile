@@ -33,7 +33,7 @@ ThemeData lightMode = ThemeData(
   appBarTheme: _appBarTheme,
   colorScheme: ColorScheme.light(
     surface: Colors.white, //appbar background, scaffold background etc...
-    primary: Colors.orange,
+    primary: Colors.orange.shade700,
     onPrimary: Colors.white,
     secondary: Colors.grey.shade500,
     tertiary: Colors.red,
@@ -48,7 +48,7 @@ ThemeData darkMode = ThemeData(
   bottomSheetTheme: _bottomSheetTheme,
   colorScheme: ColorScheme.dark(
     surface: Colors.grey.shade900, //appbar background, scaffold background etc...
-    primary: Colors.orange,
+    primary: Colors.orange.shade700,
     onPrimary: Colors.white,
     secondary: Colors.grey.shade700,
     tertiary: Colors.red,

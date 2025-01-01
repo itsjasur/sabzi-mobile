@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_sabzi/core/widgets/custom_bottom_sheet_drag.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -86,21 +87,7 @@ class FolderSelectModal extends StatelessWidget {
                 },
               ),
               // custom drag handle icon
-              Container(
-                color: Theme.of(context).colorScheme.surface,
-                width: double.infinity,
-                height: 35,
-                child: Align(
-                  child: Container(
-                    width: 50,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
+              const CustomBottomSheetDrag()
             ],
           ),
         );

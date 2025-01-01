@@ -9,6 +9,7 @@ class PrimaryButton extends StatelessWidget {
   final double? height;
   final Color? backgroundColor;
   final double? elevation;
+  final bool isLoading;
 
   const PrimaryButton({
     super.key,
@@ -18,6 +19,7 @@ class PrimaryButton extends StatelessWidget {
     this.backgroundColor,
     this.elevation,
     this.height = 50,
+    this.isLoading = false,
   });
 
   @override
@@ -35,13 +37,21 @@ class PrimaryButton extends StatelessWidget {
           type: MaterialType.button,
           borderRadius: BorderRadius.circular(borderRadius),
           elevation: elevation ?? 1,
-          color: onTap == null ? Theme.of(context).colorScheme.secondary : backgroundColor ?? Theme.of(context).colorScheme.primary,
+          color: isLoading ? Theme.of(context).colorScheme.secondary : backgroundColor ?? Theme.of(context).colorScheme.primary,
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
             child: Align(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: child,
+                child: isLoading
+                    ? Transform.scale(
+                        scale: 0.7,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                    : child,
               ),
             ),
           ),

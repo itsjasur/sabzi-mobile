@@ -4,7 +4,7 @@ import 'package:flutter_sabzi/core/formatters/currency_formatter.dart';
 import 'package:flutter_sabzi/core/widgets/back_button.dart';
 import 'package:flutter_sabzi/core/widgets/custom_text_form_field.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
-import 'package:flutter_sabzi/core/widgets/radio_widget.dart';
+import 'package:flutter_sabzi/core/widgets/custom_radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/images_row.dart';

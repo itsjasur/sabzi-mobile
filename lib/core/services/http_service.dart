@@ -43,7 +43,8 @@ class HttpService {
 
       // Check for authentication errors
       if (statusCode == 401 || statusCode == 403) {
-        ref.read(authProvider.notifier).logout();
+        // TODO
+        ref.read(authProvider.notifier).unAuthenticated();
         throw CustomHttpException('Authentication failed', statusCode: statusCode);
       }
 

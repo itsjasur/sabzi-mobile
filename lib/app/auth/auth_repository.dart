@@ -7,6 +7,11 @@ class AuthRepository {
 
   AuthRepository(this._httpService);
 
+  Future<Map<String, dynamic>> checkNewUser(String phoneNumber) async {
+    final response = await _httpService.post('/auth/check-new-user', body: {'phone_number': phoneNumber});
+    return response;
+  }
+
   Future<Map<String, dynamic>> getCode(String phoneNumber) async {
     final response = await _httpService.post('/auth/send-code', body: {'phone_number': phoneNumber});
     return response;
