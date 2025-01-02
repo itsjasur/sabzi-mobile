@@ -52,8 +52,8 @@ class MyApp extends ConsumerWidget {
       // home: ScreenPointDemo(),
       // home: const MainTestPage(),
       // home: const AddListingPage(),
-      // home: const WelcomePage(),
-      home: const SigninPage(),
+      home: const WelcomePage(),
+      // home: const SigninPage(isNewUser: true),
       // home: const GalleryView(),
     );
   }

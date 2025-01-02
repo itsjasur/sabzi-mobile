@@ -2,18 +2,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/signin/check_terms_widget.dart';
 import 'package:flutter_sabzi/app/auth/signin/signin_provider.dart';
 import 'package:flutter_sabzi/app/auth/signin/terms_modal_content.dart';
 import 'package:flutter_sabzi/core/formatters/phone_number_formatters.dart';
-import 'package:flutter_sabzi/core/widgets/custom_bottom_sheet_drag.dart';
-import 'package:flutter_sabzi/core/widgets/custom_checkbox.dart';
 import 'package:flutter_sabzi/core/widgets/custom_text_form_field.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
-import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 
 class SigninPage extends ConsumerStatefulWidget {
-  const SigninPage({super.key});
+  final bool isNewUser;
+  const SigninPage({super.key, this.isNewUser = false});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SigninPageState();
@@ -30,9 +27,27 @@ class _SigninPageState extends ConsumerState<SigninPage> {
     super.initState();
 
     // request initial focus after frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       _phoneFocusNode.requestFocus();
+
+      if (widget.isNewUser) {
+        await Future.delayed(const Duration(milliseconds: 400));
+        await _showTermsModal();
+        if (!ref.watch(signinProvider).isUserTermsAgreeChecked || ref.watch(signinProvider).isPrivacyAgreeChecked) {
+          if (mounted) Navigator.pop(context);
+        }
+      }
     });
+  }
+
+  Future<void> _showTermsModal() async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      isDismissible: true,
+      builder: (BuildContext context) => const TermsModalContent(),
+    );
   }
 
   @override
@@ -74,7 +89,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(signinProvider);
     final provider = ref.read(signinProvider.notifier);
-
     double textSize = 17;
     FontWeight fontWeight = FontWeight.w500;
 
@@ -179,27 +193,22 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                     PrimaryButton(
                       isLoading: state.isLoading,
                       onTap: () async {
-                        bool? isNewUser = await provider.checkNewUser();
-                        if (isNewUser == null) return;
+                        // bool? isNewUser = await provider.checkNewUser();
+                        bool isNewAccount = await provider.checkNewUser();
                         _phoneFocusNode.unfocus();
-                        await Future.delayed(const Duration(milliseconds: 500));
-                        // terms and privacy checks
-                        if (isNewUser && context.mounted) {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            isDismissible: true,
-                            builder: (BuildContext context) => const TermsModalContent(),
-                          );
 
+                        if (isNewAccount) {
+                          await _showTermsModal();
                           provider.updateLoadingState(false);
+                        } else {
+                          provider.updateLoadingState(false);
+                          await Future.delayed(const Duration(milliseconds: 300));
+                          // terms and privacy checks
+                          _phoneFocusNode.unfocus();
+                          provider.requestCode();
+                          _startTimer();
+                          _codeFocusNode.requestFocus();
                         }
-
-                        // _phoneFocusNode.unfocus();
-                        // provider.requestCode();
-                        // _startTimer();
-                        // _codeFocusNode.requestFocus();
                       },
                       child: const Text('Request code'),
                     ),

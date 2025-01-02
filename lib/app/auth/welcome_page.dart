@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sabzi/app/auth/signin/signin_page.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 
@@ -38,12 +39,16 @@ class WelcomePage extends StatelessWidget {
               ),
               const Spacer(),
               PrimaryButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SigninPage(isNewUser: true)));
+                },
                 child: const Text('Get started'),
               ),
               const SizedBox(height: 15),
               ScaledTap(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SigninPage()));
+                },
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(

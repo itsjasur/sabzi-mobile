@@ -29,41 +29,39 @@ class CustomCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaledTap(
       onTap: () => onChanged(!value), // toggles the current value
-      child: IntrinsicWidth(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: size,
-              width: size,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                color: value ? Theme.of(context).colorScheme.primary : null,
-                border: value
-                    ? null
-                    : Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-              ),
-              child: value
-                  ? Transform.scale(
-                      scale: 0.8,
-                      child: Center(
-                        child: Icon(
-                          Icons.check,
-                          size: size,
-                          color: Colors.white,
-                          weight: 800,
-                        ),
-                      ),
-                    )
-                  : null,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: size,
+            width: size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadius),
+              color: value ? Theme.of(context).colorScheme.primary : null,
+              border: value
+                  ? null
+                  : Border.all(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
             ),
-            SizedBox(width: spacing),
-            child,
-          ],
-        ),
+            child: value
+                ? Transform.scale(
+                    scale: 0.8,
+                    child: Center(
+                      child: Icon(
+                        Icons.check,
+                        size: size,
+                        color: Colors.white,
+                        weight: 800,
+                      ),
+                    ),
+                  )
+                : null,
+          ),
+          SizedBox(width: spacing),
+          child,
+        ],
       ),
     );
   }

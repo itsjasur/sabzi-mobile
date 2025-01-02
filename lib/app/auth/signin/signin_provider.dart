@@ -18,7 +18,7 @@ class SigninProvider extends Notifier<SigninState> {
       _timer?.cancel();
     });
 
-    final phoneController = TextEditingController(text: '12312312');
+    final phoneController = TextEditingController(text: '999999999');
     final codeController = TextEditingController();
 
     return SigninState(phoneController: phoneController, codeController: codeController);
@@ -28,13 +28,12 @@ class SigninProvider extends Notifier<SigninState> {
   void isPrivacyAgreeChecked(bool value) => state = state.copyWith(isPrivacyAgreeChecked: value);
   void isMarketingAgreeChecked(bool value) => state = state.copyWith(isMarketingAgreeChecked: value);
 
-  Future<bool?> checkNewUser() async {
-    if (state.isLoading) return null;
+// this updates if the user account is new
+  Future<bool> checkNewUser() async {
     state = state.copyWith(isLoading: true, error: null);
-
     final response = await ref.read(authRepositoryProvider).checkNewUser(state.phoneController.text);
     final isNewUser = response['is_new_user'] ?? true;
-    print('isnewuser ${isNewUser}');
+
     return isNewUser;
   }
 
