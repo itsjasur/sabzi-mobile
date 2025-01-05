@@ -11,6 +11,7 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLength;
   final int? hintMaxLines;
   final bool expands;
+  final bool? enabled;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
@@ -38,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
     this.textSize = 15,
     this.fontWeight,
     this.maxLength,
+    this.enabled,
   });
 
   @override
@@ -47,6 +49,7 @@ class CustomTextFormField extends StatelessWidget {
         TextField(
           focusNode: focusNode,
           controller: controller,
+          enabled: enabled,
           onChanged: onChanged,
           style: TextStyle(
             fontSize: textSize,

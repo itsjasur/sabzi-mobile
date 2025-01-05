@@ -44,28 +44,28 @@ enum BottomNavs {
         return BottomNavigationModel(
           page: const HomePage(),
           label: 'Home',
-          icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
+          icon: PhosphorIcons.house(PhosphorIconsStyle.fill),
           activeIcon: PhosphorIcons.house(PhosphorIconsStyle.fill),
         );
       case BottomNavs.search:
         return BottomNavigationModel(
           page: Container(color: Colors.pink, height: double.infinity, width: double.infinity),
           label: 'Search',
-          icon: PhosphorIcons.magnifyingGlass(PhosphorIconsStyle.regular),
+          icon: PhosphorIcons.magnifyingGlass(PhosphorIconsStyle.fill),
           activeIcon: PhosphorIcons.magnifyingGlass(PhosphorIconsStyle.fill),
         );
       case BottomNavs.chat:
         return BottomNavigationModel(
           page: Container(color: Colors.purple, height: double.infinity, width: double.infinity),
           label: 'Chat',
-          icon: PhosphorIcons.chatsCircle(PhosphorIconsStyle.regular),
-          activeIcon: PhosphorIcons.chatsCircle(PhosphorIconsStyle.fill),
+          icon: PhosphorIcons.chatTeardropDots(PhosphorIconsStyle.fill),
+          activeIcon: PhosphorIcons.chatTeardropDots(PhosphorIconsStyle.fill),
         );
       case BottomNavs.profile:
         return BottomNavigationModel(
           page: Container(color: Colors.blueAccent, height: double.infinity, width: double.infinity),
           label: 'Profile',
-          icon: PhosphorIcons.user(PhosphorIconsStyle.regular),
+          icon: PhosphorIcons.user(PhosphorIconsStyle.fill),
           activeIcon: PhosphorIcons.user(PhosphorIconsStyle.fill),
         );
     }

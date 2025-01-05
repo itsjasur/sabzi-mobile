@@ -31,7 +31,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
     // request initial focus after frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(signinProvider.notifier).resetState();
-
       _phoneFocusNode.requestFocus();
 
       if (widget.isNewUser) {
@@ -64,7 +63,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
   void _startTimer() {
     _timer?.cancel();
-    _timerSeconds = 30;
+    _timerSeconds = 300;
 
     _timer = Timer.periodic(
       const Duration(seconds: 1),
@@ -120,6 +119,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                     controller: state.phoneController,
                     keyboardType: TextInputType.number,
                     hintText: '00 000 0000',
+                    enabled: !state.verificationCodeSent,
                     inputFormatters: [UzbNumberTextFormatter()],
                     textSize: textSize,
                     fontWeight: fontWeight,

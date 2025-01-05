@@ -89,16 +89,14 @@ class SigninProvider extends Notifier<SigninState> {
   Future<void> verifyCode() async {
     if (state.isLoading) return;
     state = state.copyWith(isLoading: true, error: null);
-
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     try {
-      final response = await ref.read(authRepositoryProvider).verifyCode(state.codeController.text, state.verificationToken!);
+      await ref.read(authRepositoryProvider).verifyCode(state.codeController.text, state.verificationToken!);
       state = state.copyWith(isLoading: false, error: null);
-
-      print('Before auth update: ${ref.read(authProvider).isAuthenticated}');
+      // print('Before auth update: ${ref.read(authProvider).isAuthenticated}');
       ref.read(authProvider.notifier).authenticated();
-      print('After auth update: ${ref.read(authProvider).isAuthenticated}');
+      // print('After auth update: ${ref.read(authProvider).isAuthenticated}');
     } catch (e) {
       if (e is CustomHttpException) {
         state = state.copyWith(

@@ -6,7 +6,7 @@ import 'package:flutter_sabzi/app/auth/auth_state.dart';
 class AuthProvider extends Notifier<AuthState> {
   @override
   AuthState build() {
-    return AuthState(isAuthenticated: false);
+    return AuthState(isAuthenticated: true);
   }
 
   void authenticated() {

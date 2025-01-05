@@ -5,8 +5,8 @@ class HomePageState {
   final bool isScrolled;
   // final bool hasScrollReachedEnd;
 
-  final List<CategoryModel> categories;
-  final CategoryModel? selectedCategory;
+  // final List<CategoryModel> categories;
+  // final CategoryModel? selectedCategory;
 
   final List<ItemModel> items;
   final int currentItemsPageNumber;
@@ -17,8 +17,8 @@ class HomePageState {
     this.isScrolled = false,
     // this.hasScrollReachedEnd = false,
     //
-    required this.categories,
-    this.selectedCategory,
+    // required this.categories,
+    // this.selectedCategory,
     //
     required this.items,
     required this.currentItemsPageNumber,
@@ -30,8 +30,8 @@ class HomePageState {
     bool? isScrolled,
     bool? hasScrollReachedEnd,
     //
-    List<CategoryModel>? categories,
-    CategoryModel? selectedCategory,
+    // List<CategoryModel>? categories,
+    // CategoryModel? selectedCategory,
     //
     List<ItemModel>? items,
     int? currentItemsPageNumber,
@@ -42,8 +42,8 @@ class HomePageState {
       isScrolled: isScrolled ?? this.isScrolled,
       // hasScrollReachedEnd: hasScrollReachedEnd ?? this.hasScrollReachedEnd,
       //
-      categories: categories ?? this.categories,
-      selectedCategory: selectedCategory ?? this.selectedCategory,
+      // categories: categories ?? this.categories,
+      // selectedCategory: selectedCategory ?? this.selectedCategory,
       //
       items: items ?? this.items,
       currentItemsPageNumber: currentItemsPageNumber ?? this.currentItemsPageNumber,

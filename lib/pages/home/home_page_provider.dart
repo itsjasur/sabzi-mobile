@@ -20,26 +20,26 @@ class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePage
     // calls _fetchCategories & _fetchNextItems in the next frame update
     Future.microtask(() async {
       ref.read(appProvider.notifier).setLoading(true);
-      await _fetchCategories();
+      // await _fetchCategories();
       await _fetchNextItems();
       ref.read(appProvider.notifier).setLoading(false);
     });
 
-    return HomePageState(categories: [], items: [], currentItemsPageNumber: 1, hasMoreItems: true);
+    return HomePageState(items: [], currentItemsPageNumber: 1, hasMoreItems: true);
   }
 
   // ApiService get _apiService => ref.watch(apiServiceProvider);
-  Future<void> _fetchCategories() async {
-    await Future.delayed(const Duration(microseconds: 100));
+  // Future<void> _fetchCategories() async {
+  //   await Future.delayed(const Duration(microseconds: 100));
 
-    try {
-      state = state.copyWith(categories: categoriesList, selectedCategory: categoriesList[0]);
+  //   try {
+  //     state = state.copyWith(categories: categoriesList, selectedCategory: categoriesList[0]);
 
-      // FETCH ITEMS ARE CALLED AFTER CATEGORIES with categoryId
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     // FETCH ITEMS ARE CALLED AFTER CATEGORIES with categoryId
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<void> refreshItems() async {
     state = state.copyWith(currentItemsPageNumber: 1, hasMoreItems: true);
@@ -90,13 +90,13 @@ class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePage
     // }
   }
 
-  void setCategories(List<CategoryModel> categories) {
-    state = state.copyWith(categories: categories);
-  }
+  // void setCategories(List<CategoryModel> categories) {
+  //   state = state.copyWith(categories: categories);
+  // }
 
-  void selectCategory(CategoryModel category) {
-    state = state.copyWith(selectedCategory: category);
-  }
+  // void selectCategory(CategoryModel category) {
+  //   state = state.copyWith(selectedCategory: category);
+  // }
 }
 
 final homePageProvider = NotifierProvider<HomePageProvider, HomePageState>(() {

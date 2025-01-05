@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/core/models/item_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
@@ -23,8 +22,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     final homeNotifier = ref.read(homePageProvider.notifier);
     // watchers for specific parts of the state
     final isScrolled = ref.watch(homePageProvider.select((state) => state.isScrolled));
-    final categories = ref.watch(homePageProvider.select((state) => state.categories));
-    final selectedCategory = ref.watch(homePageProvider.select((state) => state.selectedCategory));
+    // final categories = ref.watch(homePageProvider.select((state) => state.categories));
+    // final selectedCategory = ref.watch(homePageProvider.select((state) => state.selectedCategory));
 
     // items
     final items = ref.watch(homePageProvider.select((state) => state.items));
@@ -50,13 +49,35 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                 );
               },
-              child: const Text('My radius'),
+              child: Row(
+                spacing: 5,
+                children: [
+                  const Text(
+                    'My radius',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Icon(
+                    PhosphorIcons.caretDown(PhosphorIconsStyle.bold),
+                    size: 16,
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             const SizedBox(width: 20),
             ScaledTap(
+              onTap: () {},
+              child: Icon(
+                PhosphorIcons.list(PhosphorIconsStyle.bold),
+              ),
+            ),
+            const SizedBox(width: 15),
+            ScaledTap(
               onTap: ref.read(themeProvider.notifier).toggleTheme,
-              child: Icon(ref.watch(themeProvider) == ThemeMode.light ? PhosphorIconsRegular.moon : PhosphorIconsBold.sun),
+              child: Icon(ref.watch(themeProvider) == ThemeMode.light ? PhosphorIconsBold.moon : PhosphorIconsBold.sun),
             ),
             const SizedBox(width: 15),
           ],
@@ -68,39 +89,39 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: CustomScrollView(
                 controller: homeNotifier.scrollController,
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 15),
-                          ...List.generate(
-                            categories.length,
-                            (categoryIndex) {
-                              CategoryModel category = categories[categoryIndex];
+                  // SliverToBoxAdapter(
+                  //   child: SingleChildScrollView(
+                  //     scrollDirection: Axis.horizontal,
+                  //     child: Row(
+                  //       children: [
+                  //         const SizedBox(width: 15),
+                  //         ...List.generate(
+                  //           categories.length,
+                  //           (categoryIndex) {
+                  //             CategoryModel category = categories[categoryIndex];
 
-                              return ScaledTap(
-                                onTap: () => homeNotifier.selectCategory(category),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  margin: const EdgeInsets.only(right: 10),
-                                  constraints: const BoxConstraints(minWidth: 50, minHeight: 35),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: Theme.of(context).colorScheme.tertiary,
-                                    border: selectedCategory?.code == category.code ? Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)) : null,
-                                  ),
-                                  child: Text(category.name),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 20),
-                        ],
-                      ),
-                    ),
-                  ),
+                  //             return ScaledTap(
+                  //               onTap: () => homeNotifier.selectCategory(category),
+                  //               child: Container(
+                  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
+                  //                 margin: const EdgeInsets.only(right: 10),
+                  //                 constraints: const BoxConstraints(minWidth: 50, minHeight: 35),
+                  //                 alignment: Alignment.center,
+                  //                 decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(6),
+                  //                   color: Theme.of(context).colorScheme.tertiary,
+                  //                   border: selectedCategory?.code == category.code ? Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)) : null,
+                  //                 ),
+                  //                 child: Text(category.name),
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //         const SizedBox(width: 20),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   const SliverToBoxAdapter(child: SizedBox(height: 15)),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -115,7 +136,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 height: 20,
                                 indent: 20,
                                 endIndent: 20,
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: Theme.of(context).colorScheme.secondary.withAlpha(60),
                               ),
                           ],
                         );

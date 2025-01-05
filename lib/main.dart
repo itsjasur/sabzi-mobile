@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app.dart';
 import 'package:flutter_sabzi/app/auth/signin/signin_page.dart';
 import 'package:flutter_sabzi/app/auth/welcome_page.dart';
+import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
+import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_page.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
+import 'package:flutter_sabzi/pages/radius/my_radius_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:flutter_sabzi/theme/app_theme.dart';
 import 'package:yandex_maps_mapkit_lite/init.dart' as inityandex;
@@ -47,9 +50,10 @@ class MyApp extends ConsumerWidget {
       theme: lightMode,
       darkTheme: darkMode,
 
-      home: const App(),
+      // home: const App(),
       // home: const MyAreaSettingsPage(),
-      // home: ScreenPointDemo(),
+      // home: const MyRadiusMapView(cordinates: LocationCordinates(latitude: 41.302542, longitude: 69.238718)),
+      home: MyRadiusPage(),
       // home: const MainTestPage(),
       // home: const AddListingPage(),
       // home: const WelcomePage(),
