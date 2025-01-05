@@ -41,6 +41,7 @@ class WelcomePage extends StatelessWidget {
               PrimaryButton(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SigninPage(isNewUser: true)));
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SigninPage(isNewUser: true)));
                 },
                 child: const Text('Get started'),
               ),
@@ -48,6 +49,7 @@ class WelcomePage extends StatelessWidget {
               ScaledTap(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SigninPage()));
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SigninPage()));
                 },
                 child: RichText(
                   textAlign: TextAlign.center,

@@ -31,7 +31,6 @@ class SigninState {
     bool? verificationCodeSent,
     String? error,
     String? verificationToken,
-    int? timerSeconds,
     bool? isUserTermsAgreeChecked,
     bool? isPrivacyAgreeChecked,
     bool? isMarketingAgreeChecked,
@@ -42,7 +41,7 @@ class SigninState {
       isLoading: isLoading ?? this.isLoading,
       verificationCodeSent: verificationCodeSent ?? this.verificationCodeSent,
       // error: error ?? this.error,
-      error: error == null ? null : (error ?? this.error),
+      error: error == null ? null : (error),
       verificationToken: verificationToken ?? this.verificationToken,
 
       // isNewAccount: isNewAccount ?? this.isNewAccount,
@@ -52,5 +51,5 @@ class SigninState {
     );
   }
 
-  bool get allRequiredTermsChecked => isUserTermsAgreeChecked && isPrivacyAgreeChecked && isMarketingAgreeChecked;
+  bool get allRequiredTermsChecked => isUserTermsAgreeChecked && isPrivacyAgreeChecked;
 }

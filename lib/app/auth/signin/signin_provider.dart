@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/auth/auth_provider.dart';
 import 'package:flutter_sabzi/app/auth/auth_repository.dart';
+import 'package:flutter_sabzi/app/auth/auth_state.dart';
 import 'package:flutter_sabzi/app/auth/signin/signin_state.dart';
 import 'package:flutter_sabzi/core/services/http_service.dart';
 
@@ -18,7 +19,7 @@ class SigninProvider extends Notifier<SigninState> {
       _timer?.cancel();
     });
 
-    final phoneController = TextEditingController(text: '999999999');
+    final phoneController = TextEditingController();
     final codeController = TextEditingController();
 
     return SigninState(phoneController: phoneController, codeController: codeController);
@@ -34,6 +35,8 @@ class SigninProvider extends Notifier<SigninState> {
     final response = await ref.read(authRepositoryProvider).checkNewUser(state.phoneController.text);
     final isNewUser = response['is_new_user'] ?? true;
 
+    print("is new user: $isNewUser");
+
     return isNewUser;
   }
 
@@ -41,13 +44,32 @@ class SigninProvider extends Notifier<SigninState> {
     state = state.copyWith(isLoading: false);
   }
 
-  Future<void> requestCode() async {
-    if (state.isLoading) return;
+  void resetSentState() {
+    state = state.copyWith(
+      verificationCodeSent: false,
+      isLoading: false,
+    );
+  }
 
+  void resetState() {
+    state.codeController.clear();
+    state.phoneController.clear();
+    state = state.copyWith(
+      verificationCodeSent: false,
+      isLoading: false,
+      isUserTermsAgreeChecked: false,
+      isMarketingAgreeChecked: false,
+      isPrivacyAgreeChecked: false,
+      error: null,
+      verificationToken: null,
+    );
+  }
+
+  Future<void> requestCode() async {
     state.codeController.clear();
     state = state.copyWith(isLoading: true, error: null);
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     try {
       final response = await ref.read(authRepositoryProvider).getCode(state.phoneController.text);
@@ -72,9 +94,11 @@ class SigninProvider extends Notifier<SigninState> {
 
     try {
       final response = await ref.read(authRepositoryProvider).verifyCode(state.codeController.text, state.verificationToken!);
-      // state = state.copyWith(isLoading: false, error: null);
-      // final isNewUser = response["is_new_user"] ?? true;
+      state = state.copyWith(isLoading: false, error: null);
+
+      print('Before auth update: ${ref.read(authProvider).isAuthenticated}');
       ref.read(authProvider.notifier).authenticated();
+      print('After auth update: ${ref.read(authProvider).isAuthenticated}');
     } catch (e) {
       if (e is CustomHttpException) {
         state = state.copyWith(

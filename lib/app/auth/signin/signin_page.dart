@@ -2,6 +2,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sabzi/app/app.dart';
+import 'package:flutter_sabzi/app/auth/auth_provider.dart';
 import 'package:flutter_sabzi/app/auth/signin/signin_provider.dart';
 import 'package:flutter_sabzi/app/auth/signin/terms_modal_content.dart';
 import 'package:flutter_sabzi/core/formatters/phone_number_formatters.dart';
@@ -28,12 +30,14 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
     // request initial focus after frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(signinProvider.notifier).resetState();
+
       _phoneFocusNode.requestFocus();
 
       if (widget.isNewUser) {
         await Future.delayed(const Duration(milliseconds: 400));
         await _showTermsModal();
-        if (!ref.watch(signinProvider).isUserTermsAgreeChecked || ref.watch(signinProvider).isPrivacyAgreeChecked) {
+        if (!ref.watch(signinProvider).allRequiredTermsChecked) {
           if (mounted) Navigator.pop(context);
         }
       }
@@ -60,13 +64,14 @@ class _SigninPageState extends ConsumerState<SigninPage> {
 
   void _startTimer() {
     _timer?.cancel();
-    _timerSeconds = 120;
+    _timerSeconds = 30;
 
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
         if (_timerSeconds == 0) {
           timer.cancel();
+          ref.read(signinProvider.notifier).resetSentState();
         } else {
           _timerSeconds--;
         }
@@ -74,10 +79,6 @@ class _SigninPageState extends ConsumerState<SigninPage> {
       },
     );
   }
-
-  bool _requiredTerm1 = false;
-  bool _requiredTerm2 = false;
-  bool _requiredTerm3 = false;
 
   String get _timeDisplay {
     int minutes = _timerSeconds ~/ 60;
@@ -197,18 +198,18 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         bool isNewAccount = await provider.checkNewUser();
                         _phoneFocusNode.unfocus();
 
-                        if (isNewAccount) {
-                          await _showTermsModal();
+                        if (isNewAccount && !ref.watch(signinProvider).allRequiredTermsChecked) await _showTermsModal();
+
+                        if (isNewAccount && !ref.watch(signinProvider).allRequiredTermsChecked) {
                           provider.updateLoadingState(false);
-                        } else {
-                          provider.updateLoadingState(false);
-                          await Future.delayed(const Duration(milliseconds: 300));
-                          // terms and privacy checks
-                          _phoneFocusNode.unfocus();
-                          provider.requestCode();
-                          _startTimer();
-                          _codeFocusNode.requestFocus();
+                          return;
                         }
+
+                        await Future.delayed(const Duration(milliseconds: 300));
+                        _phoneFocusNode.unfocus();
+                        provider.requestCode();
+                        _startTimer();
+                        _codeFocusNode.requestFocus();
                       },
                       child: const Text('Request code'),
                     ),
@@ -217,7 +218,10 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                       padding: const EdgeInsets.only(top: 10),
                       child: PrimaryButton(
                         isLoading: state.isLoading,
-                        onTap: provider.verifyCode,
+                        onTap: () {
+                          _codeFocusNode.unfocus();
+                          provider.verifyCode();
+                        },
                         child: const Text('Confirm'),
                       ),
                     ),

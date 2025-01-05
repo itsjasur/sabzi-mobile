@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/signin/check_terms_widget.dart';
 import 'package:flutter_sabzi/app/auth/signin/signin_provider.dart';
 import 'package:flutter_sabzi/core/widgets/custom_bottom_sheet_drag.dart';
 import 'package:flutter_sabzi/core/widgets/custom_checkbox.dart';
+import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class TermsModalContent extends ConsumerWidget {
   const TermsModalContent({super.key});
@@ -25,79 +26,65 @@ class TermsModalContent extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
+                spacing: 20,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
                   const Text(
                     'Consent is required to use Sabzi',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 20),
                   CustomCheckbox(
-                    borderRadius: 20,
-                    size: 22,
-                    value: state.allRequiredTermsChecked,
+                    value: state.isUserTermsAgreeChecked,
                     onChanged: (value) {
                       provider.isUserTermsAgreeChecked(value!);
-                      provider.isPrivacyAgreeChecked(value);
-                      provider.isMarketingAgreeChecked(value);
                     },
-                    child: const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        spacing: 10,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              'Consent to all',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: Text(
-                              'Includes collection and use of the minimum personal information essential for using the service, collection and use of location information, consent to receive advertising information (optional) and consent to receive marketing information (optional).',
-                              style: TextStyle(fontSize: 13),
-                            ),
-                          ),
-                        ],
+                    title: "I agree to user terms",
+                    borderRadius: 20,
+                    trailingIcon: ScaledTap(
+                      onTap: () {},
+                      child: Icon(
+                        PhosphorIcons.caretRight(PhosphorIconsStyle.regular),
+                        size: 18,
                       ),
                     ),
                   ),
-                  Divider(color: Theme.of(context).colorScheme.secondary, thickness: 0.5, height: 40),
-                  CheckTermsWidget(
-                    title: "I agree to user terms",
-                    value: state.isUserTermsAgreeChecked,
-                    onCheck: (newValue) {
-                      provider.isUserTermsAgreeChecked(newValue!);
-                    },
-                    onOpen: () {},
-                  ),
-                  const SizedBox(height: 10),
-                  CheckTermsWidget(
-                    title: "I agree to privacy policy skadfhaskljdhfjklasdhfjkhasdlfhasdlfhsldkjhfhsjk",
+                  CustomCheckbox(
                     value: state.isPrivacyAgreeChecked,
-                    onCheck: (newValue) {
-                      provider.isPrivacyAgreeChecked(newValue!);
+                    onChanged: (value) {
+                      provider.isPrivacyAgreeChecked(value!);
                     },
-                    onOpen: () {},
+                    borderRadius: 20,
+                    title: 'I agree to privacy terms',
+                    trailingIcon: ScaledTap(
+                      onTap: () {},
+                      child: Icon(
+                        PhosphorIcons.caretRight(PhosphorIconsStyle.regular),
+                        size: 18,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  CheckTermsWidget(
-                    title: "I agree to marketing terms",
-                    value: state.isPrivacyAgreeChecked,
-                    onCheck: (newValue) {
-                      provider.isPrivacyAgreeChecked(newValue!);
+                  CustomCheckbox(
+                    value: state.isMarketingAgreeChecked,
+                    onChanged: (value) {
+                      provider.isMarketingAgreeChecked(value!);
                     },
-                    onOpen: () {},
+                    borderRadius: 20,
+                    title: '(Optional) I agree to marketing terms',
+                    trailingIcon: ScaledTap(
+                      onTap: () {},
+                      child: Icon(
+                        PhosphorIcons.caretRight(PhosphorIconsStyle.regular),
+                        size: 18,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 20),
+                  PrimaryButton(
+                    onTap: () => Navigator.pop(context),
+                    child: const Text('Confirm'),
+                  ),
                 ],
               ),
             ),

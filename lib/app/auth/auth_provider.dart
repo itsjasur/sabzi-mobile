@@ -6,14 +6,11 @@ import 'package:flutter_sabzi/app/auth/auth_state.dart';
 class AuthProvider extends Notifier<AuthState> {
   @override
   AuthState build() {
-    return AuthState(isAuthenticated: false, isLoading: false);
-  }
-
-  void checkNewUser(bool val) {
-    state = state.copyWith(isNewUser: true);
+    return AuthState(isAuthenticated: false);
   }
 
   void authenticated() {
+    print('AuthProvider: Setting authenticated state to true');
     state = state.copyWith(isAuthenticated: true);
   }
 

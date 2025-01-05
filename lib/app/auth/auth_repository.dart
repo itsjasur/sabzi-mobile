@@ -39,7 +39,6 @@ class AuthRepository {
       //clear tokens even if logout API fails
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('access_token');
-      await prefs.remove('refresh_token');
     }
   }
 }

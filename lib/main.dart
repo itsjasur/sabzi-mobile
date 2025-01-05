@@ -47,12 +47,12 @@ class MyApp extends ConsumerWidget {
       theme: lightMode,
       darkTheme: darkMode,
 
-      // home: const App(),
+      home: const App(),
       // home: const MyAreaSettingsPage(),
       // home: ScreenPointDemo(),
       // home: const MainTestPage(),
       // home: const AddListingPage(),
-      home: const WelcomePage(),
+      // home: const WelcomePage(),
       // home: const SigninPage(isNewUser: true),
       // home: const GalleryView(),
     );
