@@ -11,14 +11,9 @@ class MyRadiusPage extends StatefulWidget {
 }
 
 class _MyRadiusPageState extends State<MyRadiusPage> {
-  List<double> _radiuses = [3, 6, 9, 12];
-  double _selectedRadius = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedRadius = _radiuses.first;
-  }
+  final List<double> _radiuses = [3000, 6000, 9000, 12000];
+  final List<double> _zoomLevels = [12.6, 11.7, 11.1, 10.7];
+  double _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +30,26 @@ class _MyRadiusPageState extends State<MyRadiusPage> {
       ),
       body: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: MyRadiusMapView(
-              cordinates: LocationCordinates(latitude: 41.302542, longitude: 69.238718),
+              // key: ValueKey(_selectedIndex),
+              cordinates: const LocationCordinates(latitude: 41.302542, longitude: 69.238718),
+              circleRadius: _radiuses[_selectedIndex.toInt()],
+              zoomLevel: _zoomLevels[_selectedIndex.toInt()],
             ),
           ),
           Container(
             // color: Colors.green,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               // spacing: 30,
               children: [
+                const SizedBox(height: 20),
                 const Text(
                   'Move slider to adjust your area radius',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    // color: Theme.of(context).colorScheme.secondary,
                     fontSize: 15,
                   ),
                 ),
@@ -60,24 +58,22 @@ class _MyRadiusPageState extends State<MyRadiusPage> {
                   data: SliderTheme.of(context).copyWith(
                     trackHeight: 3,
                     tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 10.0),
-                    // thumbColor: Theme.of(context).colorScheme.primary,
-                    // overlayShape: SliderComponentShape.noThumb, //press splash color
-                    // activeTickMarkColor: sliderColor,
-                    // inactiveTickMarkColor: sliderColor,
-                    // activeTrackColor: sliderColor,
-                    // inactiveTrackColor: sliderColor,
+                    overlayShape: SliderComponentShape.noThumb, //press splash color
+                    overlayColor: Colors.transparent,
                   ),
                   child: Slider(
-                    value: _selectedRadius,
-                    min: _radiuses.first,
-                    max: _radiuses.last,
-                    divisions: 3,
+                    value: _selectedIndex,
+                    min: 0,
+                    max: (_radiuses.length - 1).toDouble(),
+                    divisions: _radiuses.length - 1,
                     activeColor: sliderColor,
                     inactiveColor: sliderColor,
                     thumbColor: Theme.of(context).colorScheme.primary,
                     onChanged: (double value) {
-                      _selectedRadius = value;
-                      print(value);
+                      _selectedIndex = value;
+                      // print(value);
+                      print(_radiuses[_selectedIndex.toInt()]);
+                      print(_radiuses[_selectedIndex.toInt()]);
                       setState(() {});
                       // ref.read(areaSettingsProvider.notifier).updateSliderValue(areaRadiusList[value.toInt()]);
                     },
@@ -90,14 +86,14 @@ class _MyRadiusPageState extends State<MyRadiusPage> {
                     Text(
                       'Nearest',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13.5,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     Text(
                       'Farthest',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13.5,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
