@@ -40,7 +40,7 @@ class CustomRadio<T> extends StatelessWidget {
                   color: Colors.transparent,
                   border: Border.all(
                     width: 1.5,
-                    color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                    color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),

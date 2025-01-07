@@ -18,8 +18,8 @@ class _MainTestPageState extends State<MainTestPage> {
       //     if (index == 0) {
       //       return Text('this is start ${index}');
       //     }
-      //     if (index <= _testItems.length) {
-      //       return Text(_testItems[index - 1]);
+      //     if (index <= _testListings.length) {
+      //       return Text(_testListings[index - 1]);
       //     }
 
       //     return null;
@@ -66,5 +66,5 @@ class _MainTestPageState extends State<MainTestPage> {
     );
   }
 
-  final _testItems = List.generate(100, (i) => 'Item $i');
+  final _testListings = List.generate(100, (i) => 'Item $i');
 }

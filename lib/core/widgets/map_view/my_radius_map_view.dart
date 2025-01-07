@@ -38,6 +38,7 @@ class MyRadiusMapViewState extends State<MyRadiusMapView> {
   void dispose() {
     super.dispose();
     _mapWindow?.map.mapObjects.clear();
+    _mapWindow?.map.removeCameraListener(_cameraListener);
   }
 
   void _updateView() {

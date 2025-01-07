@@ -73,20 +73,20 @@ class CustomTextFormField extends StatelessWidget {
             hintText: hintText,
             hintMaxLines: hintMaxLines,
             hintStyle: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: textSize,
               fontWeight: fontWeight,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
               borderSide: BorderSide(
-                color: errorText != null ? Colors.red : Theme.of(context).colorScheme.secondary,
+                color: errorText != null ? Colors.red : Theme.of(context).colorScheme.onSurface,
               ),
             ),
             focusedBorder: OutlineInputBorder(

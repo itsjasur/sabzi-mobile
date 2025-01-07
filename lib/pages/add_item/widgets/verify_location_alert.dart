@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_page.dart';
+import 'package:flutter_sabzi/pages/radius/my_radius_page.dart';
 
 class VerifyLocationAlert extends ConsumerWidget {
   const VerifyLocationAlert({super.key});
@@ -23,7 +23,7 @@ class VerifyLocationAlert extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const Text('Please verify your location to sell your items.'),
+          const Text('Please verify your location to sell your listings.'),
           const SizedBox(height: 15),
           Row(
             // mainAxisSize: MainAxisSize.max,
@@ -58,7 +58,7 @@ class VerifyLocationAlert extends ConsumerWidget {
                     elevation: 0,
                     onTap: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyAreaSettingsPage()));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyRadiusPage()));
                     },
                     child: const Text(
                       'Verify location',

@@ -1,54 +1,40 @@
-import 'package:flutter_sabzi/core/models/category_model.dart';
-import 'package:flutter_sabzi/core/models/item_model.dart';
+import 'package:flutter_sabzi/core/models/listing_model.dart';
 
 class HomePageState {
-  final bool isScrolled;
-  // final bool hasScrollReachedEnd;
+  final bool isPageScrolled;
 
-  // final List<CategoryModel> categories;
-  // final CategoryModel? selectedCategory;
+  final List<ListingModel> listings;
+  final int currentListingsPageNumber;
 
-  final List<ItemModel> items;
-  final int currentItemsPageNumber;
-  final bool isLoadingMoreItems;
-  final bool hasMoreItems;
+  // final int? randomListingsSeedNumber;
+  final bool isLoadingMoreListings;
+  final bool hasMoreListings;
 
   HomePageState({
-    this.isScrolled = false,
-    // this.hasScrollReachedEnd = false,
-    //
-    // required this.categories,
-    // this.selectedCategory,
-    //
-    required this.items,
-    required this.currentItemsPageNumber,
-    this.isLoadingMoreItems = false,
-    required this.hasMoreItems,
+    this.isPageScrolled = false,
+    required this.listings,
+    // this.randomListingsSeedNumber,
+    required this.currentListingsPageNumber,
+    this.isLoadingMoreListings = false,
+    required this.hasMoreListings,
   });
 
   HomePageState copyWith({
-    bool? isScrolled,
+    bool? isPageScrolled,
     bool? hasScrollReachedEnd,
-    //
-    // List<CategoryModel>? categories,
-    // CategoryModel? selectedCategory,
-    //
-    List<ItemModel>? items,
-    int? currentItemsPageNumber,
-    bool? isLoadingMoreItems,
-    bool? hasMoreItems,
+    List<ListingModel>? listings,
+    int? currentListingsPageNumber,
+    // int? randomListingsSeedNumber,
+    bool? isLoadingMoreListings,
+    bool? hasMoreListings,
   }) {
     return HomePageState(
-      isScrolled: isScrolled ?? this.isScrolled,
-      // hasScrollReachedEnd: hasScrollReachedEnd ?? this.hasScrollReachedEnd,
-      //
-      // categories: categories ?? this.categories,
-      // selectedCategory: selectedCategory ?? this.selectedCategory,
-      //
-      items: items ?? this.items,
-      currentItemsPageNumber: currentItemsPageNumber ?? this.currentItemsPageNumber,
-      isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
-      hasMoreItems: hasMoreItems ?? this.hasMoreItems,
+      isPageScrolled: isPageScrolled ?? this.isPageScrolled,
+      listings: listings ?? this.listings,
+      currentListingsPageNumber: currentListingsPageNumber ?? this.currentListingsPageNumber,
+      // randomListingsSeedNumber: randomListingsSeedNumber ?? this.randomListingsSeedNumber,
+      isLoadingMoreListings: isLoadingMoreListings ?? this.isLoadingMoreListings,
+      hasMoreListings: hasMoreListings ?? this.hasMoreListings,
     );
   }
 }

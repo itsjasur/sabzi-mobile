@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/core/models/item_model.dart';
+import 'package:flutter_sabzi/core/models/listing_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_page.dart';
+import 'package:flutter_sabzi/pages/radius/my_radius_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -20,14 +20,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final homeNotifier = ref.read(homePageProvider.notifier);
-    // watchers for specific parts of the state
-    final isScrolled = ref.watch(homePageProvider.select((state) => state.isScrolled));
-    // final categories = ref.watch(homePageProvider.select((state) => state.categories));
-    // final selectedCategory = ref.watch(homePageProvider.select((state) => state.selectedCategory));
-
-    // items
-    final items = ref.watch(homePageProvider.select((state) => state.items));
-    final isLoadingMoreItems = ref.watch(homePageProvider.select((state) => state.isLoadingMoreItems));
+    final state = ref.watch(homePageProvider);
 
     return Scaffold(
       body: Scaffold(
@@ -37,17 +30,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             ScaledTap(
               onTap: () {
                 showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true, // Makes it full-screen if needed
-                  useSafeArea: true,
-                  isDismissible: false,
-                  barrierColor: Theme.of(context).colorScheme.surface,
-                  // useRootNavigator: true,
-                  // shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                  builder: (BuildContext context) {
-                    return const MyAreaSettingsPage();
-                  },
-                );
+                    context: context,
+                    isScrollControlled: true, // Makes it full-screen if needed
+                    useSafeArea: true,
+                    isDismissible: false,
+                    barrierColor: Theme.of(context).colorScheme.surface,
+                    builder: (BuildContext context) => const MyRadiusPage());
               },
               child: Row(
                 spacing: 5,
@@ -60,7 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ),
                   Icon(
-                    PhosphorIcons.caretDown(PhosphorIconsStyle.bold),
+                    PhosphorIcons.mapPinArea(PhosphorIconsStyle.regular),
                     size: 16,
                   ),
                 ],
@@ -85,66 +73,35 @@ class _HomePageState extends ConsumerState<HomePage> {
         body: Stack(
           children: [
             RefreshIndicator(
-              onRefresh: homeNotifier.refreshItems,
+              onRefresh: homeNotifier.refreshListings,
               child: CustomScrollView(
                 controller: homeNotifier.scrollController,
                 slivers: [
-                  // SliverToBoxAdapter(
-                  //   child: SingleChildScrollView(
-                  //     scrollDirection: Axis.horizontal,
-                  //     child: Row(
-                  //       children: [
-                  //         const SizedBox(width: 15),
-                  //         ...List.generate(
-                  //           categories.length,
-                  //           (categoryIndex) {
-                  //             CategoryModel category = categories[categoryIndex];
-
-                  //             return ScaledTap(
-                  //               onTap: () => homeNotifier.selectCategory(category),
-                  //               child: Container(
-                  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                  //                 margin: const EdgeInsets.only(right: 10),
-                  //                 constraints: const BoxConstraints(minWidth: 50, minHeight: 35),
-                  //                 alignment: Alignment.center,
-                  //                 decoration: BoxDecoration(
-                  //                   borderRadius: BorderRadius.circular(6),
-                  //                   color: Theme.of(context).colorScheme.tertiary,
-                  //                   border: selectedCategory?.code == category.code ? Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)) : null,
-                  //                 ),
-                  //                 child: Text(category.name),
-                  //               ),
-                  //             );
-                  //           },
-                  //         ),
-                  //         const SizedBox(width: 20),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 15)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 5)),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      childCount: items.length,
-                      (context, itemsIndex) {
-                        ItemModel item = items[itemsIndex];
+                      childCount: state.listings.length,
+                      (context, listingsIndex) {
+                        ListingModel listing = state.listings[listingsIndex];
                         return Column(
                           children: [
-                            ItemCard(item: item),
-                            if (itemsIndex != items.length - 1)
+                            ListingCard(listing: listing),
+                            if (listingsIndex != state.listings.length - 1)
                               Divider(
                                 height: 20,
-                                indent: 20,
-                                endIndent: 20,
-                                color: Theme.of(context).colorScheme.secondary.withAlpha(60),
+                                indent: 17,
+                                endIndent: 17,
+                                color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
                               ),
                           ],
                         );
                       },
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 30)),
-                  if (isLoadingMoreItems)
+                  const SliverToBoxAdapter(child: SizedBox(height: 50)),
+
+                  // TODO: temporary
+                  if (state.isLoadingMoreListings)
                     const SliverToBoxAdapter(
                       child: Align(
                         child: Text('Loading more'),
@@ -157,7 +114,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             Positioned(
               bottom: 20,
               right: 20,
-              child: HoomeAddProductButton(homePageScrolled: isScrolled),
+              child: HoomeAddProductButton(homePageScrolled: state.isPageScrolled),
             )
           ],
         ),

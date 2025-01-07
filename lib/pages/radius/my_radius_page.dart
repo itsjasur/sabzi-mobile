@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
+import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/radius/my_radius_provider.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class MyRadiusPage extends StatefulWidget {
+class MyRadiusPage extends ConsumerWidget {
   const MyRadiusPage({super.key});
 
   @override
-  State<MyRadiusPage> createState() => _MyRadiusPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(myRadiusProvider);
+    final notifier = ref.read(myRadiusProvider.notifier);
 
-class _MyRadiusPageState extends State<MyRadiusPage> {
-  final List<double> _radiuses = [3000, 6000, 9000, 12000];
-  final List<double> _zoomLevels = [12.6, 11.7, 11.1, 10.7];
-  double _selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
     final sliderColor = Theme.of(context).brightness == Brightness.light ? Colors.grey.shade300 : Colors.grey.shade300;
     return Scaffold(
       appBar: AppBar(
@@ -24,83 +22,92 @@ class _MyRadiusPageState extends State<MyRadiusPage> {
         leading: const AppBarBackButton(isX: true),
         centerTitle: true,
         title: const Text(
-          'My area settings',
-          style: TextStyle(fontSize: 18),
+          'My radius settings',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
         ),
+        actions: [
+          ScaledTap(
+            onTap: () {
+              // TODO: SHOW HTML INFO ON HOW MY RADIUS WORKS (WEBVIEW)
+            },
+            child: Icon(
+              PhosphorIcons.info(PhosphorIconsStyle.regular),
+              size: 25,
+            ),
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             child: MyRadiusMapView(
-              // key: ValueKey(_selectedIndex),
               cordinates: const LocationCordinates(latitude: 41.302542, longitude: 69.238718),
-              circleRadius: _radiuses[_selectedIndex.toInt()],
-              zoomLevel: _zoomLevels[_selectedIndex.toInt()],
+              circleRadius: state.radiuses[state.currentIndex.toInt()],
+              zoomLevel: state.zoomLevels[state.currentIndex.toInt()],
             ),
           ),
-          Container(
-            // color: Colors.green,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              // spacing: 30,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'Move slider to adjust your area radius',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    trackHeight: 3,
-                    tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 10.0),
-                    overlayShape: SliderComponentShape.noThumb, //press splash color
-                    overlayColor: Colors.transparent,
-                  ),
-                  child: Slider(
-                    value: _selectedIndex,
-                    min: 0,
-                    max: (_radiuses.length - 1).toDouble(),
-                    divisions: _radiuses.length - 1,
-                    activeColor: sliderColor,
-                    inactiveColor: sliderColor,
-                    thumbColor: Theme.of(context).colorScheme.primary,
-                    onChanged: (double value) {
-                      _selectedIndex = value;
-                      // print(value);
-                      print(_radiuses[_selectedIndex.toInt()]);
-                      print(_radiuses[_selectedIndex.toInt()]);
-                      setState(() {});
-                      // ref.read(areaSettingsProvider.notifier).updateSliderValue(areaRadiusList[value.toInt()]);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Nearest',
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+          SafeArea(
+            child: Container(
+              // color: Colors.green,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                // spacing: 30,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Move slider to adjust your area radius',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                     ),
-                    Text(
-                      'Farthest',
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                  ),
+                  const SizedBox(height: 20),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 3,
+                      tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 10.0),
+                      overlayShape: SliderComponentShape.noThumb, //press splash color
+                      overlayColor: Colors.transparent,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 50),
-              ],
+                    child: Slider(
+                      value: state.currentIndex,
+                      min: 0,
+                      max: (state.radiuses.length - 1).toDouble(),
+                      divisions: state.radiuses.length - 1,
+                      activeColor: sliderColor,
+                      inactiveColor: sliderColor,
+                      thumbColor: Theme.of(context).colorScheme.primary,
+                      onChanged: notifier.changeIndex,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Nearest',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        'Farthest',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ],

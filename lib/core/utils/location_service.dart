@@ -1,5 +1,5 @@
+import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
 
 class LocationService {
   // Singleton pattern

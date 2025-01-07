@@ -8,8 +8,6 @@ import 'package:flutter_sabzi/core/widgets/custom_radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/images_row.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_models.dart';
-import 'package:flutter_sabzi/pages/my_area_settings/my_area_settings_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddListingPage extends ConsumerStatefulWidget {
@@ -26,8 +24,8 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
 
     // Show popup after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      LocationCordinates? currentLocationCordination = ref.watch(areaSettingsProvider.select((state) => state.currentLocationCordination));
-      if (currentLocationCordination != null) return;
+      // LocationCordinates? currentLocationCordination = ref.watch(areaSettingsProvider.select((state) => state.currentLocationCordination));
+      // if (currentLocationCordination != null) return;
       // showDialog(context: context, builder: (context) => const VerifyLocationAlert());
     });
   }
@@ -171,7 +169,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                                     ),
                                     VerticalDivider(
                                       width: 20,
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                       indent: 7,
                                       endIndent: 7,
                                       thickness: 1,
@@ -202,7 +200,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                                 child: IgnorePointer(
                                   child: Checkbox(
                                     side: BorderSide(
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                       width: 1.5,
                                     ),
                                     value: ref.watch(addListingProvider).isPriceNegotiable,

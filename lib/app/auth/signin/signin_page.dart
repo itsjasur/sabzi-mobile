@@ -174,7 +174,7 @@ class _SigninPageState extends ConsumerState<SigninPage> {
                         child: PrimaryButton(
                           elevation: 0,
                           borderRadius: 4,
-                          backgroundColor: Theme.of(context).colorScheme.secondary.withAlpha(50),
+                          backgroundColor: Theme.of(context).colorScheme.onSurface.withAlpha(50),
                           onTap: () {
                             provider.requestCode();
                             _startTimer();

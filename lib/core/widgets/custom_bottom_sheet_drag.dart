@@ -14,7 +14,7 @@ class CustomBottomSheetDrag extends StatelessWidget {
           width: 50,
           height: 4,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(10),
           ),
         ),

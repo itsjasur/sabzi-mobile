@@ -114,7 +114,7 @@ class ImagesRow extends ConsumerWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.onSurface,
                       width: 1,
                     ),
                   ),
@@ -125,13 +125,13 @@ class ImagesRow extends ConsumerWidget {
                       Icon(
                         PhosphorIcons.camera(PhosphorIconsStyle.fill),
                         size: 30,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       RichText(
                         text: TextSpan(
                           style: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           children: [
                             TextSpan(

@@ -37,7 +37,7 @@ class PrimaryButton extends StatelessWidget {
           type: MaterialType.button,
           borderRadius: BorderRadius.circular(borderRadius),
           elevation: elevation ?? 1,
-          color: isLoading ? Theme.of(context).colorScheme.secondary : backgroundColor ?? Theme.of(context).colorScheme.primary,
+          color: isLoading ? Theme.of(context).colorScheme.onSurface : backgroundColor ?? Theme.of(context).colorScheme.primary,
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
             child: Align(

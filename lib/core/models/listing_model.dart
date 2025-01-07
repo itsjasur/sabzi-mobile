@@ -1,14 +1,15 @@
+import 'package:flutter_sabzi/core/enums/listing_status.dart';
 import 'package:flutter_sabzi/core/utils/custom_localizers.dart';
 
-class ItemModel {
+class ListingModel {
   final int id;
   final String title;
   final String description;
-  final String price;
+  final int price;
   final String currency;
   final bool isNegotiable;
   final int sellerId;
-  final String status;
+  final ListingStatus status;
   final int categoryId;
   final List<String> imageUrls;
   final String datePosted;
@@ -18,7 +19,7 @@ class ItemModel {
   final int? viewCount;
   bool isAddedToFavourites;
 
-  ItemModel({
+  ListingModel({
     required this.id,
     required this.title,
     required this.description,
@@ -37,16 +38,16 @@ class ItemModel {
     required this.isAddedToFavourites,
   });
 
-  // Create ItemModel from Map
-  factory ItemModel.fromMap(Map<String, dynamic> map) {
-    return ItemModel(
+  // Create ListingModel from Map
+  factory ListingModel.fromMap(Map<String, dynamic> map) {
+    return ListingModel(
       id: map['id'] as int,
       title: map['title'] as String,
       description: map['description'] as String,
       currency: map['currency'] as String,
-      price: CustomFormatters().currencyFormat(map['price'], map['currency']),
+      price: map['price'] as int,
       isNegotiable: map['negotiable'] as bool,
-      status: map['status'] as String,
+      status: ListingStatus.fromString(map['status']),
       sellerId: map['seller_id'] as int,
       categoryId: map['category_id'],
       imageUrls: List<String>.from(map['image_urls']),
@@ -63,7 +64,7 @@ class ItemModel {
 
 
 
-  // // Convert ItemModel to Map
+  // // Convert ListingModel to Map
   // Map<String, dynamic> toMap() {
   //   return {
   //     'id': id,
@@ -79,13 +80,13 @@ class ItemModel {
   // }
 
   // // Copy with method for easy modification
-  // ItemModel copyWith({
+  // ListingModel copyWith({
   //   String? id,
   //   String? title,
 
   //   bool? isSold,
   // }) {
-  //   return ItemModel(
+  //   return ListingModel(
   //     id: id ?? this.id,
 
   //   );

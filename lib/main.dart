@@ -50,10 +50,10 @@ class MyApp extends ConsumerWidget {
       theme: lightMode,
       darkTheme: darkMode,
 
-      // home: const App(),
+      home: const App(),
       // home: const MyAreaSettingsPage(),
       // home: const MyRadiusMapView(cordinates: LocationCordinates(latitude: 41.302542, longitude: 69.238718)),
-      home: MyRadiusPage(),
+      // home: MyRadiusPage(),
       // home: const MainTestPage(),
       // home: const AddListingPage(),
       // home: const WelcomePage(),

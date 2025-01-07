@@ -1,10 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/app_provider.dart';
 import 'package:flutter_sabzi/core/mixins/scroll_mixin.dart';
-import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/pages/home/home_page_state.dart';
-import 'package:flutter_sabzi/test/categories.dart';
-import 'package:flutter_sabzi/test/items.dart';
+import 'package:flutter_sabzi/test/listings.dart';
 
 class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePageState> {
   @override
@@ -17,86 +14,50 @@ class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePage
       disposeScroll();
     });
 
-    // calls _fetchCategories & _fetchNextItems in the next frame update
-    Future.microtask(() async {
-      ref.read(appProvider.notifier).setLoading(true);
-      // await _fetchCategories();
-      await _fetchNextItems();
-      ref.read(appProvider.notifier).setLoading(false);
+    Future.microtask(() {
+      _fetchListings();
     });
 
-    return HomePageState(items: [], currentItemsPageNumber: 1, hasMoreItems: true);
+    return HomePageState(listings: [], currentListingsPageNumber: 1, hasMoreListings: true);
   }
 
-  // ApiService get _apiService => ref.watch(apiServiceProvider);
-  // Future<void> _fetchCategories() async {
-  //   await Future.delayed(const Duration(microseconds: 100));
-
-  //   try {
-  //     state = state.copyWith(categories: categoriesList, selectedCategory: categoriesList[0]);
-
-  //     // FETCH ITEMS ARE CALLED AFTER CATEGORIES with categoryId
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  Future<void> refreshItems() async {
-    state = state.copyWith(currentItemsPageNumber: 1, hasMoreItems: true);
-    await _fetchNextItems();
+  Future<void> refreshListings() async {
+    state = state.copyWith(currentListingsPageNumber: 1, hasMoreListings: true);
+    await _fetchListings();
   }
 
-  Future<void> _fetchNextItems() async {
-    // return if not more items or currently loading more
-    if (state.isLoadingMoreItems || !state.hasMoreItems) return;
+  Future<void> _fetchListings() async {
+    if (state.isLoadingMoreListings || !state.hasMoreListings) return;
 
-    print('fetch items calleld');
-    print('isLoadingMoreItems ${state.isLoadingMoreItems}');
-    print('hasMoreItems ${state.hasMoreItems}');
-    print('pageNumber ${state.currentItemsPageNumber}');
+    print('pageNumber ${state.currentListingsPageNumber}');
 
-    // change to loading more items
-    state = state.copyWith(isLoadingMoreItems: true);
+    // change to loading more listings
+    state = state.copyWith(isLoadingMoreListings: true, currentListingsPageNumber: state.currentListingsPageNumber + 1);
 
     // API CALL HERE
     try {
       await Future.delayed(const Duration(microseconds: 100));
-      // has no more items
-      if (itemsList.isEmpty) {
-        state = state.copyWith(hasMoreItems: false);
-        return;
-      }
-
-      // if more items received
-      state = state.copyWith(items: [...state.items + itemsList], currentItemsPageNumber: state.currentItemsPageNumber + 1);
+      state = state.copyWith(listings: [...state.listings + listingsList]);
     } catch (e) {
       print(e);
     } finally {
-      state = state.copyWith(isLoadingMoreItems: false);
+      state = state.copyWith(isLoadingMoreListings: false);
     }
   }
 
   @override
   void updateScrollState(bool isScrolled, double offset, bool hasScrollReachedBottom) {
-    state = state.copyWith(isScrolled: isScrolled);
+    state = state.copyWith(isPageScrolled: isScrolled);
 
-    if (hasScrollReachedBottom && !state.isLoadingMoreItems && state.hasMoreItems) {
+    if (hasScrollReachedBottom && !state.isLoadingMoreListings && state.hasMoreListings) {
       print('scrolled reached bottom');
-      _fetchNextItems();
+      // _fetchListings();
     }
 
     // if (!state.hasScrollReachedEnd && hasScrollReachedBottom) {
     //   state = state.copyWith(hasScrollReachedEnd: true);
     // }
   }
-
-  // void setCategories(List<CategoryModel> categories) {
-  //   state = state.copyWith(categories: categories);
-  // }
-
-  // void selectCategory(CategoryModel category) {
-  //   state = state.copyWith(selectedCategory: category);
-  // }
 }
 
 final homePageProvider = NotifierProvider<HomePageProvider, HomePageState>(() {

@@ -45,7 +45,7 @@ class CustomCheckbox extends StatelessWidget {
               border: value
                   ? null
                   : Border.all(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
             ),
             child: value
