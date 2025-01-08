@@ -9,7 +9,7 @@ class CustomFormatters {
       return 'Free';
     }
     try {
-      if (currrency == 'USD') return "\$ ${formatter.format(number)}";
+      if (currrency == 'USD') return "${formatter.format(number)} \$";
       return "${formatter.format(number)} SO'M";
     } catch (e) {
       throw ArgumentError('Input must be int or double');

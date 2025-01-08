@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/listing_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
+import 'package:flutter_sabzi/pages/home/category/categories_page.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
@@ -30,36 +31,41 @@ class _HomePageState extends ConsumerState<HomePage> {
             ScaledTap(
               onTap: () {
                 showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true, // Makes it full-screen if needed
-                    useSafeArea: true,
-                    isDismissible: false,
-                    barrierColor: Theme.of(context).colorScheme.surface,
-                    builder: (BuildContext context) => const MyRadiusPage());
+                  context: context,
+                  isScrollControlled: true, // Makes it full-screen if needed
+                  useSafeArea: true,
+                  isDismissible: false,
+                  barrierColor: Theme.of(context).colorScheme.surface,
+                  builder: (BuildContext context) => const MyRadiusPage(),
+                );
               },
-              child: Row(
-                spacing: 5,
-                children: [
-                  const Text(
-                    'My radius',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
+              child: const Icon(PhosphorIconsBold.mapPinArea
+                  // size: 25,
                   ),
-                  Icon(
-                    PhosphorIcons.mapPinArea(PhosphorIconsStyle.regular),
-                    size: 16,
-                  ),
-                ],
-              ),
             ),
             const Spacer(),
             const SizedBox(width: 20),
             ScaledTap(
-              onTap: () {},
-              child: Icon(
-                PhosphorIcons.list(PhosphorIconsStyle.bold),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true, // Makes it full-screen if needed
+                  useSafeArea: true,
+                  isDismissible: false,
+                  barrierColor: Theme.of(context).colorScheme.surface,
+                  builder: (BuildContext context) => const CategoriesPage(),
+                );
+              },
+              // child: Container(
+              //   color: Colors.amber,
+              //   child: const Icon(PhosphorIconsBold.list),
+              // ),
+              // ref.watch(categoriesProvider)
+
+              child: const Badge(
+                backgroundColor: Colors.red,
+                smallSize: 12,
+                child: Icon(PhosphorIconsBold.list),
               ),
             ),
             const SizedBox(width: 15),

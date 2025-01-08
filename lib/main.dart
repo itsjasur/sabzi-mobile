@@ -8,6 +8,7 @@ import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_page.dart';
 import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
+import 'package:flutter_sabzi/pages/home/category/categories_page.dart';
 import 'package:flutter_sabzi/pages/radius/my_radius_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:flutter_sabzi/theme/app_theme.dart';
@@ -59,6 +60,7 @@ class MyApp extends ConsumerWidget {
       // home: const WelcomePage(),
       // home: const SigninPage(isNewUser: true),
       // home: const GalleryView(),
+      // home: const CategoriesPage(),
     );
   }
 }

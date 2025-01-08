@@ -34,7 +34,7 @@ class ListingCard extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                spacing: 3,
+                spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -46,20 +46,20 @@ class ListingCard extends StatelessWidget {
                           listing.title,
                           style: const TextStyle(
                             fontSize: 16,
-                            // fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w500,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      IntrinsicWidth(
-                        child: ScaledTap(
-                          onTap: () {
-                            print('more clicked');
-                          },
-                          child: Icon(
-                            PhosphorIcons.dotsThreeVertical(PhosphorIconsStyle.bold),
-                            color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
-                            size: 23,
-                          ),
+                      ScaledTap(
+                        onTap: () {
+                          print('more clicked');
+                        },
+                        child: Icon(
+                          PhosphorIconsBold.dotsThreeVertical,
+                          color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                          size: 23,
                         ),
                       ),
                     ],
@@ -91,7 +91,8 @@ class ListingCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(2),
                           ),
                           child: Text(
-                            listing.status.value, //TODO TRANSLATE
+                            'sold',
+                            // listing.status.value, //TODO TRANSLATE
                             style: TextStyle(
                               fontSize: 10.5,
                               color: Theme.of(context).colorScheme.surface,
@@ -112,35 +113,39 @@ class ListingCard extends StatelessWidget {
                   const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    spacing: 1,
+                    // spacing: 1,
                     children: [
-                      Icon(
-                        PhosphorIcons.heart(PhosphorIconsStyle.fill),
-                        color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
-                        size: 16,
-                      ),
-                      Text(
-                        '12',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
-                          fontSize: 13,
-                          height: 1,
+                      if (listing.chatCount != null && listing.chatCount! > 0) ...[
+                        Icon(
+                          PhosphorIconsFill.chatCircleDots,
+                          color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                          size: 16,
                         ),
-                      ),
-                      const SizedBox(width: 5),
-                      Icon(
-                        PhosphorIcons.chatCircleDots(PhosphorIconsStyle.fill),
-                        color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
-                        size: 16,
-                      ),
-                      Text(
-                        '12',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
-                          fontSize: 13,
-                          height: 1,
+                        Text(
+                          listing.chatCount.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                            fontSize: 13,
+                            height: 1,
+                          ),
                         ),
-                      ),
+                      ],
+                      if (listing.chatCount != null && listing.chatCount! > 0) ...[
+                        const SizedBox(width: 5),
+                        Icon(
+                          PhosphorIconsFill.heart,
+                          color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                          size: 16,
+                        ),
+                        Text(
+                          listing.likeCount.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                            fontSize: 13,
+                            height: 1,
+                          ),
+                        ),
+                      ],
                     ],
                   )
                 ],
