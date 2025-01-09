@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_state.dart';
@@ -10,7 +11,7 @@ class AddListingProvider extends Notifier<AddListingState> {
   @override
   AddListingState build() {
     final state = AddListingState(
-      selectedAssetEntityList: [],
+      selectedImages: [],
       selectedCurrency: 'UZS',
       isPriceNegotiable: true,
       titleController: TextEditingController(),
@@ -37,35 +38,27 @@ class AddListingProvider extends Notifier<AddListingState> {
   }
 
   void swapItemPosition(int oldIndex, int newIndex) {
-    final updatedList = [...state.selectedAssetEntityList];
+    final updatedList = [...state.selectedImages];
     // adjusts the newIndex if it's after the removal point
     if (newIndex > oldIndex) newIndex -= 1;
 
     final removedItem = updatedList.removeAt(oldIndex);
     updatedList.insert(newIndex, removedItem);
-    state = state.copyWith(selectedAssetEntityList: updatedList);
+    state = state.copyWith(selectedImages: updatedList);
   }
 
-  void removeAssetEntity(String assetId) {
-    final updatedList = state.selectedAssetEntityList.where((item) => item.key != assetId).toList();
-    state = state.copyWith(selectedAssetEntityList: updatedList);
+  void removeImageWithIndex(int index) {
+    final List<Uint8List> updatedList = [...state.selectedImages];
+    updatedList.removeAt(index);
+    state = state.copyWith(selectedImages: updatedList);
   }
 
-  Future<void> addAssetEntity(String assetId) async {
-    try {
-      final asset = await AssetEntity.fromId(assetId);
-      if (asset == null) {
-        removeAssetEntity(assetId); //removes assetid from list if asset not found
-        return;
+  Future<void> saveAssetsAsBytes(List<AssetEntity> assets) async {
+    for (AssetEntity asset in assets) {
+      final image = await asset.originBytes;
+      if (image != null) {
+        state = state.copyWith(selectedImages: [...state.selectedImages, image]);
       }
-      final thumbnail = await asset.thumbnailDataWithSize(const ThumbnailSize(200, 200), quality: 80);
-
-      if (thumbnail != null) {
-        final newList = [...state.selectedAssetEntityList, MapEntry(assetId, thumbnail)];
-        state = state.copyWith(selectedAssetEntityList: newList);
-      }
-    } catch (e) {
-      print('Error adding asset: $e');
     }
   }
 
@@ -84,11 +77,8 @@ class AddListingProvider extends Notifier<AddListingState> {
         state = state.copyWith(
           selectedCurrency: draft.currency,
           isPriceNegotiable: draft.isPriceNegotiable,
+          selectedImages: draft.images,
         );
-        // loads assets
-        for (final assetId in draft.assetIds) {
-          await addAssetEntity(assetId);
-        }
       } catch (e) {
         print('Error loading draft: $e');
       }
@@ -102,7 +92,7 @@ class AddListingProvider extends Notifier<AddListingState> {
       price: state.priceController.text,
       currency: state.selectedCurrency,
       isPriceNegotiable: state.isPriceNegotiable,
-      assetIds: state.selectedAssetEntityList.map((e) => e.key).toList(),
+      images: state.selectedImages,
     );
 
     final prefs = await SharedPreferences.getInstance();

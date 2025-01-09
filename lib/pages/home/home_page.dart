@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/listing_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/home/category/categories_page.dart';
+import 'package:flutter_sabzi/pages/category/categories_page.dart';
+import 'package:flutter_sabzi/pages/category/categories_provider.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
@@ -46,28 +47,23 @@ class _HomePageState extends ConsumerState<HomePage> {
             const Spacer(),
             const SizedBox(width: 20),
             ScaledTap(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true, // Makes it full-screen if needed
-                  useSafeArea: true,
-                  isDismissible: false,
-                  barrierColor: Theme.of(context).colorScheme.surface,
-                  builder: (BuildContext context) => const CategoriesPage(),
-                );
-              },
-              // child: Container(
-              //   color: Colors.amber,
-              //   child: const Icon(PhosphorIconsBold.list),
-              // ),
-              // ref.watch(categoriesProvider)
-
-              child: const Badge(
-                backgroundColor: Colors.red,
-                smallSize: 12,
-                child: Icon(PhosphorIconsBold.list),
-              ),
-            ),
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true, // Makes it full-screen if needed
+                    useSafeArea: true,
+                    isDismissible: false,
+                    enableDrag: false,
+                    barrierColor: Theme.of(context).colorScheme.surface,
+                    builder: (BuildContext context) => const CategoriesPage(),
+                  );
+                },
+                child: Badge(
+                  isLabelVisible: ref.watch(categoriesProvider).selectedCategoryId != -1,
+                  backgroundColor: Colors.red,
+                  smallSize: 12,
+                  child: const Icon(PhosphorIconsBold.list),
+                )),
             const SizedBox(width: 15),
             ScaledTap(
               onTap: ref.read(themeProvider.notifier).toggleTheme,

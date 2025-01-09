@@ -1,7 +1,7 @@
 // auth_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/auth_repository.dart';
-import 'package:flutter_sabzi/app/auth/auth_state.dart';
+import 'package:flutter_sabzi/pages/auth/auth_repository.dart';
+import 'package:flutter_sabzi/pages/auth/auth_state.dart';
 
 class AuthProvider extends Notifier<AuthState> {
   @override

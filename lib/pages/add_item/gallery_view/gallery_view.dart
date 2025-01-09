@@ -109,13 +109,13 @@ class _GalleryViewState extends State<GalleryView> {
                         if (index == 0) return CameraGridItem(onImageCaptured: _insertImage);
 
                         final imageIndex = index - 1;
-                        MapEntry<String, Uint8List?> entry = _currentFolderImagesCache[imageIndex];
+                        MapEntry<AssetEntity, Uint8List?> entry = _currentFolderImagesCache[imageIndex];
 
                         if (entry.value != null) {
                           return GalleryGridImage(
                             // key: ValueKey(entry.key),
                             image: entry.value!,
-                            assetId: entry.key,
+                            asset: entry.key,
                           );
                         }
 
@@ -129,7 +129,8 @@ class _GalleryViewState extends State<GalleryView> {
     );
   }
 
-  final List<MapEntry<String, Uint8List?>> _currentFolderImagesCache = [];
+  final List<MapEntry<AssetEntity, Uint8List?>> _currentFolderImagesCache = [];
+
   List<AssetPathEntity> _folders = [];
   final List<CustomFolderModel> _foldersInfoList = [];
   bool _isPageLoading = true;
@@ -180,7 +181,7 @@ class _GalleryViewState extends State<GalleryView> {
     for (AssetEntity asset in newAssets) {
       print(asset);
       final img = await asset.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80);
-      _currentFolderImagesCache.add(MapEntry(asset.id, img));
+      _currentFolderImagesCache.add(MapEntry(asset, img));
     }
 
     _currentFolderPage++;
@@ -190,7 +191,7 @@ class _GalleryViewState extends State<GalleryView> {
 
   Future<void> _insertImage(AssetEntity asset) async {
     Uint8List? image = await asset.thumbnailDataWithSize(const ThumbnailSize(300, 300), quality: 80);
-    _currentFolderImagesCache.insert(0, MapEntry(asset.id, image));
+    _currentFolderImagesCache.insert(0, MapEntry(asset, image));
     setState(() {});
   }
 

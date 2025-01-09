@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app_provider.dart';
-import 'package:flutter_sabzi/app/auth/auth_provider.dart';
-import 'package:flutter_sabzi/app/auth/welcome_page.dart';
+import 'package:flutter_sabzi/pages/auth/auth_provider.dart';
+import 'package:flutter_sabzi/pages/auth/welcome_page.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_state.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_widget.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/signin/signin_provider.dart';
+import 'package:flutter_sabzi/pages/auth/signin/signin_provider.dart';
 import 'package:flutter_sabzi/core/widgets/custom_bottom_sheet_drag.dart';
 import 'package:flutter_sabzi/core/widgets/custom_checkbox.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';

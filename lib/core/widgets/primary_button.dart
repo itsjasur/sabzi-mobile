@@ -8,7 +8,7 @@ class PrimaryButton extends StatelessWidget {
   final double borderRadius;
   final double? height;
   final Color? backgroundColor;
-  final double? elevation;
+  final double elevation;
   final bool isLoading;
 
   const PrimaryButton({
@@ -17,7 +17,7 @@ class PrimaryButton extends StatelessWidget {
     required this.child,
     this.borderRadius = 6,
     this.backgroundColor,
-    this.elevation,
+    this.elevation = 0,
     this.height = 50,
     this.isLoading = false,
   });
@@ -36,7 +36,7 @@ class PrimaryButton extends StatelessWidget {
           ),
           type: MaterialType.button,
           borderRadius: BorderRadius.circular(borderRadius),
-          elevation: elevation ?? 1,
+          elevation: elevation,
           color: isLoading ? Theme.of(context).colorScheme.onSurface : backgroundColor ?? Theme.of(context).colorScheme.primary,
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),

@@ -3,28 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_provider.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class GalleryGridImage extends ConsumerWidget {
   final Uint8List image;
-  final String assetId;
-
-  const GalleryGridImage({super.key, required this.image, required this.assetId});
+  final AssetEntity asset;
+  const GalleryGridImage({super.key, required this.image, required this.asset});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedAssetEntityList = ref.watch(addListingProvider.select((state) => state.selectedAssetEntityList));
-    final index = selectedAssetEntityList.indexWhere((item) => item.key == assetId) + 1;
-    // print('INDEX BELOW');
-    // print(index);
-    bool isSelected = index != 0;
-    final notifier = ref.read(addListingProvider.notifier);
+    final selectedAssetEntityList = ref.watch(galleryViewProvider.select((state) => state.selectedAssetEntityList));
+    final index = selectedAssetEntityList.indexWhere((element) => element.id == asset.id) + 1;
+
+    bool isSelected = selectedAssetEntityList.any((element) => element.id == asset.id);
+    final notifier = ref.read(galleryViewProvider.notifier);
 
     return ScaledTap(
       onTap: () {
         if (isSelected) {
-          notifier.removeAssetEntity(assetId);
+          notifier.removeAssetEntity(asset);
         } else {
-          if (selectedAssetEntityList.length >= 9) {
+          final alreadyAddedCount = ref.watch(addListingProvider).selectedImages.length;
+          final newAdditionsCount = ref.watch(galleryViewProvider).selectedAssetEntityList.length;
+
+          if (alreadyAddedCount + newAdditionsCount >= 9) {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -33,7 +36,7 @@ class GalleryGridImage extends ConsumerWidget {
               ),
             );
           } else {
-            notifier.addAssetEntity(assetId);
+            notifier.addAssetEntity(asset);
           }
         }
       },

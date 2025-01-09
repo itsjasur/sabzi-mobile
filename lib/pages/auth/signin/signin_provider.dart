@@ -2,10 +2,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/auth_provider.dart';
-import 'package:flutter_sabzi/app/auth/auth_repository.dart';
-import 'package:flutter_sabzi/app/auth/auth_state.dart';
-import 'package:flutter_sabzi/app/auth/signin/signin_state.dart';
+import 'package:flutter_sabzi/pages/auth/auth_provider.dart';
+import 'package:flutter_sabzi/pages/auth/auth_repository.dart';
+import 'package:flutter_sabzi/pages/auth/auth_state.dart';
+import 'package:flutter_sabzi/pages/auth/signin/signin_state.dart';
 import 'package:flutter_sabzi/core/services/http_service.dart';
 
 class SigninProvider extends Notifier<SigninState> {

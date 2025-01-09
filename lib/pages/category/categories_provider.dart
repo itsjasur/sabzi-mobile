@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/models/category_model.dart';
-import 'package:flutter_sabzi/pages/home/category/categories_state.dart';
+import 'package:flutter_sabzi/pages/category/categories_state.dart';
 
 class CategoriesProvider extends Notifier<CategoriesState> {
   @override
@@ -12,8 +12,12 @@ class CategoriesProvider extends Notifier<CategoriesState> {
     return CategoriesState();
   }
 
-  void toggleCategorySelect() {
-    state = state.copyWith(selectedCategoryId: state.selectedCategoryId);
+  Future<void> selectCategory(int value) async {
+    if (value == state.selectedCategoryId) {
+      state = state.copyWith(selectedCategoryId: -1);
+    } else {
+      state = state.copyWith(selectedCategoryId: value);
+    }
   }
 
   void _fetchCategories() {

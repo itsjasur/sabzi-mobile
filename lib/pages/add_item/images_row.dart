@@ -12,12 +12,12 @@ class ImagesRow extends ConsumerWidget {
   @override
   build(BuildContext context, WidgetRef ref) {
     double containerSize = 65;
-    final images = ref.watch(addListingProvider.select((state) => state.selectedAssetEntityList));
+    final images = ref.watch(addListingProvider.select((state) => state.selectedImages));
 
     Widget itemBuilder(int index) {
       return Container(
         alignment: Alignment.bottomCenter,
-        key: ValueKey(images[index].key),
+        key: ValueKey(index),
         margin: const EdgeInsets.only(left: 12),
         child: Stack(
           alignment: Alignment.bottomCenter,
@@ -26,7 +26,7 @@ class ImagesRow extends ConsumerWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.memory(
-                images[index].value,
+                images[index],
                 height: containerSize,
                 width: containerSize,
                 fit: BoxFit.cover,
@@ -42,11 +42,13 @@ class ImagesRow extends ConsumerWidget {
                   child: Container(
                     color: Colors.black87,
                     height: 20,
+                    alignment: Alignment.center,
                     child: const Text(
                       'Main',
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 11,
                         color: Colors.white,
+                        height: 1,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -54,21 +56,20 @@ class ImagesRow extends ConsumerWidget {
                 ),
               ),
             Positioned(
-              top: -5,
-              right: -5,
+              top: -4,
+              right: -4,
               child: ScaledTap(
-                onTap: () {
-                  ref.read(addListingProvider.notifier).removeAssetEntity(images[index].key);
-                },
+                onTap: () => ref.read(addListingProvider.notifier).removeImageWithIndex(index),
                 child: Container(
+                  padding: const EdgeInsets.all(1),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.inverseSurface,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   child: Icon(
                     Icons.close,
                     color: Theme.of(context).colorScheme.surface,
-                    size: 18,
+                    size: 14.5,
                   ),
                 ),
               ),
@@ -89,8 +90,8 @@ class ImagesRow extends ConsumerWidget {
             shrinkWrap: true,
             proxyDecorator: (child, index, animation) => itemBuilder(index),
             onReorder: (int oldIndex, int newIndex) {
-              print('oldindex, $oldIndex');
-              print('newindex $newIndex');
+              // print('oldindex, $oldIndex');
+              // print('newindex $newIndex');
               HapticFeedback.lightImpact();
               ref.read(addListingProvider.notifier).swapItemPosition(oldIndex, newIndex);
             },
@@ -114,7 +115,7 @@ class ImagesRow extends ConsumerWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurface.withAlpha(80),
                       width: 1,
                     ),
                   ),
@@ -125,13 +126,13 @@ class ImagesRow extends ConsumerWidget {
                       Icon(
                         PhosphorIcons.camera(PhosphorIconsStyle.fill),
                         size: 30,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).colorScheme.onSurface.withAlpha(80),
                       ),
                       RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurface.withAlpha(80),
                           ),
                           children: [
                             TextSpan(

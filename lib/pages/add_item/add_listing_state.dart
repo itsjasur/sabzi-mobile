@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class AddListingState {
-  final List<MapEntry<String, Uint8List>> selectedAssetEntityList;
+  final List<Uint8List> selectedImages;
   final String selectedCurrency;
   final bool isPriceNegotiable;
   final TextEditingController titleController;
@@ -11,7 +11,7 @@ class AddListingState {
   final TextEditingController priceController;
 
   AddListingState({
-    required this.selectedAssetEntityList,
+    required this.selectedImages,
     required this.selectedCurrency,
     required this.isPriceNegotiable,
     required this.titleController,
@@ -21,7 +21,7 @@ class AddListingState {
 
   // Don't forget to update copyWith
   AddListingState copyWith({
-    List<MapEntry<String, Uint8List>>? selectedAssetEntityList,
+    List<Uint8List>? selectedImages,
     String? selectedCurrency,
     bool? isPriceNegotiable,
     TextEditingController? titleController,
@@ -29,7 +29,7 @@ class AddListingState {
     TextEditingController? priceController,
   }) {
     return AddListingState(
-      selectedAssetEntityList: selectedAssetEntityList ?? this.selectedAssetEntityList,
+      selectedImages: selectedImages ?? this.selectedImages,
       selectedCurrency: selectedCurrency ?? this.selectedCurrency,
       isPriceNegotiable: isPriceNegotiable ?? this.isPriceNegotiable,
       titleController: titleController ?? this.titleController,

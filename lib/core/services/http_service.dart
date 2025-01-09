@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/app/auth/auth_provider.dart';
+import 'package:flutter_sabzi/pages/auth/auth_provider.dart';
 import 'package:http/http.dart' as http;
 
 class CustomHttpException implements Exception {

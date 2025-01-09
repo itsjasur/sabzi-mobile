@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app_provider.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
+import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -39,7 +40,7 @@ class CameraGridItem extends ConsumerWidget {
             onImageCaptured(asset);
 
             // adding the camera image to selected by default
-            ref.watch(addListingProvider.notifier).addAssetEntity(asset.id);
+            ref.watch(galleryViewProvider.notifier).addAssetEntity(asset);
             ref.watch(appProvider.notifier).setLoading(false);
           }
         } catch (e) {
