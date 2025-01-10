@@ -4,16 +4,16 @@ import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/radius/my_radius_provider.dart';
+import 'package:flutter_sabzi/pages/area/my_area_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class MyRadiusPage extends ConsumerWidget {
-  const MyRadiusPage({super.key});
+class MyAreaPage extends ConsumerWidget {
+  const MyAreaPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(myRadiusProvider);
-    final notifier = ref.read(myRadiusProvider.notifier);
+    final state = ref.watch(myAreaProvider);
+    final notifier = ref.read(myAreaProvider.notifier);
 
     final sliderColor = Theme.of(context).brightness == Brightness.light ? Colors.grey.shade300 : Colors.grey.shade300;
     return Scaffold(
@@ -22,7 +22,7 @@ class MyRadiusPage extends ConsumerWidget {
         leading: const AppBarBackButton(isX: true),
         centerTitle: true,
         title: const Text(
-          'My radius settings',
+          'My area settings',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -44,9 +44,9 @@ class MyRadiusPage extends ConsumerWidget {
       body: Column(
         children: [
           Expanded(
-            child: MyRadiusMapView(
+            child: MyAreaMapView(
               cordinates: const LocationCordinates(latitude: 41.302542, longitude: 69.238718),
-              circleRadius: state.radiuses[state.currentIndex.toInt()],
+              circleArea: state.radiuses[state.currentIndex.toInt()],
               zoomLevel: state.zoomLevels[state.currentIndex.toInt()],
             ),
           ),
@@ -59,7 +59,7 @@ class MyRadiusPage extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 20),
                   const Text(
-                    'Move slider to adjust your area radius',
+                    'Move slider to adjust your area area',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,

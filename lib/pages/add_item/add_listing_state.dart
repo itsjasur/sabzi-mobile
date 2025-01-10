@@ -10,6 +10,8 @@ class AddListingState {
   final TextEditingController descriptionController;
   final TextEditingController priceController;
 
+  final int selectedCategoryId;
+
   AddListingState({
     required this.selectedImages,
     required this.selectedCurrency,
@@ -17,6 +19,7 @@ class AddListingState {
     required this.titleController,
     required this.descriptionController,
     required this.priceController,
+    this.selectedCategoryId = -1,
   });
 
   AddListingState copyWith({
@@ -26,6 +29,7 @@ class AddListingState {
     TextEditingController? titleController,
     TextEditingController? descriptionController,
     TextEditingController? priceController,
+    int? selectedCategoryId,
   }) {
     return AddListingState(
       selectedImages: selectedImages ?? this.selectedImages,
@@ -34,6 +38,7 @@ class AddListingState {
       titleController: titleController ?? this.titleController,
       descriptionController: descriptionController ?? this.descriptionController,
       priceController: priceController ?? this.priceController,
+      selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
     );
   }
 }

@@ -6,12 +6,15 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final String? hintText;
   final Function(String value)? onChanged;
+  final Function()? onTap;
   final TextEditingController? controller;
   final int? maxLines;
   final int? maxLength;
   final int? hintMaxLines;
   final bool expands;
+  final bool readOnly;
   final bool? enabled;
+  final String? initialValue;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
@@ -30,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.hintMaxLines = 1,
     this.expands = false,
+    this.readOnly = false,
     this.keyboardType,
     this.inputFormatters,
     this.textInputAction,
@@ -40,13 +44,15 @@ class CustomTextFormField extends StatelessWidget {
     this.fontWeight,
     this.maxLength,
     this.enabled,
+    this.onTap,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
+        TextFormField(
           focusNode: focusNode,
           controller: controller,
           enabled: enabled,
@@ -58,11 +64,14 @@ class CustomTextFormField extends StatelessWidget {
           cursorColor: Theme.of(context).colorScheme.onSurface,
           cursorWidth: 1.5,
           cursorHeight: 19,
+          readOnly: readOnly,
+          onTap: onTap,
           expands: expands,
           maxLines: maxLines,
           maxLength: maxLength,
           textInputAction: textInputAction,
           inputFormatters: inputFormatters,
+          initialValue: initialValue,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             counter: const SizedBox.shrink(),

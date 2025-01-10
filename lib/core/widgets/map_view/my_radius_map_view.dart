@@ -4,18 +4,18 @@ import 'package:yandex_maps_mapkit_lite/mapkit.dart' as yandex_mapkit;
 import 'package:yandex_maps_mapkit_lite/yandex_map.dart';
 import 'package:yandex_maps_mapkit_lite/image.dart' as yanimage;
 
-class MyRadiusMapView extends StatefulWidget {
+class MyAreaMapView extends StatefulWidget {
   final LocationCordinates cordinates;
   final double zoomLevel;
-  final double circleRadius;
+  final double circleArea;
 
-  const MyRadiusMapView({super.key, required this.cordinates, required this.zoomLevel, required this.circleRadius});
+  const MyAreaMapView({super.key, required this.cordinates, required this.zoomLevel, required this.circleArea});
 
   @override
-  State<MyRadiusMapView> createState() => MyRadiusMapViewState();
+  State<MyAreaMapView> createState() => MyAreaMapViewState();
 }
 
-class MyRadiusMapViewState extends State<MyRadiusMapView> {
+class MyAreaMapViewState extends State<MyAreaMapView> {
   yandex_mapkit.MapWindow? _mapWindow;
   late final _cameraListener = MyCameraListener();
 
@@ -26,10 +26,10 @@ class MyRadiusMapViewState extends State<MyRadiusMapView> {
   }
 
   @override
-  void didUpdateWidget(MyRadiusMapView oldWidget) {
+  void didUpdateWidget(MyAreaMapView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.circleRadius != widget.circleRadius && oldWidget.zoomLevel != widget.zoomLevel) {
+    if (oldWidget.circleArea != widget.circleArea && oldWidget.zoomLevel != widget.zoomLevel) {
       _updateView();
     }
   }
@@ -76,7 +76,7 @@ class MyRadiusMapViewState extends State<MyRadiusMapView> {
           latitude: widget.cordinates.latitude,
           longitude: widget.cordinates.longitude,
         ),
-        radius: widget.circleRadius,
+        radius: widget.circleArea,
       ),
     )
       ..visible = false

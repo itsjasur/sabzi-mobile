@@ -1,16 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/pages/radius/my_radius_state.dart';
+import 'package:flutter_sabzi/pages/area/my_area_state.dart';
 
-class MyRadiusProvider extends Notifier<MyRadiusState> {
+class MyAreaProvider extends Notifier<MyAreaState> {
   @override
-  MyRadiusState build() {
+  MyAreaState build() {
     ref.onDispose(() {});
 
     Future.microtask(() async {
-      _fetchMyRadiusSettings();
+      _fetchMyAreaSettings();
     });
 
-    return MyRadiusState(
+    return MyAreaState(
       radiuses: [3000, 6000, 9000, 12000],
       zoomLevels: [12.6, 11.7, 11.1, 10.7],
       currentIndex: 0,
@@ -23,10 +23,10 @@ class MyRadiusProvider extends Notifier<MyRadiusState> {
     // API CALL HERE TO UPDATE USER RADIUS SETTINGS
   }
 
-  void _fetchMyRadiusSettings() {
+  void _fetchMyAreaSettings() {
     // TODO:
     // API CALL HERE TO FETCH USER RADIUS SETTINGS
   }
 }
 
-final myRadiusProvider = NotifierProvider<MyRadiusProvider, MyRadiusState>(() => MyRadiusProvider());
+final myAreaProvider = NotifierProvider<MyAreaProvider, MyAreaState>(() => MyAreaProvider());

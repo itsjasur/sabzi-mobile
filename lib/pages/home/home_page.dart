@@ -7,7 +7,7 @@ import 'package:flutter_sabzi/pages/category/categories_provider.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
-import 'package:flutter_sabzi/pages/radius/my_radius_page.dart';
+import 'package:flutter_sabzi/pages/area/my_area_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -37,7 +37,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   useSafeArea: true,
                   isDismissible: false,
                   barrierColor: Theme.of(context).colorScheme.surface,
-                  builder: (BuildContext context) => const MyRadiusPage(),
+                  builder: (BuildContext context) => const MyAreaPage(),
                 );
               },
               child: const Icon(PhosphorIconsBold.mapPinArea

@@ -12,6 +12,11 @@ class CategoriesProvider extends Notifier<CategoriesState> {
     return CategoriesState();
   }
 
+  // CategoryModel getCategory(int id) {
+  //   final foundItem = state.categories.firstWhere((element) => element.id == id);
+  //   return foundItem;
+  // }
+
   Future<void> selectCategory(int value) async {
     if (value == state.selectedCategoryId) {
       state = state.copyWith(selectedCategoryId: -1);

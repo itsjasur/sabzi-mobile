@@ -4,6 +4,7 @@ import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/custom_radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/category/categories_provider.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CategoriesPage extends ConsumerWidget {
   const CategoriesPage({super.key});
@@ -69,22 +70,29 @@ class CategoriesPage extends ConsumerWidget {
                               height: 50,
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              'Electronics',
-                              style: TextStyle(
+                              category.name,
+                              style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                          IgnorePointer(
-                            child: CustomRadio(
-                              value: category.id,
-                              groupValue: state.selectedCategoryId,
-                              onChanged: null,
+
+                          if (category.id == state.selectedCategoryId)
+                            Icon(
+                              PhosphorIconsFill.checkCircle,
+                              size: 25,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                          )
+                          // IgnorePointer(
+                          //   child: CustomRadio(
+                          //     value: category.id,
+                          //     groupValue: state.selectedCategoryId,
+                          //     onChanged: null,
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

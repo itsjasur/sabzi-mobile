@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_state.dart';
 import 'package:flutter_sabzi/pages/add_item/models/listing_draft_model.dart';
+import 'package:flutter_sabzi/pages/category/categories_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AddListingProvider extends Notifier<AddListingState> {
   @override
   AddListingState build() {
+    ref.watch(categoriesProvider).categories;
+
     final state = AddListingState(
       selectedImages: [],
       selectedCurrency: 'UZS',
@@ -19,6 +22,7 @@ class AddListingProvider extends Notifier<AddListingState> {
       titleController: TextEditingController(),
       descriptionController: TextEditingController(),
       priceController: TextEditingController(text: '0'),
+      // categoryNameController: TextEditingController(),
     );
 
     // disposal
@@ -26,6 +30,7 @@ class AddListingProvider extends Notifier<AddListingState> {
       state.titleController.dispose();
       state.descriptionController.dispose();
       state.priceController.dispose();
+      // state.categoryNameController.dispose();
     });
     _loadDraft();
     return state;
@@ -64,6 +69,16 @@ class AddListingProvider extends Notifier<AddListingState> {
     }
   }
 
+  void selectCategory(int value) {
+    state = state.copyWith(selectedCategoryId: value);
+  }
+
+  String? getCategoryName() {
+    if (state.selectedCategoryId == -1) return null;
+    final foundCategory = ref.watch(categoriesProvider).categories.firstWhere((element) => element.id == state.selectedCategoryId);
+    return foundCategory.name;
+  }
+
   Future<void> _loadDraft() async {
     final prefs = await SharedPreferences.getInstance();
     final draftJson = prefs.getString('item_draft');
@@ -88,6 +103,7 @@ class AddListingProvider extends Notifier<AddListingState> {
           selectedCurrency: draft.currency,
           isPriceNegotiable: draft.isPriceNegotiable,
           selectedImages: images,
+          selectedCategoryId: draft.categoryId,
         );
       } catch (e, trace) {
         print('Error loading draft: $e');
@@ -115,6 +131,7 @@ class AddListingProvider extends Notifier<AddListingState> {
       currency: state.selectedCurrency,
       isPriceNegotiable: state.isPriceNegotiable,
       imagePaths: imagePaths,
+      categoryId: state.selectedCategoryId,
     );
 
     final prefs = await SharedPreferences.getInstance();

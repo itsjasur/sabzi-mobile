@@ -8,6 +8,9 @@ import 'package:flutter_sabzi/core/widgets/custom_radio_widget.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/images_row.dart';
+import 'package:flutter_sabzi/pages/add_item/widgets/categories_list_modal.dart';
+import 'package:flutter_sabzi/pages/category/categories_page.dart';
+import 'package:flutter_sabzi/pages/category/categories_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddListingPage extends ConsumerStatefulWidget {
@@ -40,6 +43,9 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(addListingProvider);
+    final notifier = ref.read(addListingProvider.notifier);
+
     return Focus(
       focusNode: _pageFocusNode,
       child: GestureDetector(
@@ -58,7 +64,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
             actions: [
               ScaledTap(
                 onTap: () {
-                  ref.read(addListingProvider.notifier).saveDraft();
+                  notifier.saveDraft();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Draft saved'),
@@ -92,9 +98,39 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                           _titleBuilder('Title'),
                           const SizedBox(height: 10),
                           CustomTextFormField(
-                            controller: ref.watch(addListingProvider).titleController,
+                            controller: state.titleController,
                             hintText: 'What are you selling or giving away?',
                             errorText: _validator('title'),
+                            onChanged: (String value) {
+                              setState(() {});
+                            },
+                          ),
+                          const SizedBox(height: 30),
+
+                          //
+                          _titleBuilder('Category'),
+                          const SizedBox(height: 10),
+                          CustomTextFormField(
+                            key: ValueKey(state.selectedCategoryId),
+                            hintText: 'Select category',
+                            initialValue: notifier.getCategoryName(),
+                            // initialValue: state.selectedCategoryId == -1 ? null : ref.read(categoriesProvider.notifier).getCategory(state.selectedCategoryId).name,
+                            readOnly: true,
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true, // Makes it full-screen if needed
+                                useSafeArea: true,
+                                isDismissible: false,
+                                barrierColor: Theme.of(context).colorScheme.surface,
+                                builder: (BuildContext context) => const CategoriesListModal(),
+                              );
+                            },
+                            errorText: _validator('category'),
+                            suffixIcon: Icon(
+                              PhosphorIconsRegular.caretDown,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                             onChanged: (String value) {
                               setState(() {});
                             },
@@ -104,7 +140,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                           const SizedBox(height: 10),
                           CustomTextFormField(
                             keyboardType: TextInputType.number,
-                            controller: ref.watch(addListingProvider).priceController,
+                            controller: state.priceController,
                             hintText: '0',
                             prefixIcon: Container(
                               margin: const EdgeInsets.only(left: 12),
@@ -124,20 +160,20 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                                           children: [
                                             CustomRadio(
                                               onChanged: (value) {
-                                                ref.read(addListingProvider.notifier).updateCurrency(value);
+                                                notifier.updateCurrency(value);
                                                 Navigator.pop(context);
                                               },
                                               value: 'USD',
-                                              groupValue: ref.watch(addListingProvider).selectedCurrency,
+                                              groupValue: state.selectedCurrency,
                                               child: const Text("USD \$"), ////translate
                                             ),
                                             CustomRadio(
                                               onChanged: (value) {
-                                                ref.read(addListingProvider.notifier).updateCurrency(value);
+                                                notifier.updateCurrency(value);
                                                 Navigator.pop(context);
                                               },
                                               value: 'UZS',
-                                              groupValue: ref.watch(addListingProvider).selectedCurrency,
+                                              groupValue: state.selectedCurrency,
                                               child: const Text("UZS So'm"), //translate
                                             ),
                                           ],
@@ -156,7 +192,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                                         ),
                                         const SizedBox(width: 5),
                                         Text(
-                                          ref.watch(addListingProvider).selectedCurrency == 'UZS' ? "So'm" : "\$", //translate
+                                          state.selectedCurrency == 'UZS' ? "So'm" : "\$", //translate
                                           style: TextStyle(
                                             color: Theme.of(context).colorScheme.onSurface,
                                             fontSize: 15,
@@ -183,9 +219,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                           ),
                           const SizedBox(height: 7),
                           ScaledTap(
-                            onTap: () {
-                              ref.read(addListingProvider.notifier).togglePriceNegotiable();
-                            },
+                            onTap: notifier.togglePriceNegotiable,
                             child: IntrinsicWidth(
                               child: Row(
                                 spacing: 7,
@@ -199,7 +233,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                                           color: Theme.of(context).colorScheme.onSurface.withAlpha(80),
                                           width: 1,
                                         ),
-                                        value: ref.watch(addListingProvider).isPriceNegotiable,
+                                        value: state.isPriceNegotiable,
                                         onChanged: (value) {},
                                       ),
                                     ),
@@ -216,7 +250,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
                           _titleBuilder('Description'),
                           const SizedBox(height: 10),
                           CustomTextFormField(
-                            controller: ref.watch(addListingProvider).descriptionController,
+                            controller: state.descriptionController,
                             maxLines: null,
                             textInputAction: TextInputAction.newline,
                             hintMaxLines: null,
@@ -269,11 +303,18 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
   String? _validator(String? value) {
     if (!_submitted) return null;
 
+    final state = ref.watch(addListingProvider);
+
     if (value == 'title') {
-      if (ref.watch(addListingProvider).titleController.text.isEmpty) return 'Please fill in the title.';
+      if (state.titleController.text.isEmpty) return 'Please fill in the title.';
     }
+
+    if (value == 'category') {
+      if (state.titleController.text.isEmpty) return 'Please select category';
+    }
+
     if (value == 'description') {
-      if (ref.watch(addListingProvider).descriptionController.text.isEmpty) return 'Please fill in the description.';
+      if (state.descriptionController.text.isEmpty) return 'Please fill in the description.';
     }
 
     return null;
