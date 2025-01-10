@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 class ListingDraftModel {
@@ -6,7 +7,7 @@ class ListingDraftModel {
   final String price;
   final String currency;
   final bool isPriceNegotiable;
-  final List<Uint8List> images; // Store just the IDs of assets
+  final List<String> imagePaths; // Store just the IDs of assets
 
   ListingDraftModel({
     required this.title,
@@ -14,7 +15,7 @@ class ListingDraftModel {
     required this.price,
     required this.currency,
     required this.isPriceNegotiable,
-    required this.images,
+    required this.imagePaths,
   });
 
   Map<String, dynamic> toJson() => {
@@ -23,7 +24,7 @@ class ListingDraftModel {
         'price': price,
         'currency': currency,
         'isPriceNegotiable': isPriceNegotiable,
-        'images': images,
+        'imagePaths': imagePaths,
       };
 
   factory ListingDraftModel.fromJson(Map<String, dynamic> json) => ListingDraftModel(
@@ -32,6 +33,6 @@ class ListingDraftModel {
         price: json['price'] ?? '',
         currency: json['currency'] ?? 'UZS',
         isPriceNegotiable: json['isPriceNegotiable'] ?? true,
-        images: List<Uint8List>.from(json['images'] ?? []),
+        imagePaths: ((json['imagePaths'] ?? []) as List).map((e) => e as String).toList(),
       );
 }

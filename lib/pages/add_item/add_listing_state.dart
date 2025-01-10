@@ -19,7 +19,6 @@ class AddListingState {
     required this.priceController,
   });
 
-  // Don't forget to update copyWith
   AddListingState copyWith({
     List<Uint8List>? selectedImages,
     String? selectedCurrency,
