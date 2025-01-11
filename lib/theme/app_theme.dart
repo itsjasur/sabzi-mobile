@@ -20,8 +20,8 @@ AppBarTheme _appBarTheme(ColorScheme colorScheme) => AppBarTheme(
       scrolledUnderElevation: 0,
       centerTitle: true,
       titleTextStyle: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
         color: colorScheme.onSurface,
       ),
     );

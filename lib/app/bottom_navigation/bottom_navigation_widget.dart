@@ -30,7 +30,7 @@ class BottomNavWidget extends ConsumerWidget {
           child: Row(
             spacing: 10,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: BottomNavs.values
+            children: BottomNav.values
                 .map(
                   (navigationItem) => ScaledTap(
                     onTap: () => ref.read(navigationProvider.notifier).setPage(navigationItem),
@@ -45,7 +45,7 @@ class BottomNavWidget extends ConsumerWidget {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          navigationItem.info.label,
+                          navigationItem.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

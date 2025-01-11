@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
-import 'package:flutter_sabzi/pages/area/my_area_page.dart';
+import 'package:flutter_sabzi/pages/my_area/my_area_page.dart';
 
 class VerifyLocationAlert extends ConsumerWidget {
   const VerifyLocationAlert({super.key});

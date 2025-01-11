@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/pages/area/my_area_state.dart';
+import 'package:flutter_sabzi/pages/my_area/my_area_state.dart';
 
 class MyAreaProvider extends Notifier<MyAreaState> {
   @override

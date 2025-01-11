@@ -13,7 +13,7 @@ class AppBarBackButton extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             child: Icon(
               isX ? PhosphorIconsBold.x : PhosphorIconsBold.caretLeft,
-              size: 25,
+              // size: 25,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           )

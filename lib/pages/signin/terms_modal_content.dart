@@ -41,7 +41,7 @@ class TermsModalContent extends ConsumerWidget {
                     onChanged: (value) {
                       provider.isUserTermsAgreeChecked(value!);
                     },
-                    title: "I agree to user terms",
+                    label: "I agree to user terms",
                     borderRadius: 20,
                     trailingIcon: ScaledTap(
                       onTap: () {},
@@ -57,7 +57,7 @@ class TermsModalContent extends ConsumerWidget {
                       provider.isPrivacyAgreeChecked(value!);
                     },
                     borderRadius: 20,
-                    title: 'I agree to privacy terms',
+                    label: 'I agree to privacy terms',
                     trailingIcon: ScaledTap(
                       onTap: () {},
                       child: Icon(
@@ -72,7 +72,7 @@ class TermsModalContent extends ConsumerWidget {
                       provider.isMarketingAgreeChecked(value!);
                     },
                     borderRadius: 20,
-                    title: '(Optional) I agree to marketing terms',
+                    label: '(Optional) I agree to marketing terms',
                     trailingIcon: ScaledTap(
                       onTap: () {},
                       child: Icon(

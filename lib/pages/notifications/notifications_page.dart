@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -9,7 +10,15 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBarBackButton(),
         title: const Text('Notifications'),
+        actions: [
+          ScaledTap(
+            onTap: () {},
+            child: const Icon(PhosphorIconsRegular.gear),
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {},

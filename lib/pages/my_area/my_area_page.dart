@@ -4,7 +4,7 @@ import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/area/my_area_provider.dart';
+import 'package:flutter_sabzi/pages/my_area/my_area_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class MyAreaPage extends ConsumerWidget {

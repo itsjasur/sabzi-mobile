@@ -10,7 +10,7 @@ import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_page.dart';
 import 'package:flutter_sabzi/pages/gallery_view/gallery_view.dart';
 import 'package:flutter_sabzi/pages/category/categories_page.dart';
-import 'package:flutter_sabzi/pages/area/my_area_page.dart';
+import 'package:flutter_sabzi/pages/my_area/my_area_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
 import 'package:flutter_sabzi/theme/app_theme.dart';
 import 'package:yandex_maps_mapkit_lite/init.dart' as inityandex;
@@ -52,8 +52,8 @@ class MyApp extends ConsumerWidget {
       theme: lightMode,
       darkTheme: darkMode,
 
-      // home: const App(),
-      home: const NotificationsPage(),
+      home: const App(),
+      // home: const NotificationsPage(),
       // home: const MyAreaSettingsPage(),
       // home: const MyAreaMapView(cordinates: LocationCordinates(latitude: 41.302542, longitude: 69.238718)),
       // home: MyAreaPage(),
