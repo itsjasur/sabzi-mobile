@@ -19,14 +19,7 @@ class CategoriesListModal extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBarBackButton(isX: true),
-        title: const Text(
-          'Choose category',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            height: 1,
-          ),
-        ),
+        title: const Text('Choose category'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

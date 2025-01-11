@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/mixins/scroll_mixin.dart';
 import 'package:flutter_sabzi/pages/home/home_page_state.dart';
-import 'package:flutter_sabzi/test/listings.dart';
+import 'package:flutter_sabzi/pages/home/test.dart';
 
 class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePageState> {
   @override

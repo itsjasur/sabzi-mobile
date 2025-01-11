@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/widgets/camera_grid_item.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/widgets/done_action_button.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/folder_select_modal.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/widgets/gallery_grid_image.dart';
+import 'package:flutter_sabzi/pages/gallery_view/widgets/camera_grid_item.dart';
+import 'package:flutter_sabzi/pages/gallery_view/widgets/done_action_button.dart';
+import 'package:flutter_sabzi/pages/gallery_view/folder_select_modal.dart';
+import 'package:flutter_sabzi/pages/gallery_view/widgets/gallery_grid_image.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryView extends StatefulWidget {

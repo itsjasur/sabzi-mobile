@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
+import 'package:flutter_sabzi/pages/gallery_view/gallery_view.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ImagesRow extends ConsumerWidget {

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app.dart';
-import 'package:flutter_sabzi/pages/auth/signin/signin_page.dart';
-import 'package:flutter_sabzi/pages/auth/welcome_page.dart';
+import 'package:flutter_sabzi/pages/notifications/notifications_page.dart';
+import 'package:flutter_sabzi/pages/signin/signin_page.dart';
+import 'package:flutter_sabzi/pages/signin/welcome_page.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/models.dart';
 import 'package:flutter_sabzi/core/widgets/map_view/my_radius_map_view.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_page.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view.dart';
+import 'package:flutter_sabzi/pages/gallery_view/gallery_view.dart';
 import 'package:flutter_sabzi/pages/category/categories_page.dart';
 import 'package:flutter_sabzi/pages/area/my_area_page.dart';
 import 'package:flutter_sabzi/theme/app_them_provider.dart';
@@ -52,11 +53,12 @@ class MyApp extends ConsumerWidget {
       darkTheme: darkMode,
 
       // home: const App(),
+      home: const NotificationsPage(),
       // home: const MyAreaSettingsPage(),
       // home: const MyAreaMapView(cordinates: LocationCordinates(latitude: 41.302542, longitude: 69.238718)),
       // home: MyAreaPage(),
       // home: const MainTestPage(),
-      home: const AddListingPage(),
+      // home: const AddListingPage(),
       // home: const WelcomePage(),
       // home: const SigninPage(isNewUser: true),
       // home: const GalleryView(),

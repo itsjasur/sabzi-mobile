@@ -56,14 +56,7 @@ class _AddListingPageState extends ConsumerState<AddListingPage> {
         child: Scaffold(
           appBar: AppBar(
             leading: const AppBarBackButton(),
-            title: const Text(
-              'New listing',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                height: 1,
-              ),
-            ),
+            title: const Text('New listing'),
             actions: [
               ScaledTap(
                 onTap: () {

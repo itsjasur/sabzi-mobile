@@ -21,13 +21,7 @@ class MyAreaPage extends ConsumerWidget {
         // toolbarHeight: 40,
         leading: const AppBarBackButton(isX: true),
         centerTitle: true,
-        title: const Text(
-          'My area settings',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        title: const Text('My area settings'),
         actions: [
           ScaledTap(
             onTap: () {

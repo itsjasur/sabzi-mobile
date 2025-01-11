@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_provider.dart';
+import 'package:flutter_sabzi/pages/gallery_view/gallery_view_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryGridImage extends ConsumerWidget {

@@ -17,14 +17,7 @@ class CategoriesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const AppBarBackButton(isX: true),
-        title: const Text(
-          'Categories',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            height: 1,
-          ),
-        ),
+        title: const Text('Categories'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/pages/add_item/gallery_view/gallery_view_state.dart';
+import 'package:flutter_sabzi/pages/gallery_view/gallery_view_state.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryViewProvider extends Notifier<GalleryViewState> {

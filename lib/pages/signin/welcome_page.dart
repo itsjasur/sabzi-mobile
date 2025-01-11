@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sabzi/pages/auth/signin/signin_page.dart';
+import 'package:flutter_sabzi/pages/signin/signin_page.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 
