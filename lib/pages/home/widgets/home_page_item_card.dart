@@ -57,9 +57,9 @@ class ListingCard extends StatelessWidget {
                           print('more clicked');
                         },
                         child: Icon(
-                          PhosphorIconsBold.dotsThreeVertical,
+                          PhosphorIconsFill.dotsThreeOutlineVertical,
                           color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
-                          size: 23,
+                          size: 18,
                         ),
                       ),
                     ],
@@ -69,7 +69,6 @@ class ListingCard extends StatelessWidget {
                     text: TextSpan(
                       style: TextStyle(
                         fontSize: 13.5,
-                        // color: Theme.of(context).colorScheme.onSurface,
                         color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
                       ),
                       children: [
