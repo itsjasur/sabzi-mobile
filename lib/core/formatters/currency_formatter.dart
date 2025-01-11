@@ -20,10 +20,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       final formatter = NumberFormat('#,##0', 'en_US');
       String formattedNumber = formatter.format(number);
 
-      return TextEditingValue(
-        text: formattedNumber,
-        selection: TextSelection.collapsed(offset: formattedNumber.length),
-      );
+      return TextEditingValue(text: formattedNumber);
     } catch (e) {
       return oldValue;
     }

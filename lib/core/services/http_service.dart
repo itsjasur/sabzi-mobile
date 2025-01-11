@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/pages/auth/auth_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomHttpException implements Exception {
   final String message;
@@ -21,16 +23,17 @@ class HttpService {
 
   HttpService(this.ref, {required this.baseUrl});
 
-  // Add auth token to headers
-  Map<String, String> _getHeaders([Map<String, String>? additionalHeaders]) {
-    final headers = {
-      'Content-Type': 'application/json',
-      // Add your auth token here if needed
-      // 'Authorization': 'Bearer ${_getAuthToken()}'
-    };
+  Future<Map<String, String>> _getHeaders({required bool isProtected, bool isMultiPart = false}) async {
+    final headers = {'Device-Lang': 'en'};
 
-    if (additionalHeaders != null) {
-      headers.addAll(additionalHeaders);
+    if (!isMultiPart) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    if (isProtected) {
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('access_token') ?? "";
+      headers['Authorization'] = 'Bearer $accessToken';
     }
 
     return headers;
@@ -72,11 +75,11 @@ class HttpService {
     }
   }
 
-  Future<dynamic> get(String endpoint, {Map<String, String>? headers}) async {
+  Future<dynamic> get(String endpoint, {Map<String, String>? headers, bool isProtected = false}) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl$endpoint'),
-        headers: _getHeaders(headers),
+        headers: await _getHeaders(isProtected: isProtected),
       );
       return _handleResponse(response);
     } catch (e) {
@@ -86,11 +89,11 @@ class HttpService {
     }
   }
 
-  Future<dynamic> post(String endpoint, {dynamic body, Map<String, String>? headers}) async {
+  Future<dynamic> post(String endpoint, {dynamic body, Map<String, String>? headers, bool isProtected = false}) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl$endpoint'),
-        headers: _getHeaders(headers),
+        headers: await _getHeaders(isProtected: isProtected),
         body: json.encode(body),
       );
       return _handleResponse(response);
@@ -100,6 +103,53 @@ class HttpService {
       // throw CustomHttpException(e.toString());
     }
   }
+
+  Future<dynamic> multipart(String endpoint, {required Map<String, String> fields, required Map<String, File> files, bool isProtected = false}) async {
+    try {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      final request = http.MultipartRequest('POST', uri);
+
+      final headers = await _getHeaders(isProtected: isProtected, isMultiPart: true);
+      request.headers.addAll(headers);
+      request.fields.addAll(fields);
+
+      // adds files
+      for (var entry in files.entries) {
+        final file = entry.value;
+        final stream = http.ByteStream(file.openRead());
+        final length = await file.length();
+
+        final multipartFile = http.MultipartFile(
+          entry.key,
+          stream,
+          length,
+          filename: file.path.split('/').last,
+        );
+        request.files.add(multipartFile);
+      }
+
+      // sends request
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      return _handleResponse(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+//   final result = await httpService.multipart(
+//   '/upload',
+//   fields: {
+//     'user_id': '123',
+//     'description': 'Profile update'
+//   },
+//   files: {
+//     'profile_picture': File('path/to/image.jpg'),
+//     'document': File('path/to/document.pdf')
+//   },
+//   isProtected: true,
+// );
 }
 
 final httpServiceProvider = Provider((ref) {

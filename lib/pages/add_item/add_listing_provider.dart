@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_state.dart';
 import 'package:flutter_sabzi/pages/add_item/models/listing_draft_model.dart';
 import 'package:flutter_sabzi/pages/category/categories_provider.dart';
@@ -32,7 +33,7 @@ class AddListingProvider extends Notifier<AddListingState> {
       state.priceController.dispose();
       // state.categoryNameController.dispose();
     });
-    _loadDraft();
+    // _loadDraft();
     return state;
   }
 
@@ -73,10 +74,10 @@ class AddListingProvider extends Notifier<AddListingState> {
     state = state.copyWith(selectedCategoryId: value);
   }
 
-  String? getCategoryName() {
+  String? get categoryName {
     if (state.selectedCategoryId == -1) return null;
-    final foundCategory = ref.watch(categoriesProvider).categories.firstWhere((element) => element.id == state.selectedCategoryId);
-    return foundCategory.name;
+    final categories = ref.watch(categoriesProvider).categories;
+    return categories.where((element) => element.id == state.selectedCategoryId).firstOrNull?.name;
   }
 
   Future<void> _loadDraft() async {

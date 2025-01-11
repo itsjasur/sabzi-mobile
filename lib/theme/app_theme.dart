@@ -28,6 +28,7 @@ ThemeData lightMode = ThemeData(
   useMaterial3: true,
   // applyElevationOverlayColor: true,
   dialogTheme: dialogTheme,
+
   snackBarTheme: _sanckbarTheme.copyWith(contentTextStyle: const TextStyle(fontSize: 15, color: Colors.white)),
   bottomSheetTheme: _bottomSheetTheme,
   appBarTheme: _appBarTheme,
