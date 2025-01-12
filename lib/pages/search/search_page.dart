@@ -13,9 +13,14 @@ class SearchPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends ConsumerState<SearchPage> {
+class _SearchPageState extends ConsumerState<SearchPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final state = ref.watch(searchProvider);
     final notifier = ref.read(searchProvider.notifier);
 

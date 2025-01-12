@@ -24,21 +24,28 @@ class HoomeAddProductButton extends ConsumerWidget {
           curve: Curves.ease,
           child: Container(
             alignment: Alignment.center,
-            height: 50,
-            constraints: const BoxConstraints(minWidth: 50),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            // constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
             child: homePageScrolled
-                ? Icon(
-                    PhosphorIcons.plus(PhosphorIconsStyle.bold),
-                    size: 30,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  )
-                : Text(
-                    'Add product',
-                    style: TextStyle(
+                ? SizedBox(
+                    height: 55,
+                    width: 55,
+                    child: Icon(
+                      PhosphorIconsBold.plus,
+                      size: 30,
                       color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    height: 45,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      'Add listing',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
           ),

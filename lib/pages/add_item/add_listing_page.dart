@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/core/formatters/currency_formatter.dart';
-import 'package:flutter_sabzi/core/formatters/currency_with_suffix_formatter.dart';
 import 'package:flutter_sabzi/core/widgets/app_back_button.dart';
 import 'package:flutter_sabzi/core/widgets/custom_text_form_field.dart';
 import 'package:flutter_sabzi/core/widgets/primary_button.dart';
@@ -11,9 +9,6 @@ import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_provider.dart';
 import 'package:flutter_sabzi/pages/add_item/images_row.dart';
 import 'package:flutter_sabzi/pages/add_item/widgets/categories_list_modal.dart';
-import 'package:flutter_sabzi/pages/category/categories_page.dart';
-import 'package:flutter_sabzi/pages/category/categories_provider.dart';
-import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddListingPage extends ConsumerStatefulWidget {

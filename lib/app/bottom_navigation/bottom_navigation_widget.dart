@@ -12,7 +12,7 @@ class BottomNavWidget extends ConsumerWidget {
     final state = ref.watch(navigationProvider);
 
     return Container(
-      padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
@@ -36,14 +36,14 @@ class BottomNavWidget extends ConsumerWidget {
                     onTap: () => ref.read(navigationProvider.notifier).setPage(navigationItem),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      // spacing: 3,
                       children: [
-                        const SizedBox(height: 5),
                         Icon(
                           navigationItem == state.currentPage ? navigationItem.info.activeIcon : navigationItem.info.icon,
                           size: 26,
                           color: Theme.of(context).colorScheme.onSurface.withAlpha(navigationItem == state.currentPage ? 255 : 100),
                         ),
-                        const SizedBox(height: 3),
+                        const SizedBox(height: 2),
                         Text(
                           navigationItem.name,
                           maxLines: 1,

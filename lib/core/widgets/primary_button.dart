@@ -18,7 +18,7 @@ class PrimaryButton extends StatelessWidget {
     this.borderRadius = 6,
     this.backgroundColor,
     this.elevation = 0,
-    this.height = 50,
+    this.height = 45,
     this.isLoading = false,
   });
 

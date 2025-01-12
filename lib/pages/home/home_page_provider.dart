@@ -48,6 +48,8 @@ class HomePageProvider extends Notifier<HomePageState> with ScrollMixin<HomePage
 
   @override
   void updateScrollState(bool isScrolled, double offset, bool hasScrollReachedBottom) {
+    state = state.copyWith(isPageScrolled: isScrolled);
+
     if (hasScrollReachedBottom) {
       if (state.listings.hasMoreItems && !state.listings.isLoading) {
         print('LOADING MORE ITEMS');

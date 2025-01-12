@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sabzi/app/app_provider.dart';
 import 'package:flutter_sabzi/app/auth/auth_provider.dart';
+import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_state.dart';
 import 'package:flutter_sabzi/pages/signin/welcome_page.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:flutter_sabzi/app/bottom_navigation/bottom_navigation_widget.dart';
@@ -27,13 +28,13 @@ class App extends ConsumerWidget {
       return Stack(
         children: [
           Scaffold(
-            // body: PageView(
-            //   physics: const NeverScrollableScrollPhysics(),
-            //   controller: ref.watch(navigationProvider).pageController,
-            //   onPageChanged: ref.read(navigationProvider.notifier).onPageChanged,
-            //   children: BottomNav.values.map((nav) => nav.info.page).toList(),
-            // ),
-            body: ref.watch(navigationProvider).currentPage.info.page,
+            body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: ref.watch(navigationProvider).pageController,
+              // onPageChanged: ref.read(navigationProvider.notifier).onPageChanged,
+
+              children: BottomNav.values.map((nav) => nav.info.page).toList(),
+            ),
             bottomNavigationBar: const BottomNavWidget(),
           ),
           if (ref.watch(appProvider.select((state) => state.isGlobalLoading)))

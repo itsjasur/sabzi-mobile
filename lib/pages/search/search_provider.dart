@@ -69,6 +69,7 @@ class SearchProvider extends Notifier<SearchState> with ScrollMixin<SearchState>
     state.searchTextController.clear();
 
     state = state.copyWith(
+      isSearchRequested: false,
       listings: state.listings.copyWith(items: [], pageNumber: 1, hasMoreItems: true, isLoading: false),
     );
   }
