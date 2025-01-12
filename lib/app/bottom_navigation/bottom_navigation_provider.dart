@@ -6,7 +6,7 @@ class BottomNavigationNotifier extends Notifier<NavigationState> {
   NavigationState build() {
     ref.onDispose(() {});
 
-    return NavigationState(currentPage: BottomNav.search);
+    return NavigationState(currentPage: BottomNav.home);
   }
 
   void setPage(BottomNav navItem) {

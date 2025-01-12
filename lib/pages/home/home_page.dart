@@ -4,8 +4,8 @@ import 'package:flutter_sabzi/core/models/listing_model.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
 import 'package:flutter_sabzi/pages/category/categories_page.dart';
 import 'package:flutter_sabzi/pages/category/categories_provider.dart';
-import 'package:flutter_sabzi/pages/home/widgets/home_add_product_button.dart';
-import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
+import 'package:flutter_sabzi/pages/home/home_add_product_button.dart';
+import 'package:flutter_sabzi/core/widgets/listing_card.dart';
 import 'package:flutter_sabzi/pages/home/home_page_provider.dart';
 import 'package:flutter_sabzi/pages/my_area/my_area_page.dart';
 import 'package:flutter_sabzi/pages/notifications/notifications_page.dart';
@@ -89,15 +89,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const SliverToBoxAdapter(child: SizedBox(height: 5)),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      childCount: state.listings.length,
+                      childCount: state.listings.items.length,
                       (context, listingsIndex) {
-                        ListingModel listing = state.listings[listingsIndex];
+                        ListingModel listing = state.listings.items[listingsIndex];
                         return Column(
                           children: [
                             ListingCard(listing: listing),
-                            if (listingsIndex != state.listings.length - 1)
+                            if (listingsIndex != state.listings.items.length - 1)
                               Divider(
-                                height: 20,
+                                height: 30,
                                 indent: 17,
                                 endIndent: 17,
                                 color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
@@ -110,10 +110,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const SliverToBoxAdapter(child: SizedBox(height: 50)),
 
                   // TODO: temporary
-                  if (state.isLoadingMoreListings)
+                  if (state.listings.isLoading)
                     const SliverToBoxAdapter(
                       child: Align(
-                        child: Text('Loading more'),
+                        child: Text('Loading'),
                       ),
                     ),
                   const SliverToBoxAdapter(child: SizedBox(height: 30)),
