@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/core/models/category_model.dart';
 import 'package:flutter_sabzi/pages/add_item/add_listing_state.dart';
 import 'package:flutter_sabzi/pages/add_item/models/listing_draft_model.dart';
 import 'package:flutter_sabzi/pages/category/categories_provider.dart';

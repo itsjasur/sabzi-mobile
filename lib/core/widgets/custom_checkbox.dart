@@ -8,7 +8,7 @@ class CustomCheckbox extends StatelessWidget {
   final String? label;
   final TextStyle? labelStyle;
   final bool isCircle;
-  final double? size;
+  final double size;
   final double borderRadius;
   final Widget? trailingIcon;
 
@@ -19,7 +19,7 @@ class CustomCheckbox extends StatelessWidget {
     this.label,
     this.size = 24,
     this.borderRadius = 3,
-    this.labelStyle,
+    this.labelStyle = const TextStyle(fontSize: 15),
     this.trailingIcon,
     this.isCircle = true,
   });
@@ -27,10 +27,10 @@ class CustomCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaledTap(
-      onTap: () => onChanged?.call(!value), // toggles the current value
+      onTap: () => onChanged?.call(!value),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 5,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 4,
         children: [
           if (isCircle)
             Icon(
@@ -46,9 +46,13 @@ class CustomCheckbox extends StatelessWidget {
             ),
           if (label != null)
             Expanded(
-              child: Text(
-                label!,
-                style: const TextStyle(fontSize: 15),
+              child: Container(
+                constraints: BoxConstraints(minHeight: size),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  label!,
+                  style: labelStyle,
+                ),
               ),
             ),
           if (trailingIcon != null) trailingIcon!

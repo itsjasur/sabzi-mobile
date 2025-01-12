@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sabzi/core/enums/listing_status.dart';
-import 'package:flutter_sabzi/core/models/listing_model.dart';
 import 'package:flutter_sabzi/core/widgets/custom_checkbox.dart';
-import 'package:flutter_sabzi/core/widgets/primary_button.dart';
 import 'package:flutter_sabzi/core/widgets/scaled_tap.dart';
-import 'package:flutter_sabzi/pages/home/test.dart';
 import 'package:flutter_sabzi/pages/home/widgets/home_page_item_card.dart';
+import 'package:flutter_sabzi/pages/search/search_provider.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
@@ -17,55 +14,32 @@ class SearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<SearchPage> {
-  final FocusNode _focusNode = FocusNode();
-
-  final TextEditingController _controller = TextEditingController();
-
-  final List<String> _previousSearchWords = ['samsung', 'iphone', 'xiaomi', 'nokia', 'oppo', 'honor', 'huwei', 'xiaomi', 'nokia', 'oppo', 'honor', 'huwei'];
-  final List<String> _suggestedSearchWords = ['samsung', 'iphone', 'xiaomi', 'nokia', 'oppo', 'honor', 'huwei', 'xiaomi', 'nokia', 'oppo', 'honor', 'huwei'];
-
-  // final List<ListingModel> _foundListings = listingsList;
-  final List<ListingModel> _foundListings = [];
-
-  bool _isReceiveNotificationsChecked = true;
-  bool _searchRequested = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _focusNode.addListener(() {
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(searchProvider);
+    final notifier = ref.read(searchProvider.notifier);
+
     return GestureDetector(
       onTap: () {
-        _focusNode.unfocus();
+        state.focusNode.unfocus();
       },
       child: Scaffold(
         appBar: AppBar(
           title: AnimatedSize(
             duration: const Duration(milliseconds: 500),
             child: Row(
-              // spacing: 10,
               children: [
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: TextFormField(
-                      controller: _controller,
-                      onFieldSubmitted: (value) {
-                        print(value);
-                      },
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      focusNode: _focusNode,
+                      controller: state.searchTextController,
+                      onFieldSubmitted: (v) => notifier.searchListings(),
+                      onChanged: notifier.updateSearchkeyword,
+                      focusNode: state.focusNode,
                       textInputAction: TextInputAction.search,
                       style: const TextStyle(fontSize: 15),
+                      cursorHeight: 20,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Search',
@@ -75,7 +49,8 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         ),
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.onSurface.withAlpha(20),
-                        isCollapsed: true,
+                        // isCollapsed: true,
+                        isDense: true,
                         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
                         suffixIconConstraints: const BoxConstraints(maxHeight: 22),
                         prefixIconConstraints: const BoxConstraints(maxHeight: 22),
@@ -85,24 +60,21 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                             onTap: () {},
                             child: Icon(
                               PhosphorIconsRegular.magnifyingGlass,
-                              size: 21,
+                              size: 20,
                               color: Theme.of(context).colorScheme.onSurface.withAlpha(110),
                             ),
                           ),
                         ),
-                        suffixIcon: _controller.text.isNotEmpty
+                        suffixIcon: state.searchTextController.text.isNotEmpty
                             ? Container(
                                 margin: const EdgeInsets.only(right: 8),
                                 child: ScaledTap(
+                                  onTap: notifier.clearSearchKeywordInputText,
                                   child: Icon(
                                     PhosphorIconsFill.xCircle,
                                     color: Theme.of(context).colorScheme.onSurface.withAlpha(110),
-                                    size: 21,
+                                    size: 20,
                                   ),
-                                  onTap: () {
-                                    _controller.clear();
-                                    setState(() {});
-                                  },
                                 ),
                               )
                             : null,
@@ -113,11 +85,11 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 AnimatedSize(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  child: _focusNode.hasFocus
+                  child: state.focusNode.hasFocus
                       ? Container(
                           margin: const EdgeInsets.only(left: 10),
                           child: ScaledTap(
-                            onTap: _focusNode.unfocus,
+                            onTap: state.focusNode.unfocus,
                             child: const Text(
                               'Close',
                               style: TextStyle(fontSize: 15),
@@ -133,7 +105,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         body: CustomScrollView(
           slivers: [
             // FOCUSED, BUT NOT TYPED NOR SEARCHED -> SHOW RECENT SEARCHED KEYWORDS
-            if (_controller.text.isEmpty)
+            if (!state.isSearchRequested && state.searchTextController.text.isEmpty)
               SliverToBoxAdapter(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -150,7 +122,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         ),
                       ),
                       ScaledTap(
-                        onTap: () {},
+                        onTap: notifier.deleteAllRecentSearchkeywords,
                         child: Text(
                           'Delete all',
                           style: TextStyle(
@@ -164,13 +136,16 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 ),
               ),
             // FOCUSED, BUT NOT TYPED NOR SEARCHED -> SHOW RECENT SEARCHED KEYWORDS
-            if (_controller.text.isEmpty)
+            if (!state.isSearchRequested && state.searchTextController.text.isEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: _previousSearchWords.length,
-                  (context, prevSearchWordIndex) {
+                  childCount: state.recentSearchKeywords.length,
+                  (context, recentSearchKeywordIndex) {
                     return ScaledTap(
-                      onTap: () {},
+                      onTap: () {
+                        notifier.updateSearchkeyword(state.recentSearchKeywords.elementAt(recentSearchKeywordIndex));
+                        notifier.searchListings();
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
@@ -183,12 +158,12 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                               size: 20,
                             ),
                             Text(
-                              _previousSearchWords[prevSearchWordIndex],
+                              state.recentSearchKeywords.elementAt(recentSearchKeywordIndex),
                               style: const TextStyle(fontSize: 15),
                             ),
                             const Spacer(),
                             ScaledTap(
-                              onTap: () {},
+                              onTap: () => notifier.removeRecentSearchkeyword(state.recentSearchKeywords.elementAt(recentSearchKeywordIndex)),
                               child: Icon(
                                 PhosphorIconsRegular.x,
                                 color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
@@ -204,13 +179,16 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               ),
 
             // WHEN FOCUSED AND TYPED -> SHOW SUGGESTED KEYWRODS (FROM API)
-            if (_focusNode.hasFocus && _controller.text.isNotEmpty)
+            if (!state.isSearchRequested && state.searchTextController.text.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: _suggestedSearchWords.length,
-                  (context, suggestedSearchWordIndex) {
+                  childCount: state.suggestedSearchKeywords.length,
+                  (context, suggestedSearchKetwordIndex) {
                     return ScaledTap(
-                      onTap: () {},
+                      onTap: () {
+                        notifier.updateSearchkeyword(state.suggestedSearchKeywords.elementAt(suggestedSearchKetwordIndex));
+                        notifier.searchListings();
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
@@ -223,7 +201,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                               size: 20,
                             ),
                             Text(
-                              _suggestedSearchWords[suggestedSearchWordIndex],
+                              state.suggestedSearchKeywords.elementAt(suggestedSearchKetwordIndex),
                               style: const TextStyle(fontSize: 15),
                             ),
                           ],
@@ -235,9 +213,10 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               ),
 
             // SEARCH REQUESTED -> SHOW ADD NOTIFICATION KEYBOARD 1
-            if (!_focusNode.hasFocus && _searchRequested)
+            if (state.isSearchRequested)
               SliverToBoxAdapter(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10),
                     Padding(
@@ -249,18 +228,15 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         children: [
                           Flexible(
                             child: Text(
-                              'Receive notifications whenever a new listing is added with this keyword: ${_controller.text}',
+                              'Receive notifications whenever a new listing is added with this keyword: ${state.searchTextController.text}',
                               style: const TextStyle(fontSize: 15),
                             ),
                           ),
                           ScaledTap(
-                            onTap: () {
-                              _isReceiveNotificationsChecked = !_isReceiveNotificationsChecked;
-                              setState(() {});
-                            },
+                            onTap: notifier.toggleCheckboxForNotifications,
                             child: Icon(
-                              _isReceiveNotificationsChecked ? PhosphorIconsFill.checkSquare : PhosphorIconsRegular.checkSquare,
-                              color: _isReceiveNotificationsChecked ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withAlpha(80),
+                              state.isReceiveNotificationsChecked ? PhosphorIconsFill.checkSquare : PhosphorIconsRegular.checkSquare,
+                              color: state.isReceiveNotificationsChecked ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withAlpha(80),
                               size: 32,
                             ),
                           ),
@@ -272,23 +248,46 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       height: 6,
                       color: Theme.of(context).colorScheme.onSurface.withAlpha(15),
                       thickness: 6,
-                    )
+                    ),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: IntrinsicWidth(
+                        child: CustomCheckbox(
+                          size: 24,
+                          onChanged: (value) => notifier.toggleCheckboxForListingStatus(),
+                          value: state.isShowOnlyAvailableChecked,
+                          label: 'Only show available listing',
+                          labelStyle: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),
 
-            // SEARCHED AND LISTINGS FOUND 1
-            if (!_focusNode.hasFocus && _foundListings.isNotEmpty)
+            // SEARCH REQUESTED -> SHOW LOADING
+            if (state.isSearchRequested && state.isSearching)
+              const SliverFillRemaining(
+                fillOverscroll: true,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+
+            // SEARCHED AND LISTINGS FOUND
+            if (state.isSearchRequested && !state.isSearching && state.foundListings.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: _foundListings.length,
+                  childCount: state.foundListings.length,
                   (context, foundListingsIndex) {
                     return Column(
                       children: [
-                        ListingCard(listing: _foundListings[foundListingsIndex]),
-                        if (foundListingsIndex != _foundListings.length - 1)
+                        ListingCard(listing: state.foundListings[foundListingsIndex]),
+                        if (foundListingsIndex != state.foundListings.length - 1)
                           Divider(
-                            height: 20,
+                            height: 30,
                             indent: 17,
                             endIndent: 17,
                             color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
@@ -300,7 +299,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               ),
 
             // SEARCHED BUT NO LISTING FOUND
-            if (!_focusNode.hasFocus && _searchRequested && _foundListings.isEmpty)
+            if (state.isSearchRequested && !state.isSearching && state.foundListings.isEmpty)
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
@@ -314,7 +313,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Nothing found for the keyword: ${_controller.text}',
+                        'Nothing found for the keyword: ${state.searchTextController.text}',
                         style: TextStyle(
                           fontSize: 15,
                           color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
